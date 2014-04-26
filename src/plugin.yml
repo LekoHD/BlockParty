@@ -1,7 +1,7 @@
 name : BlockParty
-version : 0.3
-author: LekoHD
-description: Official Plugin for CloudMine 24/7
+version : 0.4
+authors: [Leon167, XxChxppellxX]
+description: Official BlockParty plugin
 website: http://www.Cloud-Mine.de
 main: com.lekohd.blockparty.Main
 
