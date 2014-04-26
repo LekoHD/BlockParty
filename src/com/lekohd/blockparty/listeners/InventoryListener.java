@@ -11,6 +11,10 @@ import org.bukkit.inventory.ItemStack;
 import com.lekohd.blockparty.Main;
 import com.lekohd.blockparty.music.Vote;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class InventoryListener implements Listener{
 	
 	@SuppressWarnings("deprecation")

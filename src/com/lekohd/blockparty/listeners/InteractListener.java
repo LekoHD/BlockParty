@@ -16,6 +16,10 @@ import com.lekohd.blockparty.music.Vote;
 import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Players;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class InteractListener implements Listener{
 
 	public int duration = 10;

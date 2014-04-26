@@ -2,11 +2,16 @@ package com.lekohd.blockparty.bonus;
 
 import java.util.Random;
 
+
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
 import com.lekohd.blockparty.Main;
+
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
 
 public class Boosts {
 	

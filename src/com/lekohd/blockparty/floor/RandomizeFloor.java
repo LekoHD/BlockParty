@@ -3,6 +3,10 @@ package com.lekohd.blockparty.floor;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class RandomizeFloor {
 	public static int xMax, yMax, zMax;
 	public static int xMin, yMin, zMin;

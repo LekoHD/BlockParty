@@ -4,6 +4,10 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import com.lekohd.blockparty.Main;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class FloorPoints {
 
 	public static Location getMin(String arenaName){

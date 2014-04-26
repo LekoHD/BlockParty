@@ -2,6 +2,7 @@ package com.lekohd.blockparty.commands;
 
 import me.confuser.barapi.BarAPI;
 
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,6 +18,10 @@ import com.lekohd.blockparty.floor.SaveFloor;
 import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Players;
 import com.lekohd.blockparty.system.Start;
+
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
 
 public class BlockParty implements CommandExecutor{
 	

@@ -15,6 +15,10 @@ import com.lekohd.blockparty.music.Songs;
 import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Players;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class MoveListener implements Listener {
 
 	@SuppressWarnings("deprecation")

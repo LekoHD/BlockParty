@@ -13,6 +13,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.lekohd.blockparty.Main;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class Vote {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

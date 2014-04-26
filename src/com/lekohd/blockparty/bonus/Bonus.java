@@ -7,6 +7,10 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.lekohd.blockparty.Main;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+
 public class Bonus {
 
 	public static int dc;

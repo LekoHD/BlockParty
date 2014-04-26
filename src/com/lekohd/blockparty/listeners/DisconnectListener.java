@@ -6,6 +6,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.lekohd.blockparty.Main;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class DisconnectListener implements Listener {
 
 	@EventHandler

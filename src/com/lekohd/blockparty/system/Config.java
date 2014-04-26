@@ -23,6 +23,10 @@ import com.lekohd.blockparty.sign.Signs;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class Config {
 
 	public File arena;

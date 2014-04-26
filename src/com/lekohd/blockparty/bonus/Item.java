@@ -2,11 +2,16 @@ package com.lekohd.blockparty.bonus;
 
 import java.util.Random;
 
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
 
 public class Item {
 

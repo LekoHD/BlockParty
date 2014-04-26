@@ -2,6 +2,10 @@ package com.lekohd.blockparty.floor;
 
 import com.lekohd.blockparty.Main;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class AddFloor {
 
 	public static void add(String arenaName, String floorName){

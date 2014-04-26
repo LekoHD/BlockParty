@@ -10,6 +10,10 @@ import com.xxmicloxx.NoteBlockAPI.RadioSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.Song;
 import com.xxmicloxx.NoteBlockAPI.SongPlayer;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class Songs {
 	public static void play(Player p, String song){
         Player target = p;

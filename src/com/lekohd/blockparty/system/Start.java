@@ -10,7 +10,10 @@ import com.lekohd.blockparty.level.Period;
 import com.lekohd.blockparty.music.Songs;
 import com.lekohd.blockparty.sign.Signs;
 
-
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class Start {
 
 	public static int number = 31; // TODO Muss in der Config noch anpassbar sein

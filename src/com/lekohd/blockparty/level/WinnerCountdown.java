@@ -10,6 +10,10 @@ import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Players;
 import com.lekohd.blockparty.system.Start;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 //import org.bukkit.craftbukkit.v1_7_R2.CraftWorld;
 
 public class WinnerCountdown {

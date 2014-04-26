@@ -10,6 +10,10 @@ import org.bukkit.entity.Player;
 import com.lekohd.blockparty.Main;
 import com.lekohd.blockparty.floor.LoadFloor;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class Arena {
 	public static void create(Player p, String arenaName){
 		/*File arena = new File("plugins//BlockParty//Arenas//" + arenaName + ".yml");

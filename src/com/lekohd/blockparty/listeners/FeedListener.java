@@ -6,6 +6,10 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import com.lekohd.blockparty.Main;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class FeedListener implements Listener{
 
 	@EventHandler

@@ -12,6 +12,10 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class LoadFloor {
 	private Vector size;
 	public CuboidClipboard sh = null;

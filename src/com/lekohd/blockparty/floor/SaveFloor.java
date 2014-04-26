@@ -9,6 +9,10 @@ import org.bukkit.entity.Player;
 
 import com.lekohd.blockparty.Main;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class SaveFloor {
 
 	public static void setFloor(Player p, String arenaName){

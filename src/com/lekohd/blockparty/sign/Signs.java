@@ -3,7 +3,11 @@ package com.lekohd.blockparty.sign;
 import com.lekohd.blockparty.Main;
 
 public class Signs {
-	
+
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 	public static void updateJoin(String arenaName, boolean full){
 		if(Main.signs.containsKey(arenaName)){
 			if(full)

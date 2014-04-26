@@ -19,6 +19,10 @@ import com.lekohd.blockparty.sign.Signs;
 import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Players;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class Period {
 
 	public static double number = 16;  // TODO Muss noch configurierbar sein!

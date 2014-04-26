@@ -7,6 +7,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.lekohd.blockparty.Main;
 
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
+ 
 public class DamageListener implements Listener{
 	@EventHandler
     public void onEntityDamageEvent(final EntityDamageEvent e) {

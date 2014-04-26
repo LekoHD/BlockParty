@@ -27,7 +27,9 @@ import com.lekohd.blockparty.listeners.SignListener;
 import com.lekohd.blockparty.music.Songs;
 import com.lekohd.blockparty.system.Config;
 
-
+/*
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
+ */
 
 public class Main extends JavaPlugin {
 
