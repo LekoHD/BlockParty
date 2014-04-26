@@ -91,7 +91,7 @@ public class BlockParty implements CommandExecutor{
 							else
 							{
 								for (Player player : Players.getPlayersInLobby(Main.inLobbyPlayers.get(p))){
-									player.sendMessage("§3[BlockParty] §8" + p.getName() + " leaved the game");
+									player.sendMessage("§3[BlockParty] §8" + p.getName() + " left the game");
 								}
 							}
 		    				Main.inLobbyPlayers.remove(p);
@@ -103,7 +103,7 @@ public class BlockParty implements CommandExecutor{
 		    				p.getInventory().setContents(Main.inv.get(p));
 		    				if(Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
 		    					BarAPI.removeBar(p);
-			    			p.sendMessage("§3[BlockParty] §8You leaved the arena!");
+			    			p.sendMessage("§3[BlockParty] §8You left the arena!");
 			    			return true;
 		    			}
 		    		}
