@@ -1,0 +1,16 @@
+name : BlockParty
+version : 0.3
+author: LekoHD
+description: Official Plugin for CloudMine 24/7
+website: http://www.Cloud-Mine.de
+main: com.lekohd.blockparty.Main
+
+depend:
+  - WorldEdit
+softdepend:
+  - BarAPI
+  - NoteBlockAPI
+
+commands:
+  blockparty:
+    aliases: [bp,block,blockp]
