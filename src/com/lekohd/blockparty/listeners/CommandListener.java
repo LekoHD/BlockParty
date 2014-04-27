@@ -17,7 +17,7 @@ public class CommandListener implements Listener{
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent e)
 	{
 		Player p = e.getPlayer();
-	        if(Main.inGamePlayers.containsKey(p) || Main.onFloorPlayers.containsKey(p)){
+	        if(Main.inGamePlayers.containsKey(p.getName()) || Main.onFloorPlayers.containsKey(p.getName())){
 	            // Hier die Aktion, wenn ein Befehl in einer ArrayList 'ArrayListName' steht.
 	        	if(!p.isOp())
 	        	{

@@ -16,10 +16,10 @@ public class DamageListener implements Listener{
     public void onEntityDamageEvent(final EntityDamageEvent e) {
 		if(e.getEntity() instanceof Player){
 			Player p = (Player) e.getEntity();
-			if(Main.inLobbyPlayers.containsKey(p)){
+			if(Main.inLobbyPlayers.containsKey(p.getName())){
 				e.setCancelled(true);
 			}
-			if(Main.onFloorPlayers.containsKey(p)){
+			if(Main.onFloorPlayers.containsKey(p.getName())){
 				e.setCancelled(true);
 			}
 		}

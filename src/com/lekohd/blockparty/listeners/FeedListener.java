@@ -14,7 +14,7 @@ public class FeedListener implements Listener{
 
 	@EventHandler
 	public void onFeed(final FoodLevelChangeEvent e){
-		if(Main.onFloorPlayers.containsKey(e.getEntity()))
+		if(Main.onFloorPlayers.containsKey(e.getEntity().getName()))
 			e.setFoodLevel(20);
 	}
 	

@@ -34,13 +34,12 @@ import com.lekohd.blockparty.system.Config;
 public class Main extends JavaPlugin {
 
 	public static Player p;
-	public static HashMap<Player, String> inGamePlayers = new HashMap<>();
-	public static HashMap<Player, String> inLobbyPlayers = new HashMap<>();
-	public static HashMap<Player, String> onFloorPlayers = new HashMap<>();
-	public static HashMap<Player, Location> locs = new HashMap<>();
-	public static HashMap<Player, GameMode> gm = new HashMap<>();
-	public static HashMap<Player, ItemStack[]> inv = new HashMap<>();
-	//public static HashSet<String> floors = new HashSet<>();
+	public static HashMap<String, String> inGamePlayers = new HashMap<>();
+	public static HashMap<String, String> inLobbyPlayers = new HashMap<>();
+	public static HashMap<String, String> onFloorPlayers = new HashMap<>();
+	public static HashMap<String, Location> locs = new HashMap<>();
+	public static HashMap<String, GameMode> gm = new HashMap<>();
+	public static HashMap<String, ItemStack[]> inv = new HashMap<>();
 	public static HashMap<String, Config> getArena = new HashMap<>();
 	public static ArrayList<LoadFloor> floors = new ArrayList<>();
 	public static HashMap<String, ArrayList<LoadFloor>> getFloor = new HashMap<>();
@@ -53,7 +52,7 @@ public class Main extends JavaPlugin {
 	
 	// TODO hoverable text
 	// prevent user from placing blocks
-	// TODO disable pvp
+	// disable pvp
 	// falling blocks
 	// TODO Note Block as countdown
 	// Heath and Feed regeneration
@@ -121,32 +120,4 @@ public class Main extends JavaPlugin {
 			  }  
 		  }
 	  }
-	  /*public static boolean lessThanMinimum(String arenaName){
-		  if(Players.getPlayerAmountInLobby(arenaName) >= lessMinimum)
-		  {
-			  return false;
-		  }
-		  return true;
-	  }
-	  
-	  public static void minCfgPlayers(String arenaName){
-		  File arena = new File("plugins//BlockParty//Arenas//" + arenaName + ".yml");
-			if(arena.exists())
-			{
-				FileConfiguration cfg = YamlConfiguration.loadConfiguration(arena);
-				try {
-					cfg.load(arena);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvalidConfigurationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				lessMinimum = cfg.getInt("configuration.MinPlayers");
-			}
-	  }*/
 }

@@ -5,17 +5,21 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import me.confuser.barapi.BarAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.lekohd.blockparty.Main;
 import com.lekohd.blockparty.floor.FloorPoints;
@@ -346,9 +350,22 @@ public class Config {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public ItemStack getVoteItem(){
+		ItemStack item = new ItemStack(Material.FIREBALL, 1);
+	    ItemMeta meta = item.getItemMeta();
+	    meta.setDisplayName("§6Vote for a Song!");
+		List lores = new ArrayList();
+	    lores.add("Click me!");
+	    meta.setLore(lores);
+	    item.setItemMeta(meta);
+	    return item;
+	}
+	
+	@SuppressWarnings("deprecation")
 	public void join(Player p){
 		if(isEnabled){
-		if(!Main.inLobbyPlayers.containsKey(p) && !(Main.inGamePlayers.containsKey(p)))
+		if(!Main.inLobbyPlayers.containsKey(p.getName()) && !(Main.inGamePlayers.containsKey(p.getName())))
 		{
 			if(this.exists(p))
 			{
@@ -357,9 +374,11 @@ public class Config {
 					if(gameProgress.equalsIgnoreCase("inLobby"))
 					{
 						p.teleport(lobbySpawn);
-						Main.inLobbyPlayers.put(p, arenaName);
-						Main.inv.put(p, p.getInventory().getContents());
+						Main.inLobbyPlayers.put(p.getName(), arenaName);
+						Main.inv.put(p.getName(), p.getInventory().getContents());
 						p.getInventory().clear();
+						p.getInventory().addItem(this.getVoteItem());
+						p.updateInventory();
 						Start.start(arenaName);
 						Signs.updateJoin(arenaName, false);
 						if(Bukkit.getPluginManager().isPluginEnabled("BarAPI")){
@@ -367,11 +386,12 @@ public class Config {
 						}
 						p.sendMessage("§3[BlockParty] §8You have joined Arena " + arenaName);
 						if(Players.getPlayerAmountInLobby(arenaName) <= 1){
-							Players.getPlayersInLobby(arenaName).get(0).sendMessage("§3[BlockParty] §8" + p.getName() + " joined the game");
+							Bukkit.getPlayer(Players.getPlayersInLobby(arenaName).get(0)).sendMessage("§3[BlockParty] §8" + p.getName() + " joined the game");
 						}
 						else
 						{
-							for (Player player : Players.getPlayersInLobby(arenaName)){
+							for (String name : Players.getPlayersInLobby(arenaName)){
+								Player player = Bukkit.getPlayer(name);
 								player.sendMessage("§3[BlockParty] §8" + p.getName() + " joined the game");
 							}
 						}

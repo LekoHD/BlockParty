@@ -100,6 +100,7 @@ public class Period {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void delayedStart(String arenaName, int c){
 		
 		final String aName;
@@ -108,14 +109,15 @@ public class Period {
 		num=6;
 		if(Bukkit.getPluginManager().isPluginEnabled("BarAPI")){
 			if(!(Players.getPlayerAmountOnFloor(aName) == 1)){
-				for(Player p : Players.getPlayersOnFloor(aName))
+				for(String name : Players.getPlayersOnFloor(aName))
 				{
+					Player p = Bukkit.getPlayer(name);
 					BarAPI.setMessage(p, "Waiting ...", (float) 100);
 				}
 			}
 			else
 			{
-				BarAPI.setMessage(Players.getPlayersOnFloor(aName).get(0),"Waiting ...", (float) 100);
+				BarAPI.setMessage(Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)),"Waiting ...", (float) 100);
 			}
 		}
 		dc = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
@@ -136,6 +138,7 @@ public class Period {
 		}, 0L, 20L);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void start(String arenaName, int c, final Boosts bo){
 		final String aName = arenaName;
 		final Boosts b = new Boosts();
@@ -147,7 +150,8 @@ public class Period {
 		setStart = Main.getArena.get(arenaName).getStart();
 		//setFloor(aName);
 		final Byte randomNum =  (byte)RandomizeFloor.randomizedItem(aName);
-		for(Player p : Players.getPlayersOnFloor(aName)){
+		for(String name : Players.getPlayersOnFloor(aName)){
+			Player p = Bukkit.getPlayer(name);
 			p.sendMessage("§3[BlockParty] §8Next Block is " + FloorBlock.getName(randomNum) + " !");
 			FloorBlock.givePlayer(p, randomNum);
 			p.setLevel(counter+1);
@@ -167,14 +171,15 @@ public class Period {
 							if(number > 10){
 								if(Bukkit.getPluginManager().isPluginEnabled("BarAPI")){
 									if(!(Players.getPlayerAmountOnFloor(aName) == 1)){
-										for(Player p : Players.getPlayersOnFloor(aName))
+										for(String name : Players.getPlayersOnFloor(aName))
 										{
+											Player p = Bukkit.getPlayer(name);
 											BarAPI.setMessage(p, "Dance", (float) ((number-10)/(numb-10)*100));
 										}
 									}
 									else
 									{
-										BarAPI.setMessage(Players.getPlayersOnFloor(aName).get(0), "Dance", (float) ((number-10)/(numb-10)*100));
+										BarAPI.setMessage(Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)), "Dance", (float) ((number-10)/(numb-10)*100));
 									}
 								}
 							}
@@ -185,14 +190,15 @@ public class Period {
 									}
 									if(Bukkit.getPluginManager().isPluginEnabled("BarAPI")){
 										if(!(Players.getPlayerAmountOnFloor(aName) == 1)){
-											for(Player p : Players.getPlayersOnFloor(aName))
+											for(String name : Players.getPlayersOnFloor(aName))
 											{
+												Player p = Bukkit.getPlayer(name);
 												BarAPI.setMessage(p, "STOP", 5);
 											}
 										}
 										else
 										{
-											BarAPI.setMessage(Players.getPlayersOnFloor(aName).get(0), "STOP", 5);
+											BarAPI.setMessage(Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)), "STOP", 5);
 										}
 									}
 									RemoveBlocks.remove(aName, randomNum);
@@ -204,19 +210,21 @@ public class Period {
 							if(number<=5 && number>4)
 							{
 								setFloor(aName, false);
-								for(Player p : Players.getPlayersOnFloor(aName)){
+								for(String name : Players.getPlayersOnFloor(aName)){
+									Player p = Bukkit.getPlayer(name);
 									p.getInventory().remove(Material.STAINED_CLAY);
 								}
 								if(Bukkit.getPluginManager().isPluginEnabled("BarAPI")){
 									if(!(Players.getPlayerAmountOnFloor(aName) == 1)){
-										for(Player p : Players.getPlayersOnFloor(aName))
+										for(String name : Players.getPlayersOnFloor(aName))
 										{
+											Player p = Bukkit.getPlayer(name);
 											BarAPI.setMessage(p, "Waiting ...", (float) 100);
 										}
 									}
 									else
 									{
-										BarAPI.setMessage(Players.getPlayersOnFloor(aName).get(0),"Waiting ...", (float) 100);
+										BarAPI.setMessage(Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)),"Waiting ...", (float) 100);
 									}
 								}
 								if(Main.getArena.get(aName).getUseBoosts()){
@@ -224,8 +232,9 @@ public class Period {
 									{
 										b.place(aName);
 										if(!(Players.getPlayerAmountOnFloor(aName) == 1)){
-											for(Player p : Players.getPlayersOnFloor(aName))
+											for(String name : Players.getPlayersOnFloor(aName))
 											{
+												Player p = Bukkit.getPlayer(name);
 												p.sendMessage("§3[BlockParty] §8A Boost have been summoned!");
 											}
 										}
@@ -238,19 +247,19 @@ public class Period {
 								Main.getArena.get(aName).setGameProgress("inLobby");
 								Signs.updateGameProgress(aName, true);
 								setFloor(aName, true);
-								Players.getPlayersOnFloor(aName).get(0).teleport(Arena.getGameSpawn(aName));
+								Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).teleport(Arena.getGameSpawn(aName));
 								if(Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI"))
-									Songs.stop(Players.getPlayersOnFloor(aName).get(0));
+									Songs.stop(Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)));
 								if(Main.getArena.get(aName).getUseBoosts()){
 									if(bo != null)
 										bo.remove();
 								}
-								Players.getPlayersOnFloor(aName).get(0).sendMessage("§3[BlockParty] §8Congratulations! You won the game.");   // TODO set old spawn Floor
+								Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).sendMessage("§3[BlockParty] §8Congratulations! You won the game.");   // TODO set old spawn Floor
 								ItemStack[] is;
 								if(Main.getArena.get(aName).getRewardItems().size() > 1)
 								{
 									is = Main.inv.get(Players.getPlayersOnFloor(aName).get(0));
-									Inventory inv = Players.getPlayersOnFloor(aName).get(0).getInventory();
+									Inventory inv = Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).getInventory();
 									inv.setContents(is);
 									for(int item : (Main.getArena.get(aName).getRewardItems()))
 									{
@@ -259,20 +268,20 @@ public class Period {
 									}
 									is = inv.getContents();
 									Main.inv.put(Players.getPlayersOnFloor(aName).get(0), is);
-									Players.getPlayersOnFloor(aName).get(0).getInventory().clear();
-									Players.getPlayersOnFloor(aName).get(0).sendMessage("§3[BlockParty] §8You will get you reward when you leave the arena!");
+									Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).getInventory().clear();
+									Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).sendMessage("§3[BlockParty] §8You will get you reward when you leave the arena!");
 								}
 								else if(Main.getArena.get(aName).getRewardItems().size() == 1){
 									is = Main.inv.get(Players.getPlayersOnFloor(aName).get(0));
 									if(is!= null)
 										{
-											Inventory inv = Players.getPlayersOnFloor(aName).get(0).getInventory();
+											Inventory inv = Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).getInventory();
 											inv.setContents(is);
 											inv.addItem(getItem(Main.getArena.get(aName).getRewardItems().get(0)));
 											is = inv.getContents();
 											Main.inv.put(Players.getPlayersOnFloor(aName).get(0), is);
-											Players.getPlayersOnFloor(aName).get(0).getInventory().clear();
-											Players.getPlayersOnFloor(aName).get(0).sendMessage("§3[BlockParty] §8You will get you reward when you leave the arena!");
+											Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).getInventory().clear();
+											Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).sendMessage("§3[BlockParty] §8You will get you reward when you leave the arena!");
 										}
 									
 								}
@@ -282,14 +291,15 @@ public class Period {
 								}
 								WinnerCountdown.start(aName);
 								if(!(Players.getPlayerAmountInLobby(aName) <= 1)){
-									for(Player p : Players.getPlayersInLobby(aName))
+									for(String name : Players.getPlayersInLobby(aName))
 									{
-										p.sendMessage("§3[BlockParty] §8Player " + Players.getPlayersInGame(aName).get(0).getName() + " won the game.");
+										Player p = Bukkit.getPlayer(name);
+										p.sendMessage("§3[BlockParty] §8Player " + Players.getPlayersInGame(aName).get(0) + " won the game.");
 									}
 								}
 								else if (Players.getPlayerAmountInLobby(aName)!=0)
 								{				
-									Players.getPlayersInLobby(aName).get(0).sendMessage("§3[BlockParty] §8Player " + Players.getPlayersInGame(aName).get(0).getName() + " won the game.");
+									Bukkit.getPlayer(Players.getPlayersInLobby(aName).get(0)).sendMessage("§3[BlockParty] §8Player " + Players.getPlayersInGame(aName).get(0) + " won the game.");
 								}
 							}
 						}
@@ -321,15 +331,16 @@ public class Period {
 			}
 			Main.getArena.get(aName).setGameProgress("inLobby");
 			Signs.updateGameProgress(aName, true);
-			for(Player p : Players.getPlayersOnFloor(aName))
+			for(String name : Players.getPlayersOnFloor(aName))
 			{
+				Player p = Bukkit.getPlayer(name);
 				p.sendMessage("§3[BlockParty] §8Congratulations! You won the game.");
 				if(Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI"))
 					Songs.stop(p);
 				ItemStack[] is;
 				if(Main.getArena.get(aName).getRewardItems().size() > 1)
 				{
-					is = Main.inv.get(p);
+					is = Main.inv.get(p.getName());
 					Inventory inv = p.getInventory();
 					inv.setContents(is);
 					//inv.addItem(getItem(Main.getArena.get(aName).getRewardItems().get(0)));
@@ -340,17 +351,17 @@ public class Period {
 						inv.addItem(getItem(item));
 					}
 					is = inv.getContents();
-					Main.inv.put(p, is);
+					Main.inv.put(p.getName(), is);
 					p.getInventory().clear();
 					p.sendMessage("§3[BlockParty] §8You will get you reward when you leave the arena!");
 				}
 				else if(Main.getArena.get(aName).getRewardItems().size() == 1){
-					is = Main.inv.get(p);
+					is = Main.inv.get(p.getName());
 					Inventory inv = p.getInventory();
 					inv.setContents(is);
 					inv.addItem(getItem(Main.getArena.get(aName).getRewardItems().get(0)));
 					is = inv.getContents();
-					Main.inv.put(p, is);
+					Main.inv.put(p.getName(), is);
 					p.getInventory().clear();
 					p.sendMessage("§3[BlockParty] §8You will get you reward when you leave the arena!");
 				}
@@ -360,14 +371,15 @@ public class Period {
 				}
 			}
 			if(!(Players.getPlayerAmountInLobby(aName) == 1)){
-				for(Player p : Players.getPlayersInLobby(aName))
+				for(String name : Players.getPlayersInLobby(aName))
 				{
+					Player p = Bukkit.getPlayer(name);
 					p.sendMessage("§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
 				}
 			}
 			else
 			{
-				Players.getPlayersInLobby(aName).get(0).sendMessage("§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
+				Bukkit.getPlayer(Players.getPlayersInLobby(aName).get(0)).sendMessage("§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
 			}
 			WinnerCountdown.start(aName);
 		}
@@ -376,9 +388,9 @@ public class Period {
 	
 	public String getWinners(String arenaName){
 		String names = "";
-		for(Player p : Players.getPlayersInGame(arenaName))
+		for(String name : Players.getPlayersInGame(arenaName))
 		{
-			names = names + " " + p.getName();
+			names = names + " " + name;
 		}
 		return names;
 	}
@@ -388,18 +400,19 @@ public class Period {
 		    ItemStack item = new ItemStack(id, 1);
 		    return item;
 	}
-	/*public static void telBackToLobby(String arenaName){ // TODO Nicht doch PlayersOnLobby
-		//if(Players.getPlayersInGame(arenaName).)
-		for(Player p : Players.getPlayersInGame(arenaName))
+	@SuppressWarnings("deprecation")
+	public static void telBackToLobby(String arenaName){
+		for(String name : Players.getPlayersInGame(arenaName))
 		{
-			if(!Players.getPlayersInGame(arenaName).contains(p))
+			if(!Players.getPlayersInGame(arenaName).contains(name))
 			{
+				Player p = Bukkit.getPlayer(name);
 				p.teleport(Arena.getLobbySpawn(arenaName));
-				Main.inGamePlayers.remove(p);
-				Main.inLobbyPlayers.put(p, arenaName);
+				Main.inGamePlayers.remove(p.getName());
+				Main.inLobbyPlayers.put(p.getName(), arenaName);
 					
 			}
 		}
 		
-	}*/
+	}
 }

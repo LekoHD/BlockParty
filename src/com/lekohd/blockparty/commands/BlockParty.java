@@ -3,6 +3,7 @@ package com.lekohd.blockparty.commands;
 import me.confuser.barapi.BarAPI;
 
 
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+
 import com.lekohd.blockparty.Main;
 import com.lekohd.blockparty.floor.AddFloor;
 import com.lekohd.blockparty.floor.RemoveFloor;
@@ -28,7 +30,8 @@ public class BlockParty implements CommandExecutor{
 	  public static String lobby = "Lobby";
 	  public static String game = "Game";
 	  
-	  public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
+	  @SuppressWarnings("deprecation")
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	  {
 	    if(sender instanceof Player){
 	    	final Player p = (Player)sender;
@@ -78,34 +81,34 @@ public class BlockParty implements CommandExecutor{
 		    	{
 	    			if(p.hasPermission("blockparty.user"))
 		    		{
-		    			if(!Main.inLobbyPlayers.containsKey(p))
+		    			if(!Main.inLobbyPlayers.containsKey(p.getName()))
 		    			{
 		    				p.sendMessage("§3[BlockParty] §8You are not in an arena!");
 		    				return true;
 		    			}
-		    			if(Main.inGamePlayers.containsKey(p))
+		    			if(Main.inGamePlayers.containsKey(p.getName()))
 		    			{
 		    				p.sendMessage("§3[BlockParty] §8You can not leave the current game");
 		    				return true;
 		    			}
-		    			if((Main.inLobbyPlayers.containsKey(p)) && !(Main.inGamePlayers.containsKey(p)))
+		    			if((Main.inLobbyPlayers.containsKey(p.getName())) && !(Main.inGamePlayers.containsKey(p.getName())))
 		    			{
-		    				if(Players.getPlayerAmountInLobby(Main.inLobbyPlayers.get(p)) <= 1){
-								Players.getPlayersInLobby(Main.inLobbyPlayers.get(p)).get(0).sendMessage("§3[BlockParty] §8" + p.getName() + " leaved the game");
+		    				if(Players.getPlayerAmountInLobby(Main.inLobbyPlayers.get(p.getName())) <= 1){
+								Bukkit.getPlayer(Players.getPlayersInLobby(Main.inLobbyPlayers.get(p.getName())).get(0)).sendMessage("§3[BlockParty] §8" + p.getName() + " leaved the game");
 							}
 							else
 							{
-								for (Player player : Players.getPlayersInLobby(Main.inLobbyPlayers.get(p))){
-									player.sendMessage("§3[BlockParty] §8" + p.getName() + " left the game");
+								for (String name : Players.getPlayersInLobby(Main.inLobbyPlayers.get(p.getName()))){
+									Bukkit.getPlayer(name).sendMessage("§3[BlockParty] §8" + p.getName() + " left the game");
 								}
 							}
-		    				Main.inLobbyPlayers.remove(p);
-		    				p.teleport(Main.locs.get(p));
-		    				Main.locs.remove(p);
-		    				p.setGameMode(Main.gm.get(p));
-		    				Main.gm.remove(p);
+		    				Main.inLobbyPlayers.remove(p.getName());
+		    				p.teleport(Main.locs.get(p.getName()));
+		    				Main.locs.remove(p.getName());
+		    				p.setGameMode(Main.gm.get(p.getName()));
+		    				Main.gm.remove(p.getName());
 		    				p.getInventory().clear();
-		    				p.getInventory().setContents(Main.inv.get(p));
+		    				p.getInventory().setContents(Main.inv.get(p.getName()));
 		    				if(Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
 		    					BarAPI.removeBar(p);
 			    			p.sendMessage("§3[BlockParty] §8You left the arena!");
@@ -233,14 +236,14 @@ public class BlockParty implements CommandExecutor{
 	    		{
 	    			if(p.hasPermission("blockparty.user"))
 		    		{
-	    				if(!Main.inLobbyPlayers.containsKey(p) && !Main.inGamePlayers.containsKey(p))
+	    				if(!Main.inLobbyPlayers.containsKey(p.getName()) && !Main.inGamePlayers.containsKey(p.getName()))
 	    				{
 	    					if(Main.getArena.containsKey(args[1]))
 		    				{
-		    					Main.locs.put(p, p.getLocation());
-		    					Main.gm.put(p, p.getGameMode());
+		    					Main.locs.put(p.getName(), p.getLocation());
+		    					Main.gm.put(p.getName(), p.getGameMode());
 		    					Inventory inv = p.getInventory();
-		    					Main.inv.put(p, inv.getContents());
+		    					Main.inv.put(p.getName(), inv.getContents());
 		    					Arena.join(p, args[1]);
 			    				//Start.start(args[1]);
 		    				}

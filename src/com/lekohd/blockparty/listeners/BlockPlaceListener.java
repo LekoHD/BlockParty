@@ -16,10 +16,10 @@ public class BlockPlaceListener implements Listener{
 	@EventHandler
     public void onBlockPlaceEvent(final BlockPlaceEvent e) {
 		Player p = e.getPlayer();
-		if(Main.inLobbyPlayers.containsKey(p)){
+		if(Main.inLobbyPlayers.containsKey(p.getName())){
 			e.setCancelled(true);
 		}
-		if(Main.onFloorPlayers.containsKey(p)){
+		if(Main.onFloorPlayers.containsKey(p.getName())){
 			e.setCancelled(true);
 		}
 	}

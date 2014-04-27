@@ -25,6 +25,7 @@ public class WinnerCountdown {
 		final String aName = arenaName;
 		number = 6;
         cd = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+			@SuppressWarnings("deprecation")
 			public void run(){
 				if(number!=0)
 				{
@@ -38,10 +39,12 @@ public class WinnerCountdown {
 						if(Players.getPlayerAmountOnFloor(aName) == 1)
 						{
 							if(Bukkit.getPluginManager().isPluginEnabled("BarAPI")){
-								BarAPI.setMessage(Players.getPlayersOnFloor(aName).get(0), "Waiting ...", (float) 100);
+								BarAPI.setMessage(Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)), "Waiting ...", (float) 100);
 							}
-							Players.getPlayersOnFloor(aName).get(0).teleport(Arena.getLobbySpawn(aName));
+							Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).teleport(Arena.getLobbySpawn(aName));
 							Main.inLobbyPlayers.put(Players.getPlayersOnFloor(aName).get(0), aName);
+							Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).getInventory().addItem(Main.getArena.get(aName).getVoteItem());
+							Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).updateInventory();
 							Main.inGamePlayers.remove(Players.getPlayersOnFloor(aName).get(0));
 							Main.onFloorPlayers.remove(Players.getPlayersOnFloor(aName).get(0));
 							Main.getArena.get(aName).setGameProgress("inLobby");
@@ -49,16 +52,19 @@ public class WinnerCountdown {
 						}
 						else if(Players.getPlayerAmountOnFloor(aName) > 1)
 						{
-							for(Player p : Players.getPlayersOnFloor(aName))
+							for(String name : Players.getPlayersOnFloor(aName))
 							{
+								Player p = Bukkit.getPlayer(name);
 								if(Bukkit.getPluginManager().isPluginEnabled("BarAPI")){
 									BarAPI.setMessage(p, "Waiting ...", (float) 100);
 								}
 								//((CraftWorld) p.getWorld()).getHandle().a("magicCrit", p.getLocation().getX(), p.getLocation().getY() + 2, p.getLocation().getZ(), 5, 0.2, 0.2, 0.2, 0.2);
 								p.teleport(Arena.getLobbySpawn(aName));
-								Main.inGamePlayers.remove(p);
-								Main.onFloorPlayers.remove(p);
-								Main.inLobbyPlayers.put(p, aName);
+								Main.inGamePlayers.remove(p.getName());
+								Main.onFloorPlayers.remove(p.getName());
+								Main.inLobbyPlayers.put(p.getName(), aName);
+								p.getInventory().addItem(Main.getArena.get(aName).getVoteItem());
+								p.updateInventory();
 								Main.getArena.get(aName).setGameProgress("inLobby");
 								Start.start(aName);
 							}
@@ -68,7 +74,7 @@ public class WinnerCountdown {
 				else
 				{
 					Bukkit.getScheduler().cancelTask(cd);
-					System.out.println("[BlockParty] ERROR: The countdown is less than 1");
+					System.err.println("[BlockParty] ERROR: The countdown is less than 1");
 				}
 			}
 		}, 0L, 20L);

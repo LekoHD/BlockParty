@@ -15,22 +15,22 @@ public class DisconnectListener implements Listener {
 
 	@EventHandler
 	public void onDisconnect(PlayerQuitEvent e) {
-		if(Main.inGamePlayers.containsKey(e.getPlayer()))
-			Main.inGamePlayers.remove(e.getPlayer());
-		if(Main.inLobbyPlayers.containsKey(e.getPlayer()))
-			Main.inLobbyPlayers.remove(e.getPlayer());
-		if(Main.onFloorPlayers.containsKey(e.getPlayer()))
-			Main.onFloorPlayers.remove(e.getPlayer());
+		if(Main.inGamePlayers.containsKey(e.getPlayer().getName()))
+			Main.inGamePlayers.remove(e.getPlayer().getName());
+		if(Main.inLobbyPlayers.containsKey(e.getPlayer().getName()))
+			Main.inLobbyPlayers.remove(e.getPlayer().getName());
+		if(Main.onFloorPlayers.containsKey(e.getPlayer().getName()))
+			Main.onFloorPlayers.remove(e.getPlayer().getName());
 	}
 	
 	@EventHandler
 	public void onKick(PlayerKickEvent e) {
-		if(Main.inGamePlayers.containsKey(e.getPlayer()))
-			Main.inGamePlayers.remove(e.getPlayer());
-		if(Main.inLobbyPlayers.containsKey(e.getPlayer()))
-			Main.inLobbyPlayers.remove(e.getPlayer());
-		if(Main.onFloorPlayers.containsKey(e.getPlayer()))
-			Main.onFloorPlayers.remove(e.getPlayer());
+		if(Main.inGamePlayers.containsKey(e.getPlayer().getName()))
+			Main.inGamePlayers.remove(e.getPlayer().getName());
+		if(Main.inLobbyPlayers.containsKey(e.getPlayer().getName()))
+			Main.inLobbyPlayers.remove(e.getPlayer().getName());
+		if(Main.onFloorPlayers.containsKey(e.getPlayer().getName()))
+			Main.onFloorPlayers.remove(e.getPlayer().getName());
 	}
 
 }

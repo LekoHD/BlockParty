@@ -16,10 +16,9 @@ import com.lekohd.blockparty.sign.Signs;
  
 public class Start {
 
-	public static int number = 31; // TODO Muss in der Config noch anpassbar sein
+	public static int number = 31; 
 	public static int cd;
 	public static void start(String arenaName){
-		//System.out.println(Players.getPlayerAmountInLobby(arenaName));
 		
 		if(!Main.getArena.get(arenaName).lessThanMinimum())
 		{
@@ -28,16 +27,25 @@ public class Start {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void message(String mes, String arenaName){
-		for(Player p : Players.getPlayersInLobby(arenaName))
+		for(String name : Players.getPlayersInLobby(arenaName))
+		{
+			Player p = Bukkit.getPlayer(name);
 			p.sendMessage(mes);
+		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void level(String arenaName, int lev){
-		for(Player p : Players.getPlayersInLobby(arenaName))
+		for(String name : Players.getPlayersInLobby(arenaName))
+		{
+			Player p = Bukkit.getPlayer(name);
 			p.setLevel(lev);
+		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void startGame(String arenaName, Player sender){
 		if(Players.getPlayerAmountInLobby(arenaName) == 0 && !(sender == null))
 		{
@@ -46,12 +54,13 @@ public class Start {
 		else
 		{
 			String song = Main.getArena.get(arenaName).getMostVotedSong();
-			for(Player p : Players.getPlayersInLobby(arenaName))
+			for(String name : Players.getPlayersInLobby(arenaName))
 			{
+				Player p = Bukkit.getPlayer(name);
 				p.teleport(Arena.getGameSpawn(arenaName));
-				Main.inLobbyPlayers.remove(p);
-				Main.inGamePlayers.put(p, arenaName);
-				Main.onFloorPlayers.put(p, arenaName);
+				Main.inLobbyPlayers.remove(p.getName());
+				Main.inGamePlayers.put(name, arenaName);
+				Main.onFloorPlayers.put(name, arenaName);
 				p.sendMessage("§3[BlockParty] §8The game has started!");
 				if(Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI") && Main.getArena.get(arenaName).getUseSongs())
 				{
@@ -63,6 +72,7 @@ public class Start {
 			Main.getArena.get(arenaName).setGameProgress("inGame");
 			Signs.updateGameProgress(arenaName, false);
 			Main.getArena.get(arenaName).setStart(false);
+			Main.getArena.get(arenaName).unAbort();
 			Period pe = new Period();
 			Period.setFloor(arenaName, true);
 			pe.delayedStart(arenaName, 0);
@@ -70,14 +80,16 @@ public class Start {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void telOutOfArena(String arenaName){
-		for(Player p : Players.getPlayersInLobby(arenaName))
+		for(String name : Players.getPlayersInLobby(arenaName))
 		{
-			Main.inLobbyPlayers.remove(p);
-			if(Main.locs.containsKey(p))
+			Player p = Bukkit.getPlayer(name);
+			Main.inLobbyPlayers.remove(p.getName());
+			if(Main.locs.containsKey(p.getName()))
 			{
-				p.teleport(Main.locs.get(p));
-				Main.locs.remove(p);
+				p.teleport(Main.locs.get(p.getName()));
+				Main.locs.remove(p.getName());
 			}
 			else
 			{
@@ -91,6 +103,7 @@ public class Start {
 		number = Main.getArena.get(arenaName).getCountdown();
 		level(aName, number);
         cd = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+			@SuppressWarnings("deprecation")
 			public void run(){
 				if(number!=0)
 				{
@@ -99,14 +112,15 @@ public class Start {
 						number--;
 						if(Bukkit.getPluginManager().isPluginEnabled("BarAPI")){
 							if(!(Players.getPlayerAmountInLobby(aName) == 1)){
-								for(Player p : Players.getPlayersInLobby(aName))
+								for(String name : Players.getPlayersInLobby(aName))
 								{
+									Player p = Bukkit.getPlayer(name);
 									BarAPI.setMessage(p, "Game starts soon", (float) number*10/3);
 								}
 							}
 							else
 							{
-								BarAPI.setMessage(Players.getPlayersInLobby(aName).get(0),"Game starts soon", (float) number*10/3);
+								BarAPI.setMessage(Bukkit.getPlayer(Players.getPlayersInLobby(aName).get(0)),"Game starts soon", (float) number*10/3);
 							}
 						}
 						if(number == 20 || number == 30)

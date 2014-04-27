@@ -37,56 +37,6 @@ public class SaveFloor {
 	
 	public static boolean checkConditions(Player p, String arenaName){
 		
-		/*WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-		Selection selection = worldEdit.getSelection(p);
-		 
-		if (selection != null) {
-		    World world = selection.getWorld();
-		    if(selection.getHeight() == 1)
-		    {
-		    	if(selection.getLength() == cfg.getInt("configuration.floor.length"))
-			    {
-				    if(selection.getWidth() == cfg.getInt("configuration.floor.width"))
-				    {
-				    	if(selection.getHeight() == 1){
-				    		if(world.getName().equals("world"))
-				    		{
-				    			Location min = selection.getMinimumPoint();
-				    		    Location max = selection.getMaximumPoint();
-				    		    FloorPoints.set(min, max, arenaName);
-				    		    p.sendMessage("§3[BlockParty] §8Floor was set for Arena " + arenaName); 
-				    		    return true;
-				    		}
-				    		else
-				    		{
-				    			p.sendMessage("§3[BlockParty] §8Arena and Floor must be in the same world");
-				    		}
-				    	}
-				    	else
-				    	{
-				    		p.sendMessage("§3[BlockParty] §8The Floor must be one block high!");
-				    	}
-				    }
-				    else
-				    {
-				    	p.sendMessage("§3[BlockParty] §8The Floor must be " + cfg.getInt("configuration.floor.width") + " blocks wide!");
-				    	p.sendMessage("§3[BlockParty] §8You can change it in config.yml");
-				    }
-			    }
-			    else
-			    {
-			    	p.sendMessage("§3[BlockParty] §8The Floor must be " + cfg.getInt("configuration.floor.length") + " blocks long!");
-			    	p.sendMessage("§3[BlockParty] §8You can change it in config.yml");
-			    }
-		    } else {
-		    	p.sendMessage("§3[BlockParty] §8The Floor must be one block high!");
-		    }
-		} else {
-			p.sendMessage("§3[BlockParty] §8Select a region with WorldEdit first.");
-		}
-		return false;
-	}*/
-		
 		if(!(Main.getArena.get(arenaName) == null)){
 		if(Main.getArena.get(arenaName).checkConditions(p))
 			return true;

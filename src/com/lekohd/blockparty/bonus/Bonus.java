@@ -17,7 +17,7 @@ public class Bonus {
 	public static int duration = 10;
 	
 	public static void playEf(final Player p, final String ef){
-		duration = Main.getArena.get(Main.onFloorPlayers.get(p)).getBoostDuration() + 1;
+		duration = Main.getArena.get(Main.onFloorPlayers.get(p.getName())).getBoostDuration() + 1;
 		if(duration > 0){
 			if(ef.equalsIgnoreCase("walk"))
 				{
@@ -26,7 +26,7 @@ public class Bonus {
 				}
 			if(ef.equalsIgnoreCase("jump"))
 				{
-					p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, duration*20, 2));
+					p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, duration*20, 3));
 					p.sendMessage("§3[BlockParty] §8You jump hight has increased.");
 				}
 			if(ef.equalsIgnoreCase("nausea"))

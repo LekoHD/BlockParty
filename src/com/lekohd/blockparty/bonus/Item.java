@@ -3,6 +3,7 @@ package com.lekohd.blockparty.bonus;
 import java.util.Random;
 
 
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -33,25 +34,31 @@ public class Item {
 	    ender.setItemMeta(endermeta); 
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void give(Player p){
 		loadItems();
 		Random r = new Random();
-		int fType = r.nextInt(4) + 1;
+		int fType = r.nextInt(5) + 1;
 		switch (fType) {
 		default:
 		case 1:
-			Bonus.playEf(p, "walk");
+			//Bonus.playEf(p, "walk");
+			p.getInventory().addItem(walk);
+			p.updateInventory();
 			break;
 		case 2:
-			Bonus.playEf(p, "jump");
+			//Bonus.playEf(p, "jump");
+			p.getInventory().addItem(jump);
+			p.updateInventory();
 			break;
-		case 0: 
-			Bonus.playEf(p, "walk");
-			break;
-		case 3:
-			Bonus.playEf(p, "nausea");
+		case 3: 
+			p.getInventory().addItem(ender);
+			p.updateInventory();
 			break;
 		case 4:
+			Bonus.playEf(p, "nausea");
+			break;
+		case 5:
 			Bonus.playEf(p, "blindness");
 			break;
 		}
@@ -62,49 +69,5 @@ public class Item {
 		Inventory inv = p.getInventory();
 		inv.addItem(item);
 		p.getInventory().setContents(inv.getContents());
-		/*if(p.getInventory().getItem(0) == null)
-		{
-			p.getInventory().addItem(item);
-		}
-		else
-		if(p.getInventory().getItem(1) == null)
-		{
-			p.getInventory().setItem(1, item);
-		}
-		else
-		if(p.getInventory().getItem(2) == null)
-		{
-			p.getInventory().setItem(2, item);
-		}
-		else
-		if(p.getInventory().getItem(3) == null)
-		{
-			p.getInventory().setItem(3, item);
-		}
-		else
-		if(p.getInventory().getItem(4) == null)
-		{
-			p.getInventory().setItem(4, item);
-		}
-		else
-		if(p.getInventory().getItem(5) == null)
-		{
-			p.getInventory().setItem(5, item);
-		}
-		else
-		if(p.getInventory().getItem(6) == null)
-		{
-			p.getInventory().setItem(6, item);
-		}
-		else
-		if(p.getInventory().getItem(7) == null)
-		{
-			p.getInventory().setItem(7, item);
-		}
-		else
-		if(p.getInventory().getItem(8) == null)
-		{
-			p.getInventory().setItem(8, item);
-		}*/
 	}
 }
