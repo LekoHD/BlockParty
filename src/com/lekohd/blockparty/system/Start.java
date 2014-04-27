@@ -99,6 +99,8 @@ public class Start {
 	}
 	
 	public static void countdown(String arenaName){
+		if(Main.getArena.get(arenaName).getGameProgress().equalsIgnoreCase("Countdown"))	return;
+		Main.getArena.get(arenaName).setGameProgress("Countdown");
 		final String aName = arenaName;
 		number = Main.getArena.get(arenaName).getCountdown();
 		level(aName, number);
@@ -139,6 +141,7 @@ public class Start {
 						{
 							Bukkit.getScheduler().cancelTask(cd);
 							Main.getArena.get(aName).unAbort();
+							Main.getArena.get(aName).setGameProgress("inLobby");
 							startGame(aName, null);
 						}
 					}
