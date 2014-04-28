@@ -50,7 +50,7 @@ public class BlockParty extends JavaPlugin {
 	public static int lessMinimum = 0;
 	public static boolean abort = false;
 	public static ArrayList<String> arenaNames = new ArrayList<>();
-	
+	private static boolean noteBlockAPI, BarAPI;
 	// TODO hoverable text
 	// prevent user from placing blocks
 	// disable pvp
@@ -62,8 +62,10 @@ public class BlockParty extends JavaPlugin {
 	  {
 		  instance = this;
 		  loadConfig();
-		  System.out.println("[BlockParty] Plugin by " + this.getDescription().getAuthors());
+		  MessageManager.getInstance().log("Plugin by " + this.getDescription().getAuthors());
+		  
 		  this.getCommand("blockparty").setExecutor(new BlockPartyCommand());
+		  
 		  PluginManager pm = getServer().getPluginManager();
 		  pm.registerEvents(new DisconnectListener(), this);
 		  pm.registerEvents(new CommandListener(), this);
@@ -75,15 +77,17 @@ public class BlockParty extends JavaPlugin {
 		  pm.registerEvents(new BlockPlaceListener(), this);
 		  pm.registerEvents(new DamageListener(), this);
 		  pm.registerEvents(new InventoryListener(), this);
-		  if(Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI"))
-			{
-			  	for(Player p : Bukkit.getOnlinePlayers())
-			  		Songs.stop(p);
-			}
+		  
+		  noteBlockAPI = pm.isPluginEnabled("NoteBlockAPI");
+		  BarAPI = pm.isPluginEnabled("BarAPI");
+		  
+		  if(noteBlockAPI){
+			  	for(Player p : Bukkit.getOnlinePlayers()) Songs.stop(p); 
+		  }  
 	  }
 	 public void onDisable()
 	 {
-		 System.out.println("[BlockParty] Plugin disabled!");
+		 MessageManager.getInstance().log("Plugin disabled!");
 	 }
 	  public static BlockParty getInstance(){
 		  return instance;
@@ -117,7 +121,7 @@ public class BlockParty extends JavaPlugin {
 							  getFloor.put(name, floors);
 						  }	
 				  		}
-					  System.out.println("[BlockParty] Arena " + name + " loaded!");
+					  MessageManager.getInstance().log("Arena " + name + " loaded!");
 				  }
 			  }  
 		  }
