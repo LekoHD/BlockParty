@@ -4,9 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 /*
- ** Made by Jack Chappell (AKA smellyjelly1998)
- ** Skype: jack__chappell
- ** Email: jack.chappell13@gmail.com
+ * Copyright (C) 2014 Leon167 and XxChxppellxX 
  */
 
 public class MessageManager {
