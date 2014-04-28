@@ -7,7 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 
 /*
  * Copyright (C) 2014 Leon167 and XxChxppellxX 
@@ -19,11 +19,11 @@ public class Boosts {
 
 	public void place(String arenaName){
 		Random r = new Random();
-		int x = r.nextInt(Main.getArena.get(arenaName).getFloorLength());
-		int z = r.nextInt(Main.getArena.get(arenaName).getFloorWidth());
-		int y = Main.getArena.get(arenaName).getLocMin().getBlockY()+1;
-		World world = Main.getArena.get(arenaName).getWorld();
-		b = world.getBlockAt(Main.getArena.get(arenaName).getLocMin().getBlockX() + x, y, Main.getArena.get(arenaName).getLocMin().getBlockZ() + z);
+		int x = r.nextInt(BlockParty.getArena.get(arenaName).getFloorLength());
+		int z = r.nextInt(BlockParty.getArena.get(arenaName).getFloorWidth());
+		int y = BlockParty.getArena.get(arenaName).getLocMin().getBlockY()+1;
+		World world = BlockParty.getArena.get(arenaName).getWorld();
+		b = world.getBlockAt(BlockParty.getArena.get(arenaName).getLocMin().getBlockX() + x, y, BlockParty.getArena.get(arenaName).getLocMin().getBlockZ() + z);
 		b.setType(Material.BEACON);
 	}
 	

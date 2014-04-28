@@ -2,7 +2,7 @@ package com.lekohd.blockparty.floor;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 
 /*
  * Copyright (C) 2014 Leon167 and XxChxppellxX 
@@ -11,19 +11,19 @@ import com.lekohd.blockparty.Main;
 public class FloorPoints {
 
 	public static Location getMin(String arenaName){
-		return Main.getArena.get(arenaName).getLocMin();
+		return BlockParty.getArena.get(arenaName).getLocMin();
 	}
 	public static Location getMax(String arenaName){
-		return Main.getArena.get(arenaName).getLocMax();
+		return BlockParty.getArena.get(arenaName).getLocMax();
 	}
 	
 	public static void set(Location min, Location max, String arenaName){
-		Main.getArena.get(arenaName).set(min, max);
+		BlockParty.getArena.get(arenaName).set(min, max);
 		
 	}
 	
 	public static World getWorld(String arenaName){
-		return Main.getArena.get(arenaName).getWorld();
+		return BlockParty.getArena.get(arenaName).getWorld();
 	}
 	
 }

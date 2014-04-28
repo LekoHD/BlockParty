@@ -10,7 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.bonus.Bonus;
 import com.lekohd.blockparty.bonus.Item;
 import com.lekohd.blockparty.music.Vote;
@@ -31,7 +31,7 @@ public class InteractListener implements Listener{
 		if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
 		{
 			Player p = e.getPlayer();
-			if(Main.onFloorPlayers.containsKey(p.getName()))
+			if(BlockParty.onFloorPlayers.containsKey(p.getName()))
 			{
 				if(p.getItemInHand().getType() == Material.DIAMOND_BOOTS)
 					{
@@ -44,11 +44,11 @@ public class InteractListener implements Listener{
 						p.getInventory().remove(Material.GOLD_BOOTS);
 					}
 			}
-			if(Main.inLobbyPlayers.containsKey(p.getName()))
+			if(BlockParty.inLobbyPlayers.containsKey(p.getName()))
 			{
 				if(e.getPlayer().getItemInHand().getType() == Material.FIREBALL)
 				{
-					Vote.openInv(p, Main.inLobbyPlayers.get(p.getName()));
+					Vote.openInv(p, BlockParty.inLobbyPlayers.get(p.getName()));
 				}
 			}
 		}
@@ -65,13 +65,13 @@ public class InteractListener implements Listener{
 						Player p = e.getPlayer();
 						if(p.hasPermission("blockparty.user"))
 			    		{
-		    				if(!Main.inLobbyPlayers.containsKey(p.getName()) && !Main.inGamePlayers.containsKey(p.getName()))
+		    				if(!BlockParty.inLobbyPlayers.containsKey(p.getName()) && !BlockParty.inGamePlayers.containsKey(p.getName()))
 		    				{
-		    					if(Main.getArena.containsKey(removeColorCodes(sign.getLine(2))))
+		    					if(BlockParty.getArena.containsKey(removeColorCodes(sign.getLine(2))))
 			    				{
-			    					Main.locs.put(p.getName(), p.getLocation());
-			    					Main.gm.put(p.getName(), p.getGameMode());
-			    					Main.inv.put(p.getName(), p.getInventory().getContents());
+			    					BlockParty.locs.put(p.getName(), p.getLocation());
+			    					BlockParty.gm.put(p.getName(), p.getGameMode());
+			    					BlockParty.inv.put(p.getName(), p.getInventory().getContents());
 			    					Arena.join(p, removeColorCodes(sign.getLine(2)));
 				    				//Start.start(args[1]);
 			    				}
@@ -98,34 +98,34 @@ public class InteractListener implements Listener{
 						Player p = e.getPlayer();
 						if(p.hasPermission("blockparty.user"))
 			    		{
-			    			if(!Main.inLobbyPlayers.containsKey(p.getName()))
+			    			if(!BlockParty.inLobbyPlayers.containsKey(p.getName()))
 			    			{
 			    				p.sendMessage("§3[BlockParty] §8You are not in an arena!");
 			    			}
-			    			if(Main.inGamePlayers.containsKey(p.getName()))
+			    			if(BlockParty.inGamePlayers.containsKey(p.getName()))
 			    			{
 			    				p.sendMessage("§3[BlockParty] §8You can not leave the current game");
 			    			}
-			    			if((Main.inLobbyPlayers.containsKey(p.getName())) && !(Main.inGamePlayers.containsKey(p.getName())))
+			    			if((BlockParty.inLobbyPlayers.containsKey(p.getName())) && !(BlockParty.inGamePlayers.containsKey(p.getName())))
 			    			{
-			    				if(Players.getPlayerAmountInLobby(Main.inLobbyPlayers.get(p.getName())) <= 1){
-									Bukkit.getPlayer(Players.getPlayersInLobby(Main.inLobbyPlayers.get(p.getName())).get(0)).sendMessage("§3[BlockParty] §8" + p.getName() + " leaved the game");
+			    				if(Players.getPlayerAmountInLobby(BlockParty.inLobbyPlayers.get(p.getName())) <= 1){
+									Bukkit.getPlayer(Players.getPlayersInLobby(BlockParty.inLobbyPlayers.get(p.getName())).get(0)).sendMessage("§3[BlockParty] §8" + p.getName() + " leaved the game");
 								}
 								else
 								{
-									for (String name : Players.getPlayersInLobby(Main.inLobbyPlayers.get(p.getName()))){
+									for (String name : Players.getPlayersInLobby(BlockParty.inLobbyPlayers.get(p.getName()))){
 										Player player = Bukkit.getPlayer(name);
 										player.sendMessage("§3[BlockParty] §8" + p.getName() + " leaved the game");
 									}
 								}
-			    				Main.inLobbyPlayers.remove(p.getName());
-			    				p.teleport(Main.locs.get(p.getName()));
-			    				Main.locs.remove(p.getName());
-			    				p.setGameMode(Main.gm.get(p.getName()));
-			    				Main.gm.remove(p.getName());
+			    				BlockParty.inLobbyPlayers.remove(p.getName());
+			    				p.teleport(BlockParty.locs.get(p.getName()));
+			    				BlockParty.locs.remove(p.getName());
+			    				p.setGameMode(BlockParty.gm.get(p.getName()));
+			    				BlockParty.gm.remove(p.getName());
 			    				p.getInventory().clear();
-			    				p.getInventory().setContents(Main.inv.get(p.getName()));
-			    				Main.inv.remove(p.getName());
+			    				p.getInventory().setContents(BlockParty.inv.get(p.getName()));
+			    				BlockParty.inv.remove(p.getName());
 				    			p.sendMessage("§3[BlockParty] §8You leaved the arena!");
 			    			}
 			    		}
@@ -136,7 +136,7 @@ public class InteractListener implements Listener{
 		if(e.getClickedBlock().getType() == Material.BEACON)
 		{
 			Player p = e.getPlayer();
-			if(Main.onFloorPlayers.containsKey(p.getName()))
+			if(BlockParty.onFloorPlayers.containsKey(p.getName()))
 			{
 				//Bonus.playEf(p);
 				Item.give(p);

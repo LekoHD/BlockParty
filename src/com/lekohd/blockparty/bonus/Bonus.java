@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 
 /*
  * Copyright (C) 2014 Leon167 and XxChxppellxX 
@@ -17,7 +17,7 @@ public class Bonus {
 	public static int duration = 10;
 	
 	public static void playEf(final Player p, final String ef){
-		duration = Main.getArena.get(Main.onFloorPlayers.get(p.getName())).getBoostDuration() + 1;
+		duration = BlockParty.getArena.get(BlockParty.onFloorPlayers.get(p.getName())).getBoostDuration() + 1;
 		if(duration > 0){
 			if(ef.equalsIgnoreCase("walk"))
 				{
@@ -41,7 +41,7 @@ public class Bonus {
 					p.sendMessage("§3[BlockParty] §8Ohh... This was a bad effect.");
 					return;
 				}
-			dc = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+			dc = Bukkit.getScheduler().scheduleSyncRepeatingTask(BlockParty.getInstance(), new Runnable() {
 				public void run(){
 					if(duration!=0)
 					{

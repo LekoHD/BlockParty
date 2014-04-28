@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.data.DataException;
@@ -114,9 +114,9 @@ public class LoadFloor {
                     //if(block == null)
                     	//continue;
                     // block.setType(sh.getBlock(pos).getType());
-                    World world = Bukkit.getWorld(Main.getArena.get(arenaName).getWorld().getName());
-                    world.getBlockAt(Main.getArena.get(arenaName).getLocMin().getBlockX() + x, Main.getArena.get(arenaName).getLocMin().getBlockY(), Main.getArena.get(arenaName).getLocMin().getBlockZ() + z).setTypeId(cc.getBlock(new Vector(x ,0 ,z)).getId());
-                    world.getBlockAt(Main.getArena.get(arenaName).getLocMin().getBlockX() + x, Main.getArena.get(arenaName).getLocMin().getBlockY(), Main.getArena.get(arenaName).getLocMin().getBlockZ() + z).setData((byte) cc.getBlock(new Vector(x ,0 ,z)).getData());
+                    World world = Bukkit.getWorld(BlockParty.getArena.get(arenaName).getWorld().getName());
+                    world.getBlockAt(BlockParty.getArena.get(arenaName).getLocMin().getBlockX() + x, BlockParty.getArena.get(arenaName).getLocMin().getBlockY(), BlockParty.getArena.get(arenaName).getLocMin().getBlockZ() + z).setTypeId(cc.getBlock(new Vector(x ,0 ,z)).getId());
+                    world.getBlockAt(BlockParty.getArena.get(arenaName).getLocMin().getBlockX() + x, BlockParty.getArena.get(arenaName).getLocMin().getBlockY(), BlockParty.getArena.get(arenaName).getLocMin().getBlockZ() + z).setData((byte) cc.getBlock(new Vector(x ,0 ,z)).getData());
                 }
             //}
         }

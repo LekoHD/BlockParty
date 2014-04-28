@@ -11,7 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 
 /*
  * Copyright (C) 2014 Leon167 and XxChxppellxX 
@@ -22,37 +22,37 @@ public class Vote {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static void openInv(Player p, String arenaName){
 		int lines = 1;
-		if(Main.getArena.get(arenaName).getSongs().size() <= 9)
+		if(BlockParty.getArena.get(arenaName).getSongs().size() <= 9)
 		{
 			lines = 1;
 		}
-		else if(Main.getArena.get(arenaName).getSongs().size() <= 18)
+		else if(BlockParty.getArena.get(arenaName).getSongs().size() <= 18)
 		{
 			lines = 2;
 		}
-		else if(Main.getArena.get(arenaName).getSongs().size() <= 27)
+		else if(BlockParty.getArena.get(arenaName).getSongs().size() <= 27)
 		{
 			lines = 3;
 		}
-		else if(Main.getArena.get(arenaName).getSongs().size() <= 36)
+		else if(BlockParty.getArena.get(arenaName).getSongs().size() <= 36)
 		{
 			lines = 4;
 		}
-		else if(Main.getArena.get(arenaName).getSongs().size() <= 45)
+		else if(BlockParty.getArena.get(arenaName).getSongs().size() <= 45)
 		{
 			lines = 5;
 		}
-		else if(Main.getArena.get(arenaName).getSongs().size() <= 54)
+		else if(BlockParty.getArena.get(arenaName).getSongs().size() <= 54)
 		{
 			lines = 6;
 		}
 		
 		Inventory inv = Bukkit.createInventory(null, lines * 9, "Vote");
 		
-		if(Main.getArena.get(arenaName).getSongs().size() == 1){
+		if(BlockParty.getArena.get(arenaName).getSongs().size() == 1){
 			ItemStack item = new ItemStack(randomRecord(), 1);
 			ItemMeta meta = item.getItemMeta();
-			meta.setDisplayName(Main.getArena.get(arenaName).getSongs().get(0));
+			meta.setDisplayName(BlockParty.getArena.get(arenaName).getSongs().get(0));
 			List lores = new ArrayList();
 		    lores.add("Click to Vote!");
 		    meta.setLore(lores);
@@ -61,11 +61,11 @@ public class Vote {
 		}
 		else
 		{
-			for(int i = 0; i<Main.getArena.get(arenaName).getSongs().size(); i++)
+			for(int i = 0; i<BlockParty.getArena.get(arenaName).getSongs().size(); i++)
 			{
 				ItemStack item = new ItemStack(randomRecord(), 1);
 				ItemMeta meta = item.getItemMeta();
-				meta.setDisplayName(Main.getArena.get(arenaName).getSongs().get(i));
+				meta.setDisplayName(BlockParty.getArena.get(arenaName).getSongs().get(i));
 				List lores = new ArrayList();
 			    lores.add("Click to Vote!");
 			    meta.setLore(lores);
@@ -110,7 +110,7 @@ public class Vote {
 	
 	public static void voteFor(String song, String arenaName)
 	{
-		Main.getArena.get(arenaName).vote(song);
+		BlockParty.getArena.get(arenaName).vote(song);
 	}
 	
 }

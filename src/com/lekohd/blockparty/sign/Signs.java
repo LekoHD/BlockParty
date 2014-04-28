@@ -1,6 +1,6 @@
 package com.lekohd.blockparty.sign;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 
 public class Signs {
 
@@ -9,27 +9,27 @@ public class Signs {
  */
  
 	public static void updateJoin(String arenaName, boolean full){
-		if(Main.signs.containsKey(arenaName)){
+		if(BlockParty.signs.containsKey(arenaName)){
 			if(full)
 				{
-					Main.signs.get(arenaName).setLine(3, "§4Full");
+					BlockParty.signs.get(arenaName).setLine(3, "§4Full");
 				}
 			if(!full)
 				{
-					Main.signs.get(arenaName).setLine(3, "§2Join");
+					BlockParty.signs.get(arenaName).setLine(3, "§2Join");
 				}
 		}
 		
 	}
 	public static void updateGameProgress(String arenaName, boolean inLobby){
-		if(Main.signs.containsKey(arenaName)){
+		if(BlockParty.signs.containsKey(arenaName)){
 			if(inLobby)
 				{
-					Main.signs.get(arenaName).setLine(1, "§2In Lobby");
+					BlockParty.signs.get(arenaName).setLine(1, "§2In Lobby");
 				}
 			if(!inLobby)
 				{
-					Main.signs.get(arenaName).setLine(1, "§4In Game");
+					BlockParty.signs.get(arenaName).setLine(1, "§4In Game");
 				}
 		}
 	}

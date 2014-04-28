@@ -1,6 +1,6 @@
 package com.lekohd.blockparty.floor;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 
 /*
  * Copyright (C) 2014 Leon167 and XxChxppellxX 
@@ -8,17 +8,17 @@ import com.lekohd.blockparty.Main;
  
 public class RemoveFloor {
 	public static void add(String arenaName, String floorName){
-		Main.floors.clear();
-		if(Main.getFloor.get(arenaName).size()==1){
-			Main.floors.add(Main.getFloor.get(arenaName).get(0));
+		BlockParty.floors.clear();
+		if(BlockParty.getFloor.get(arenaName).size()==1){
+			BlockParty.floors.add(BlockParty.getFloor.get(arenaName).get(0));
 		}
-		if(Main.getFloor.get(arenaName).size()>1){
-			for(LoadFloor f : Main.getFloor.get(arenaName)){
-				Main.floors.add(f);
+		if(BlockParty.getFloor.get(arenaName).size()>1){
+			for(LoadFloor f : BlockParty.getFloor.get(arenaName)){
+				BlockParty.floors.add(f);
 			}
 		}
-		Main.floors.remove(floorName);
-		Main.getFloor.put(arenaName, Main.floors);
-		Main.getArena.get(arenaName).removeFloor(floorName);
+		BlockParty.floors.remove(floorName);
+		BlockParty.getFloor.put(arenaName, BlockParty.floors);
+		BlockParty.getArena.get(arenaName).removeFloor(floorName);
 	}
 }

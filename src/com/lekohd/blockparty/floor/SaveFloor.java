@@ -7,7 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 
 /*
  * Copyright (C) 2014 Leon167 and XxChxppellxX 
@@ -37,8 +37,8 @@ public class SaveFloor {
 	
 	public static boolean checkConditions(Player p, String arenaName){
 		
-		if(!(Main.getArena.get(arenaName) == null)){
-		if(Main.getArena.get(arenaName).checkConditions(p))
+		if(!(BlockParty.getArena.get(arenaName) == null)){
+		if(BlockParty.getArena.get(arenaName).checkConditions(p))
 			return true;
 		
 		return false;

@@ -3,7 +3,6 @@ package com.lekohd.blockparty;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.plugin.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -11,9 +10,10 @@ import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.lekohd.blockparty.commands.BlockParty;
+import com.lekohd.blockparty.commands.BlockPartyCommand;
 import com.lekohd.blockparty.floor.LoadFloor;
 import com.lekohd.blockparty.listeners.BlockPlaceListener;
 import com.lekohd.blockparty.listeners.ChangeBlockListener;
@@ -32,7 +32,7 @@ import com.lekohd.blockparty.system.Config;
  * Copyright (C) 2014 Leon167 and XxChxppellxX 
  */
 
-public class Main extends JavaPlugin {
+public class BlockParty extends JavaPlugin {
 
 	public static Player p;
 	public static HashMap<String, String> inGamePlayers = new HashMap<>();
@@ -45,7 +45,7 @@ public class Main extends JavaPlugin {
 	public static ArrayList<LoadFloor> floors = new ArrayList<>();
 	public static HashMap<String, ArrayList<LoadFloor>> getFloor = new HashMap<>();
 	public static HashMap<String, Sign> signs = new HashMap<>();
-	public static Main instance;
+	public static BlockParty instance;
 	public static int playerAmount = 0;
 	public static int lessMinimum = 0;
 	public static boolean abort = false;
@@ -63,7 +63,7 @@ public class Main extends JavaPlugin {
 		  instance = this;
 		  loadConfig();
 		  System.out.println("[BlockParty] Plugin by " + this.getDescription().getAuthors());
-		  this.getCommand("blockparty").setExecutor(new BlockParty());
+		  this.getCommand("blockparty").setExecutor(new BlockPartyCommand());
 		  PluginManager pm = getServer().getPluginManager();
 		  pm.registerEvents(new DisconnectListener(), this);
 		  pm.registerEvents(new CommandListener(), this);
@@ -85,7 +85,7 @@ public class Main extends JavaPlugin {
 	 {
 		 System.out.println("[BlockParty] Plugin disabled!");
 	 }
-	  public static Main getInstance(){
+	  public static BlockParty getInstance(){
 		  return instance;
 	  }
 	  @SuppressWarnings("unchecked")

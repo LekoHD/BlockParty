@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.floor.LoadFloor;
 
 /*
@@ -40,11 +40,11 @@ public class Arena {
 			}
 			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " was successfully created!");
 		}*/
-		if(!Main.getArena.containsKey(arenaName))
+		if(!BlockParty.getArena.containsKey(arenaName))
 		{
 			Config conf = new Config(arenaName);
 			p.sendMessage(conf.create());
-			Main.getArena.put(arenaName, conf);
+			BlockParty.getArena.put(arenaName, conf);
 		}
 		else
 		{
@@ -100,9 +100,9 @@ public class Arena {
 			}
 			p.sendMessage("§3[BlockParty] §8" + pos + " Spawn was set for Arena " + arenaName);
 		}*/
-		if(Main.getArena.containsKey(arenaName))
+		if(BlockParty.getArena.containsKey(arenaName))
 		{
-			p.sendMessage(Main.getArena.get(arenaName).setSpawn(p, pos));
+			p.sendMessage(BlockParty.getArena.get(arenaName).setSpawn(p, pos));
 		}
 		else
 		{
@@ -120,10 +120,10 @@ public class Arena {
 		{
 			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " doesn't exists!");
 		}*/
-		if(Main.getArena.containsKey(arenaName))
+		if(BlockParty.getArena.containsKey(arenaName))
 		{
-			p.sendMessage(Main.getArena.get(arenaName).delete());
-			Main.getArena.remove(arenaName);
+			p.sendMessage(BlockParty.getArena.get(arenaName).delete());
+			BlockParty.getArena.remove(arenaName);
 		}
 		else
 		{
@@ -203,9 +203,9 @@ public class Arena {
 		} else {
 			p.sendMessage("§3[BlockParty] §8You are already in an arena!");
 		}*/
-		if(Main.getArena.containsKey(arenaName))
+		if(BlockParty.getArena.containsKey(arenaName))
 		{
-			Main.getArena.get(arenaName).join(p);
+			BlockParty.getArena.get(arenaName).join(p);
 			p.setGameMode(GameMode.ADVENTURE);
 		}
 		else
@@ -242,9 +242,9 @@ public class Arena {
 		    return loc;
 		}
 		return null;*/
-		if(Main.getArena.containsKey(arenaName))
+		if(BlockParty.getArena.containsKey(arenaName))
 		{
-			return Main.getArena.get(arenaName).getGameSpawn();
+			return BlockParty.getArena.get(arenaName).getGameSpawn();
 		}
 		else
 		{
@@ -280,9 +280,9 @@ public class Arena {
 		    return loc;
 		}
 		return null;*/
-		if(Main.getArena.containsKey(arenaName))
+		if(BlockParty.getArena.containsKey(arenaName))
 		{
-			return Main.getArena.get(arenaName).getLobbySpawn();
+			return BlockParty.getArena.get(arenaName).getLobbySpawn();
 		}
 		else
 		{
@@ -303,23 +303,23 @@ public class Arena {
 			  conf.loadMin();
 			  conf.load();
 			  conf.enable();
-			  Main.getArena.put(arenaName, conf);
+			  BlockParty.getArena.put(arenaName, conf);
 			  if(!(conf.getFloors()  == null)){
 				  for(String floor : conf.getFloors())
 				  {
-					  Main.floors.clear();
-					  Main.floors.add(new LoadFloor(floor));
-					  Main.getFloor.put(arenaName, Main.floors);
+					  BlockParty.floors.clear();
+					  BlockParty.floors.add(new LoadFloor(floor));
+					  BlockParty.getFloor.put(arenaName, BlockParty.floors);
 				  }	
 		  		}
-			  FileConfiguration cfg = Main.getInstance().getConfig();
+			  FileConfiguration cfg = BlockParty.getInstance().getConfig();
 			  cfg.options().copyDefaults(true);
-			  if(!Main.arenaNames.contains(arenaName))
+			  if(!BlockParty.arenaNames.contains(arenaName))
 				  {
-				  	Main.arenaNames.add(arenaName);
-				  	cfg.set("enabledArenas", Main.arenaNames);
+				  	BlockParty.arenaNames.add(arenaName);
+				  	cfg.set("enabledArenas", BlockParty.arenaNames);
 				  }
-			  Main.getInstance().saveConfig();
+			  BlockParty.getInstance().saveConfig();
 			  p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " enabled!");
 		  }
 		  else
@@ -329,18 +329,18 @@ public class Arena {
 	}
 	
 	public static void disable(String arenaName, Player p){
-		if(Main.getArena.containsKey(arenaName)){
-		  if(Main.getArena.get(arenaName).ex()){
-			  Main.getArena.get(arenaName).disable();
-			  Main.getArena.remove(arenaName);
-			  FileConfiguration cfg = Main.getInstance().getConfig();
+		if(BlockParty.getArena.containsKey(arenaName)){
+		  if(BlockParty.getArena.get(arenaName).ex()){
+			  BlockParty.getArena.get(arenaName).disable();
+			  BlockParty.getArena.remove(arenaName);
+			  FileConfiguration cfg = BlockParty.getInstance().getConfig();
 			  cfg.options().copyDefaults(true);
-			  if(Main.arenaNames.contains(arenaName))
+			  if(BlockParty.arenaNames.contains(arenaName))
 				  {
-				  	Main.arenaNames.remove(arenaName);
-				  	cfg.set("enabledArenas", Main.arenaNames);
+				  	BlockParty.arenaNames.remove(arenaName);
+				  	cfg.set("enabledArenas", BlockParty.arenaNames);
 				  }
-			  Main.getInstance().saveConfig();
+			  BlockParty.getInstance().saveConfig();
 			  p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " disabled!");
 		  }
 		  else
@@ -356,13 +356,13 @@ public class Arena {
 	
 	@SuppressWarnings("unchecked")
 	public static void reload(Player p){
-		  Main.loadConfig();
-		  FileConfiguration cfg = Main.getInstance().getConfig();
-		  Main.arenaNames.clear();
-		  Main.arenaNames = (ArrayList<String>) cfg.get("enabledArenas");
-			  if(!(Main.arenaNames.isEmpty()))
+		  BlockParty.loadConfig();
+		  FileConfiguration cfg = BlockParty.getInstance().getConfig();
+		  BlockParty.arenaNames.clear();
+		  BlockParty.arenaNames = (ArrayList<String>) cfg.get("enabledArenas");
+			  if(!(BlockParty.arenaNames.isEmpty()))
 			  {
-				  for(String name : Main.arenaNames){
+				  for(String name : BlockParty.arenaNames){
 					  Config conf = new Config(name);
 					  conf.enable();
 					  conf.loadCfg();
@@ -372,13 +372,13 @@ public class Arena {
 					  conf.loadMax();
 					  conf.loadMin();
 					  conf.load();
-					  Main.getArena.put(name, conf);
+					  BlockParty.getArena.put(name, conf);
 					  if(!(conf.getFloors()  == null)){
 						  for(String floor : conf.getFloors())
 						  {
-							  Main.floors.clear();
-							  Main.floors.add(new LoadFloor(floor));
-							  Main.getFloor.put(name, Main.floors);
+							  BlockParty.floors.clear();
+							  BlockParty.floors.add(new LoadFloor(floor));
+							  BlockParty.getFloor.put(name, BlockParty.floors);
 						  }	
 				  		}
 				 }

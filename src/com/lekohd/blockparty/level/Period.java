@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.bonus.Boosts;
 import com.lekohd.blockparty.floor.FloorBlock;
 import com.lekohd.blockparty.floor.LoadFloor;
@@ -42,14 +42,14 @@ public class Period {
 	public static void setFloor(String arenaName, boolean fall){
 		final String aName = arenaName;
 		//System.out.println(Main.getArena.get(aName).getAutoGenerateFloors() + " " + Main.getArena.get(aName).getUseSchematicFloors());
-		if(!(Main.getArena.get(aName).getAutoGenerateFloors()) && (Main.getArena.get(aName).getUseSchematicFloors())){
+		if(!(BlockParty.getArena.get(aName).getAutoGenerateFloors()) && (BlockParty.getArena.get(aName).getUseSchematicFloors())){
 			setShFloor(aName);
 		}
-		if((Main.getArena.get(aName).getAutoGenerateFloors()) && !(Main.getArena.get(aName).getUseSchematicFloors())){
+		if((BlockParty.getArena.get(aName).getAutoGenerateFloors()) && !(BlockParty.getArena.get(aName).getUseSchematicFloors())){
 			RandomizeFloor.place(aName);
 		}
-		if((Main.getArena.get(aName).getAutoGenerateFloors()) && (Main.getArena.get(aName).getUseSchematicFloors())){
-			double id = (Math.random()*(Main.getFloor.get(aName).size()+1));
+		if((BlockParty.getArena.get(aName).getAutoGenerateFloors()) && (BlockParty.getArena.get(aName).getUseSchematicFloors())){
+			double id = (Math.random()*(BlockParty.getFloor.get(aName).size()+1));
 			if(fall == true){
 				setShFloor(aName);
 			}
@@ -68,31 +68,31 @@ public class Period {
 	}
 	
 	public static void setShFloor(String aName){
-		if(Main.getFloor.get(aName).isEmpty()){
+		if(BlockParty.getFloor.get(aName).isEmpty()){
 			System.err.println("Blockparty: There are no floors for Arena " + aName);
 		} else
 		{
-			if(Main.getFloor.get(aName).size() == 1){
-				Main.getFloor.get(aName).get(0).placeFloor(aName);
+			if(BlockParty.getFloor.get(aName).size() == 1){
+				BlockParty.getFloor.get(aName).get(0).placeFloor(aName);
 			}
 			else
 				
 			{
-				byte id = (byte)(Math.random()*(Main.getFloor.get(aName).size()));
-				if(Main.getArena.get(aName).getStart() == true){
-					Main.getFloor.get(aName).get(id).placeFloor(aName); // TODO In die Config, dass die nicht zufällig sein müssen!
+				byte id = (byte)(Math.random()*(BlockParty.getFloor.get(aName).size()));
+				if(BlockParty.getArena.get(aName).getStart() == true){
+					BlockParty.getFloor.get(aName).get(id).placeFloor(aName); // TODO In die Config, dass die nicht zufällig sein müssen!
 				}
-				if(Main.getArena.get(aName).getStart() == false){
-					if(Main.getFloor.get(aName).size() > 1)
+				if(BlockParty.getArena.get(aName).getStart() == false){
+					if(BlockParty.getFloor.get(aName).size() > 1)
 					{
-						for(LoadFloor l : Main.getFloor.get(aName)){
+						for(LoadFloor l : BlockParty.getFloor.get(aName)){
 							if(l.getFloorName().equalsIgnoreCase("start")){
 								l.placeFloor(aName);
-								Main.getArena.get(aName).setStart(true);
+								BlockParty.getArena.get(aName).setStart(true);
 							}
 						}
-						if(Main.getArena.get(aName).getStart() == false){
-							Main.getFloor.get(aName).get(id).placeFloor(aName);
+						if(BlockParty.getArena.get(aName).getStart() == false){
+							BlockParty.getFloor.get(aName).get(id).placeFloor(aName);
 						}
 					}
 				}
@@ -120,7 +120,7 @@ public class Period {
 				BarAPI.setMessage(Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)),"Waiting ...", (float) 100);
 			}
 		}
-		dc = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+		dc = Bukkit.getScheduler().scheduleSyncRepeatingTask(BlockParty.getInstance(), new Runnable() {
 			public void run(){
 				if(num!=0)
 				{
@@ -144,10 +144,10 @@ public class Period {
 		final Boosts b = new Boosts();
 		//counter = 0;
 		counter=c;
-		number = Main.getArena.get(arenaName).getTimeToSearch() + 10;
-		multiplier = Main.getArena.get(arenaName).getTimeReductionPerLevel();
-		periods = Main.getArena.get(arenaName).getLevel();
-		setStart = Main.getArena.get(arenaName).getStart();
+		number = BlockParty.getArena.get(arenaName).getTimeToSearch() + 10;
+		multiplier = BlockParty.getArena.get(arenaName).getTimeReductionPerLevel();
+		periods = BlockParty.getArena.get(arenaName).getLevel();
+		setStart = BlockParty.getArena.get(arenaName).getStart();
 		//setFloor(aName);
 		final Byte randomNum =  (byte)RandomizeFloor.randomizedItem(aName);
 		for(String name : Players.getPlayersOnFloor(aName)){
@@ -161,7 +161,7 @@ public class Period {
 		if(counter <= periods && number>10)
 		{
 			
-			cd = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+			cd = Bukkit.getScheduler().scheduleSyncRepeatingTask(BlockParty.getInstance(), new Runnable() {
 				public void run(){
 					if(number!=0)
 					{
@@ -202,7 +202,7 @@ public class Period {
 										}
 									}
 									RemoveBlocks.remove(aName, randomNum);
-									if(Main.getArena.get(aName).getUseBoosts()){
+									if(BlockParty.getArena.get(aName).getUseBoosts()){
 										if(bo != null)
 											bo.remove();
 									}
@@ -227,7 +227,7 @@ public class Period {
 										BarAPI.setMessage(Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)),"Waiting ...", (float) 100);
 									}
 								}
-								if(Main.getArena.get(aName).getUseBoosts()){
+								if(BlockParty.getArena.get(aName).getUseBoosts()){
 									if(counter == 3 || counter == 7 || counter == 11 || counter == 15)
 									{
 										b.place(aName);
@@ -243,43 +243,43 @@ public class Period {
 							}
 							if(Players.getPlayerAmountOnFloor(aName) == 1){
 								Bukkit.getScheduler().cancelTask(cd);
-								Main.getArena.get(aName).setStart(false);
-								Main.getArena.get(aName).setGameProgress("inLobby");
+								BlockParty.getArena.get(aName).setStart(false);
+								BlockParty.getArena.get(aName).setGameProgress("inLobby");
 								Signs.updateGameProgress(aName, true);
 								setFloor(aName, true);
 								Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).teleport(Arena.getGameSpawn(aName));
 								if(Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI"))
 									Songs.stop(Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)));
-								if(Main.getArena.get(aName).getUseBoosts()){
+								if(BlockParty.getArena.get(aName).getUseBoosts()){
 									if(bo != null)
 										bo.remove();
 								}
 								Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).sendMessage("§3[BlockParty] §8Congratulations! You won the game.");   // TODO set old spawn Floor
 								ItemStack[] is;
-								if(Main.getArena.get(aName).getRewardItems().size() > 1)
+								if(BlockParty.getArena.get(aName).getRewardItems().size() > 1)
 								{
-									is = Main.inv.get(Players.getPlayersOnFloor(aName).get(0));
+									is = BlockParty.inv.get(Players.getPlayersOnFloor(aName).get(0));
 									Inventory inv = Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).getInventory();
 									inv.setContents(is);
-									for(int item : (Main.getArena.get(aName).getRewardItems()))
+									for(int item : (BlockParty.getArena.get(aName).getRewardItems()))
 									{
 										if(is!= null){}
 											inv.addItem(getItem(item));
 									}
 									is = inv.getContents();
-									Main.inv.put(Players.getPlayersOnFloor(aName).get(0), is);
+									BlockParty.inv.put(Players.getPlayersOnFloor(aName).get(0), is);
 									Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).getInventory().clear();
 									Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).sendMessage("§3[BlockParty] §8You will get you reward when you leave the arena!");
 								}
-								else if(Main.getArena.get(aName).getRewardItems().size() == 1){
-									is = Main.inv.get(Players.getPlayersOnFloor(aName).get(0));
+								else if(BlockParty.getArena.get(aName).getRewardItems().size() == 1){
+									is = BlockParty.inv.get(Players.getPlayersOnFloor(aName).get(0));
 									if(is!= null)
 										{
 											Inventory inv = Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).getInventory();
 											inv.setContents(is);
-											inv.addItem(getItem(Main.getArena.get(aName).getRewardItems().get(0)));
+											inv.addItem(getItem(BlockParty.getArena.get(aName).getRewardItems().get(0)));
 											is = inv.getContents();
-											Main.inv.put(Players.getPlayersOnFloor(aName).get(0), is);
+											BlockParty.inv.put(Players.getPlayersOnFloor(aName).get(0), is);
 											Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).getInventory().clear();
 											Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).sendMessage("§3[BlockParty] §8You will get you reward when you leave the arena!");
 										}
@@ -323,13 +323,13 @@ public class Period {
 		}
 		else if(Players.getPlayerAmountOnFloor(aName) > 1)
 		{
-			Main.getArena.get(aName).setStart(false);
+			BlockParty.getArena.get(aName).setStart(false);
 			setFloor(aName, true);
-			if(Main.getArena.get(aName).getUseBoosts()){
+			if(BlockParty.getArena.get(aName).getUseBoosts()){
 				if(bo != null)
 					bo.remove();
 			}
-			Main.getArena.get(aName).setGameProgress("inLobby");
+			BlockParty.getArena.get(aName).setGameProgress("inLobby");
 			Signs.updateGameProgress(aName, true);
 			for(String name : Players.getPlayersOnFloor(aName))
 			{
@@ -338,30 +338,30 @@ public class Period {
 				if(Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI"))
 					Songs.stop(p);
 				ItemStack[] is;
-				if(Main.getArena.get(aName).getRewardItems().size() > 1)
+				if(BlockParty.getArena.get(aName).getRewardItems().size() > 1)
 				{
-					is = Main.inv.get(p.getName());
+					is = BlockParty.inv.get(p.getName());
 					Inventory inv = p.getInventory();
 					inv.setContents(is);
 					//inv.addItem(getItem(Main.getArena.get(aName).getRewardItems().get(0)));
 					//is = inv.getContents();
 					//Main.inv.put(Players.getPlayersOnFloor(aName).get(0), is);
-					for(int item : (Main.getArena.get(aName).getRewardItems()))
+					for(int item : (BlockParty.getArena.get(aName).getRewardItems()))
 					{
 						inv.addItem(getItem(item));
 					}
 					is = inv.getContents();
-					Main.inv.put(p.getName(), is);
+					BlockParty.inv.put(p.getName(), is);
 					p.getInventory().clear();
 					p.sendMessage("§3[BlockParty] §8You will get you reward when you leave the arena!");
 				}
-				else if(Main.getArena.get(aName).getRewardItems().size() == 1){
-					is = Main.inv.get(p.getName());
+				else if(BlockParty.getArena.get(aName).getRewardItems().size() == 1){
+					is = BlockParty.inv.get(p.getName());
 					Inventory inv = p.getInventory();
 					inv.setContents(is);
-					inv.addItem(getItem(Main.getArena.get(aName).getRewardItems().get(0)));
+					inv.addItem(getItem(BlockParty.getArena.get(aName).getRewardItems().get(0)));
 					is = inv.getContents();
-					Main.inv.put(p.getName(), is);
+					BlockParty.inv.put(p.getName(), is);
 					p.getInventory().clear();
 					p.sendMessage("§3[BlockParty] §8You will get you reward when you leave the arena!");
 				}
@@ -408,8 +408,8 @@ public class Period {
 			{
 				Player p = Bukkit.getPlayer(name);
 				p.teleport(Arena.getLobbySpawn(arenaName));
-				Main.inGamePlayers.remove(p.getName());
-				Main.inLobbyPlayers.put(p.getName(), arenaName);
+				BlockParty.inGamePlayers.remove(p.getName());
+				BlockParty.inLobbyPlayers.put(p.getName(), arenaName);
 					
 			}
 		}

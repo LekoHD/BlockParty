@@ -13,7 +13,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.floor.AddFloor;
 import com.lekohd.blockparty.floor.RemoveFloor;
 import com.lekohd.blockparty.floor.SaveFloor;
@@ -25,7 +25,7 @@ import com.lekohd.blockparty.system.Start;
  * Copyright (C) 2014 Leon167 and XxChxppellxX 
  */
 
-public class BlockParty implements CommandExecutor{
+public class BlockPartyCommand implements CommandExecutor{
 	
 	  public static String lobby = "Lobby";
 	  public static String game = "Game";
@@ -38,7 +38,7 @@ public class BlockParty implements CommandExecutor{
 	    	if(args.length == 0)
 	    	{
 	    		p.sendMessage("");
-	    		p.sendMessage("§7BlockParty indev §6" + Main.getInstance().getDescription().getVersion());
+	    		p.sendMessage("§7BlockParty indev §6" + BlockParty.getInstance().getDescription().getVersion());
 	    		p.sendMessage("");
 	    		p.sendMessage("§8Developer: §3LekoHD");
 	    		p.sendMessage("§8Commands: §3/blockparty help");
@@ -81,34 +81,34 @@ public class BlockParty implements CommandExecutor{
 		    	{
 	    			if(p.hasPermission("blockparty.user"))
 		    		{
-		    			if(!Main.inLobbyPlayers.containsKey(p.getName()))
+		    			if(!BlockParty.inLobbyPlayers.containsKey(p.getName()))
 		    			{
 		    				p.sendMessage("§3[BlockParty] §8You are not in an arena!");
 		    				return true;
 		    			}
-		    			if(Main.inGamePlayers.containsKey(p.getName()))
+		    			if(BlockParty.inGamePlayers.containsKey(p.getName()))
 		    			{
 		    				p.sendMessage("§3[BlockParty] §8You can not leave the current game");
 		    				return true;
 		    			}
-		    			if((Main.inLobbyPlayers.containsKey(p.getName())) && !(Main.inGamePlayers.containsKey(p.getName())))
+		    			if((BlockParty.inLobbyPlayers.containsKey(p.getName())) && !(BlockParty.inGamePlayers.containsKey(p.getName())))
 		    			{
-		    				if(Players.getPlayerAmountInLobby(Main.inLobbyPlayers.get(p.getName())) <= 1){
-								Bukkit.getPlayer(Players.getPlayersInLobby(Main.inLobbyPlayers.get(p.getName())).get(0)).sendMessage("§3[BlockParty] §8" + p.getName() + " leaved the game");
+		    				if(Players.getPlayerAmountInLobby(BlockParty.inLobbyPlayers.get(p.getName())) <= 1){
+								Bukkit.getPlayer(Players.getPlayersInLobby(BlockParty.inLobbyPlayers.get(p.getName())).get(0)).sendMessage("§3[BlockParty] §8" + p.getName() + " leaved the game");
 							}
 							else
 							{
-								for (String name : Players.getPlayersInLobby(Main.inLobbyPlayers.get(p.getName()))){
+								for (String name : Players.getPlayersInLobby(BlockParty.inLobbyPlayers.get(p.getName()))){
 									Bukkit.getPlayer(name).sendMessage("§3[BlockParty] §8" + p.getName() + " left the game");
 								}
 							}
-		    				Main.inLobbyPlayers.remove(p.getName());
-		    				p.teleport(Main.locs.get(p.getName()));
-		    				Main.locs.remove(p.getName());
-		    				p.setGameMode(Main.gm.get(p.getName()));
-		    				Main.gm.remove(p.getName());
+		    				BlockParty.inLobbyPlayers.remove(p.getName());
+		    				p.teleport(BlockParty.locs.get(p.getName()));
+		    				BlockParty.locs.remove(p.getName());
+		    				p.setGameMode(BlockParty.gm.get(p.getName()));
+		    				BlockParty.gm.remove(p.getName());
 		    				p.getInventory().clear();
-		    				p.getInventory().setContents(Main.inv.get(p.getName()));
+		    				p.getInventory().setContents(BlockParty.inv.get(p.getName()));
 		    				if(Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
 		    					BarAPI.removeBar(p);
 			    			p.sendMessage("§3[BlockParty] §8You left the arena!");
@@ -174,9 +174,9 @@ public class BlockParty implements CommandExecutor{
 	    		{
 	    			if(p.hasPermission("blockparty.admin"))
 		    		{
-	    				if(Main.getArena.containsKey(args[1]))
+	    				if(BlockParty.getArena.containsKey(args[1]))
 	    				{
-	    					Main.getArena.get(args[1]).abort();
+	    					BlockParty.getArena.get(args[1]).abort();
 		    				Start.startGame(args[1], p);
 	    				}
 	    				else
@@ -201,7 +201,7 @@ public class BlockParty implements CommandExecutor{
 		    	{
 	    			if(p.hasPermission("blockparty.admin"))
 		    		{
-	    				if(Main.getArena.containsKey(args[1]))
+	    				if(BlockParty.getArena.containsKey(args[1]))
 	    				{
 	    					SaveFloor.setFloor(p, args[1]);
 	    				}
@@ -222,7 +222,7 @@ public class BlockParty implements CommandExecutor{
 		    	{
 	    			if(p.hasPermission("blockparty.admin"))
 		    		{
-	    				if(Main.getArena.containsKey(args[1]))
+	    				if(BlockParty.getArena.containsKey(args[1]))
 	    				{
 	    					Arena.disable(args[1], p);
 	    				}
@@ -236,14 +236,14 @@ public class BlockParty implements CommandExecutor{
 	    		{
 	    			if(p.hasPermission("blockparty.user"))
 		    		{
-	    				if(!Main.inLobbyPlayers.containsKey(p.getName()) && !Main.inGamePlayers.containsKey(p.getName()))
+	    				if(!BlockParty.inLobbyPlayers.containsKey(p.getName()) && !BlockParty.inGamePlayers.containsKey(p.getName()))
 	    				{
-	    					if(Main.getArena.containsKey(args[1]))
+	    					if(BlockParty.getArena.containsKey(args[1]))
 		    				{
-		    					Main.locs.put(p.getName(), p.getLocation());
-		    					Main.gm.put(p.getName(), p.getGameMode());
+		    					BlockParty.locs.put(p.getName(), p.getLocation());
+		    					BlockParty.gm.put(p.getName(), p.getGameMode());
 		    					Inventory inv = p.getInventory();
-		    					Main.inv.put(p.getName(), inv.getContents());
+		    					BlockParty.inv.put(p.getName(), inv.getContents());
 		    					Arena.join(p, args[1]);
 			    				//Start.start(args[1]);
 		    				}
@@ -270,7 +270,7 @@ public class BlockParty implements CommandExecutor{
 	    		{
 	    			if(p.hasPermission("blockparty.admin"))
 		    		{
-	    				if(Main.getArena.containsKey(args[1]))
+	    				if(BlockParty.getArena.containsKey(args[1]))
 	    				{
 		    				if(args[2].equalsIgnoreCase(lobby))
 		    					Arena.setSpawn(p, args[1], lobby);
@@ -293,7 +293,7 @@ public class BlockParty implements CommandExecutor{
 	    		{
 	    			if(p.hasPermission("blockparty.admin"))
 		    		{
-	    				if(Main.getArena.containsKey(args[1]))
+	    				if(BlockParty.getArena.containsKey(args[1]))
 	    				{
 	    					AddFloor.add(args[1], args[2]);
 	    					p.sendMessage("§3[BlockParty] §8Floor " + args[2] + " was added to Arena " + args[1]);
@@ -311,7 +311,7 @@ public class BlockParty implements CommandExecutor{
 	    		{
 	    			if(p.hasPermission("blockparty.admin"))
 		    		{
-	    				if(Main.getArena.containsKey(args[1]))
+	    				if(BlockParty.getArena.containsKey(args[1]))
 	    				{
 	    					RemoveFloor.add(args[1], args[2]);
 	    					p.sendMessage("§3[BlockParty] §7Maybe the Floor will not be removed. Take a look in you arena config!");
@@ -328,7 +328,7 @@ public class BlockParty implements CommandExecutor{
 	    {
 	    	ConsoleCommandSender cs = (ConsoleCommandSender) sender;
 	    	cs.sendMessage("");
-    		cs.sendMessage("§7BlockParty indev §6" + Main.getInstance().getDescription().getVersion());
+    		cs.sendMessage("§7BlockParty indev §6" + BlockParty.getInstance().getDescription().getVersion());
     		cs.sendMessage("");
     		cs.sendMessage("§8Developer: §3LekoHD");
     		cs.sendMessage("§8Commands: §3/blockparty help");

@@ -21,7 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.floor.FloorPoints;
 import com.lekohd.blockparty.sign.Signs;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -365,7 +365,7 @@ public class Config {
 	@SuppressWarnings("deprecation")
 	public void join(Player p){
 		if(isEnabled){
-		if(!Main.inLobbyPlayers.containsKey(p.getName()) && !(Main.inGamePlayers.containsKey(p.getName())))
+		if(!BlockParty.inLobbyPlayers.containsKey(p.getName()) && !(BlockParty.inGamePlayers.containsKey(p.getName())))
 		{
 			if(this.exists(p))
 			{
@@ -374,8 +374,8 @@ public class Config {
 					if(gameProgress.equalsIgnoreCase("inLobby"))
 					{
 						p.teleport(lobbySpawn);
-						Main.inLobbyPlayers.put(p.getName(), arenaName);
-						Main.inv.put(p.getName(), p.getInventory().getContents());
+						BlockParty.inLobbyPlayers.put(p.getName(), arenaName);
+						BlockParty.inv.put(p.getName(), p.getInventory().getContents());
 						p.getInventory().clear();
 						p.getInventory().addItem(this.getVoteItem());
 						p.updateInventory();

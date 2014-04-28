@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="E:/Server/Plugin/craftbukkit-1.7.5-R0.1.jar"/>
-	<classpathentry kind="lib" path="E:/Server/Plugin/Plugins/BarAPI.jar"/>
-	<classpathentry kind="lib" path="E:/Server/Plugin/Plugins/WorldEdit.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Leon/Downloads/NoteBlockAPI-1.1.0.jar"/>
+	<classpathentry kind="lib" path="E:/BlockParty/Dependencies/BarAPI.jar"/>
+	<classpathentry kind="lib" path="E:/BlockParty/Dependencies/craftbukkit-1.7.9-R0.1-20140418.182938-15.jar"/>
+	<classpathentry kind="lib" path="E:/BlockParty/Dependencies/NoteBlockAPI-1.1.0.jar"/>
+	<classpathentry kind="lib" path="E:/BlockParty/Dependencies/WorldEdit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

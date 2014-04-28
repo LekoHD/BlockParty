@@ -5,7 +5,7 @@ import me.confuser.barapi.BarAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Players;
 import com.lekohd.blockparty.system.Start;
@@ -24,7 +24,7 @@ public class WinnerCountdown {
 	public static void start(String arenaName){
 		final String aName = arenaName;
 		number = 6;
-        cd = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+        cd = Bukkit.getScheduler().scheduleSyncRepeatingTask(BlockParty.getInstance(), new Runnable() {
 			@SuppressWarnings("deprecation")
 			public void run(){
 				if(number!=0)
@@ -42,12 +42,12 @@ public class WinnerCountdown {
 								BarAPI.setMessage(Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)), "Waiting ...", (float) 100);
 							}
 							Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).teleport(Arena.getLobbySpawn(aName));
-							Main.inLobbyPlayers.put(Players.getPlayersOnFloor(aName).get(0), aName);
-							Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).getInventory().addItem(Main.getArena.get(aName).getVoteItem());
+							BlockParty.inLobbyPlayers.put(Players.getPlayersOnFloor(aName).get(0), aName);
+							Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).getInventory().addItem(BlockParty.getArena.get(aName).getVoteItem());
 							Bukkit.getPlayer(Players.getPlayersOnFloor(aName).get(0)).updateInventory();
-							Main.inGamePlayers.remove(Players.getPlayersOnFloor(aName).get(0));
-							Main.onFloorPlayers.remove(Players.getPlayersOnFloor(aName).get(0));
-							Main.getArena.get(aName).setGameProgress("inLobby");
+							BlockParty.inGamePlayers.remove(Players.getPlayersOnFloor(aName).get(0));
+							BlockParty.onFloorPlayers.remove(Players.getPlayersOnFloor(aName).get(0));
+							BlockParty.getArena.get(aName).setGameProgress("inLobby");
 							Start.start(aName);
 						}
 						else if(Players.getPlayerAmountOnFloor(aName) > 1)
@@ -60,12 +60,12 @@ public class WinnerCountdown {
 								}
 								//((CraftWorld) p.getWorld()).getHandle().a("magicCrit", p.getLocation().getX(), p.getLocation().getY() + 2, p.getLocation().getZ(), 5, 0.2, 0.2, 0.2, 0.2);
 								p.teleport(Arena.getLobbySpawn(aName));
-								Main.inGamePlayers.remove(p.getName());
-								Main.onFloorPlayers.remove(p.getName());
-								Main.inLobbyPlayers.put(p.getName(), aName);
-								p.getInventory().addItem(Main.getArena.get(aName).getVoteItem());
+								BlockParty.inGamePlayers.remove(p.getName());
+								BlockParty.onFloorPlayers.remove(p.getName());
+								BlockParty.inLobbyPlayers.put(p.getName(), aName);
+								p.getInventory().addItem(BlockParty.getArena.get(aName).getVoteItem());
 								p.updateInventory();
-								Main.getArena.get(aName).setGameProgress("inLobby");
+								BlockParty.getArena.get(aName).setGameProgress("inLobby");
 								Start.start(aName);
 							}
 						}

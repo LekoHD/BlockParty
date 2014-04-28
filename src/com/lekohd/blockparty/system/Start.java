@@ -5,7 +5,7 @@ import me.confuser.barapi.BarAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.level.Period;
 import com.lekohd.blockparty.music.Songs;
 import com.lekohd.blockparty.sign.Signs;
@@ -20,9 +20,9 @@ public class Start {
 	public static int cd;
 	public static void start(String arenaName){
 		
-		if(!Main.getArena.get(arenaName).lessThanMinimum())
+		if(!BlockParty.getArena.get(arenaName).lessThanMinimum())
 		{
-			if(Main.getArena.get(arenaName).getGameProgress().equalsIgnoreCase("inLobby"))
+			if(BlockParty.getArena.get(arenaName).getGameProgress().equalsIgnoreCase("inLobby"))
 				countdown(arenaName);
 		}
 	}
@@ -53,26 +53,26 @@ public class Start {
 		}
 		else
 		{
-			String song = Main.getArena.get(arenaName).getMostVotedSong();
+			String song = BlockParty.getArena.get(arenaName).getMostVotedSong();
 			for(String name : Players.getPlayersInLobby(arenaName))
 			{
 				Player p = Bukkit.getPlayer(name);
 				p.teleport(Arena.getGameSpawn(arenaName));
-				Main.inLobbyPlayers.remove(p.getName());
-				Main.inGamePlayers.put(name, arenaName);
-				Main.onFloorPlayers.put(name, arenaName);
+				BlockParty.inLobbyPlayers.remove(p.getName());
+				BlockParty.inGamePlayers.put(name, arenaName);
+				BlockParty.onFloorPlayers.put(name, arenaName);
 				p.sendMessage("§3[BlockParty] §8The game has started!");
-				if(Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI") && Main.getArena.get(arenaName).getUseSongs())
+				if(Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI") && BlockParty.getArena.get(arenaName).getUseSongs())
 				{
 					Songs.stop(p);
 					Songs.play(p, song); // TODO Voteable
 				}
 				Bukkit.getScheduler().cancelTask(cd);
 			}
-			Main.getArena.get(arenaName).setGameProgress("inGame");
+			BlockParty.getArena.get(arenaName).setGameProgress("inGame");
 			Signs.updateGameProgress(arenaName, false);
-			Main.getArena.get(arenaName).setStart(false);
-			Main.getArena.get(arenaName).unAbort();
+			BlockParty.getArena.get(arenaName).setStart(false);
+			BlockParty.getArena.get(arenaName).unAbort();
 			Period pe = new Period();
 			Period.setFloor(arenaName, true);
 			pe.delayedStart(arenaName, 0);
@@ -85,11 +85,11 @@ public class Start {
 		for(String name : Players.getPlayersInLobby(arenaName))
 		{
 			Player p = Bukkit.getPlayer(name);
-			Main.inLobbyPlayers.remove(p.getName());
-			if(Main.locs.containsKey(p.getName()))
+			BlockParty.inLobbyPlayers.remove(p.getName());
+			if(BlockParty.locs.containsKey(p.getName()))
 			{
-				p.teleport(Main.locs.get(p.getName()));
-				Main.locs.remove(p.getName());
+				p.teleport(BlockParty.locs.get(p.getName()));
+				BlockParty.locs.remove(p.getName());
 			}
 			else
 			{
@@ -99,12 +99,12 @@ public class Start {
 	}
 	
 	public static void countdown(String arenaName){
-		if(Main.getArena.get(arenaName).getGameProgress().equalsIgnoreCase("Countdown"))	return;
-		Main.getArena.get(arenaName).setGameProgress("Countdown");
+		if(BlockParty.getArena.get(arenaName).getGameProgress().equalsIgnoreCase("Countdown"))	return;
+		BlockParty.getArena.get(arenaName).setGameProgress("Countdown");
 		final String aName = arenaName;
-		number = Main.getArena.get(arenaName).getCountdown();
+		number = BlockParty.getArena.get(arenaName).getCountdown();
 		level(aName, number);
-        cd = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+        cd = Bukkit.getScheduler().scheduleSyncRepeatingTask(BlockParty.getInstance(), new Runnable() {
 			@SuppressWarnings("deprecation")
 			public void run(){
 				if(number!=0)
@@ -130,18 +130,18 @@ public class Start {
 						level(aName, number);
 						if(number < 11)
 							message("§3[BlockParty] §8" + number + " seconds left!", aName);
-						if(Main.getArena.get(aName).lessThanMinimum())
+						if(BlockParty.getArena.get(aName).lessThanMinimum())
 						{
 							message("§3[BlockParty] §8Less Players than the minimum!", aName);
 							//telOutOfArena(aName);
 							start(aName);
 							Bukkit.getScheduler().cancelTask(cd);
 						}
-						if(Main.getArena.get(aName).aborted())
+						if(BlockParty.getArena.get(aName).aborted())
 						{
 							Bukkit.getScheduler().cancelTask(cd);
-							Main.getArena.get(aName).unAbort();
-							Main.getArena.get(aName).setGameProgress("inLobby");
+							BlockParty.getArena.get(aName).unAbort();
+							BlockParty.getArena.get(aName).setGameProgress("inLobby");
 							startGame(aName, null);
 						}
 					}

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 
 /*
  * Copyright (C) 2014 Leon167 and XxChxppellxX 
@@ -29,27 +29,27 @@ public class Players {
 		{
 			if(loc.equals("Lobby"))
 			{
-				if(Main.inLobbyPlayers.containsKey(p.getName()))
+				if(BlockParty.inLobbyPlayers.containsKey(p.getName()))
 				{
-					if(Main.inLobbyPlayers.get(p.getName()).equalsIgnoreCase(arenaName))
+					if(BlockParty.inLobbyPlayers.get(p.getName()).equalsIgnoreCase(arenaName))
 					{
 						playerAmountInLobby++;
 					}
 				}
 			}else if(loc.equals("Game"))
 			{
-				if(Main.inGamePlayers.containsKey(p.getName()))
+				if(BlockParty.inGamePlayers.containsKey(p.getName()))
 				{
-					if(Main.inGamePlayers.get(p.getName()).equalsIgnoreCase(arenaName))
+					if(BlockParty.inGamePlayers.get(p.getName()).equalsIgnoreCase(arenaName))
 					{
 						playerAmountInGame++;
 					}
 				}
 			}else if(loc.equals("Floor"))
 			{
-				if(Main.onFloorPlayers.containsKey(p.getName()))
+				if(BlockParty.onFloorPlayers.containsKey(p.getName()))
 				{
-					if(Main.onFloorPlayers.get(p.getName()).equalsIgnoreCase(arenaName))
+					if(BlockParty.onFloorPlayers.get(p.getName()).equalsIgnoreCase(arenaName))
 					{
 						playerAmountOnFloor++;
 					}
@@ -64,9 +64,9 @@ public class Players {
 		playersOnFloor.clear();
 		for (Player p : Bukkit.getOnlinePlayers())
 		{
-			if(Main.inLobbyPlayers.containsKey(p.getName()))
+			if(BlockParty.inLobbyPlayers.containsKey(p.getName()))
 			{
-				if(Main.inLobbyPlayers.get(p.getName()).equalsIgnoreCase(arenaName))
+				if(BlockParty.inLobbyPlayers.get(p.getName()).equalsIgnoreCase(arenaName))
 				{
 					if(loc.equals("Lobby"))
 					{
@@ -75,9 +75,9 @@ public class Players {
 					}
 				}
 			}
-			if(Main.inGamePlayers.containsKey(p.getName()))
+			if(BlockParty.inGamePlayers.containsKey(p.getName()))
 			{
-				if(Main.inGamePlayers.get(p.getName()).equalsIgnoreCase(arenaName))
+				if(BlockParty.inGamePlayers.get(p.getName()).equalsIgnoreCase(arenaName))
 				{
 				    if(loc.equals("Game"))
 					{
@@ -86,9 +86,9 @@ public class Players {
 					}
 				}
 			}
-			if(Main.onFloorPlayers.containsKey(p.getName()))
+			if(BlockParty.onFloorPlayers.containsKey(p.getName()))
 			{
-				if(Main.onFloorPlayers.get(p.getName()).equalsIgnoreCase(arenaName))
+				if(BlockParty.onFloorPlayers.get(p.getName()).equalsIgnoreCase(arenaName))
 				{
 				    if(loc.equals("Floor"))
 					{
@@ -125,6 +125,6 @@ public class Players {
 		return playerAmountOnFloor;
 	}
 	public static boolean reachedMaxPlayers(String arenaName){
-		return Main.getArena.get(arenaName).reachedMaxPlayers();
+		return BlockParty.getArena.get(arenaName).reachedMaxPlayers();
 	}
 }

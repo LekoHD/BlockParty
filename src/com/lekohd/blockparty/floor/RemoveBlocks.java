@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 
-import com.lekohd.blockparty.Main;
+import com.lekohd.blockparty.BlockParty;
 
 /*
  * Copyright (C) 2014 Leon167 and XxChxppellxX 
@@ -18,7 +18,7 @@ public class RemoveBlocks {
 		//System.out.println("In progress " + Main.getGameProgress());
 		Location locMax = FloorPoints.getMax(arenaName);
 		Location locMin = FloorPoints.getMin(arenaName);
-		boolean fall = Main.getArena.get(arenaName).getFallingBlocks();
+		boolean fall = BlockParty.getArena.get(arenaName).getFallingBlocks();
        for(int x = RandomizeFloor.getxMin(arenaName, locMax, locMin); x <= RandomizeFloor.getxMax(arenaName, locMax, locMin); x++) {
     	   //System.out.println("xPos: "+ x);
     	   for(int z = RandomizeFloor.getzMin(arenaName, locMax, locMin); z <= RandomizeFloor.getzMax(arenaName, locMax, locMin); z++) {
