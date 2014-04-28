@@ -3,6 +3,7 @@ package com.lekohd.blockparty;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bukkit.plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -63,16 +64,17 @@ public class Main extends JavaPlugin {
 		  loadConfig();
 		  System.out.println("[BlockParty] Plugin by " + this.getDescription().getAuthors());
 		  this.getCommand("blockparty").setExecutor(new BlockParty());
-		  getServer().getPluginManager().registerEvents(new DisconnectListener(), this);
-		  getServer().getPluginManager().registerEvents(new CommandListener(), this);
-		  getServer().getPluginManager().registerEvents(new MoveListener(), this);
-		  getServer().getPluginManager().registerEvents(new SignListener(), this);
-		  getServer().getPluginManager().registerEvents(new InteractListener(), this);
-		  getServer().getPluginManager().registerEvents(new FeedListener(), this);
-		  getServer().getPluginManager().registerEvents(new ChangeBlockListener(), this);
-		  getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
-		  getServer().getPluginManager().registerEvents(new DamageListener(), this);
-		  getServer().getPluginManager().registerEvents(new InventoryListener(), this);
+		  PluginManger pm = getServer().getPluginManager();
+		  pm.registerEvents(new DisconnectListener(), this);
+		  pm.registerEvents(new CommandListener(), this);
+		  pm.registerEvents(new MoveListener(), this);
+		  pm.registerEvents(new SignListener(), this);
+		  pm.registerEvents(new InteractListener(), this);
+		  pm.registerEvents(new FeedListener(), this);
+		  pm.registerEvents(new ChangeBlockListener(), this);
+		  pm.registerEvents(new BlockPlaceListener(), this);
+		  pm.registerEvents(new DamageListener(), this);
+		  pm.registerEvents(new InventoryListener(), this);
 		  if(Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI"))
 			{
 			  	for(Player p : Bukkit.getOnlinePlayers())
