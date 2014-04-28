@@ -3,7 +3,7 @@ package com.lekohd.blockparty;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.plugin;
+import org.bukkit.plugin.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -64,7 +64,7 @@ public class Main extends JavaPlugin {
 		  loadConfig();
 		  System.out.println("[BlockParty] Plugin by " + this.getDescription().getAuthors());
 		  this.getCommand("blockparty").setExecutor(new BlockParty());
-		  PluginManger pm = getServer().getPluginManager();
+		  PluginManager pm = getServer().getPluginManager();
 		  pm.registerEvents(new DisconnectListener(), this);
 		  pm.registerEvents(new CommandListener(), this);
 		  pm.registerEvents(new MoveListener(), this);
