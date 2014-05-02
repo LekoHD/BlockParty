@@ -41,7 +41,7 @@ public class Period {
 	
 	public static void setFloor(String arenaName, boolean fall){
 		final String aName = arenaName;
-		//System.out.println(Main.getArena.get(aName).getAutoGenerateFloors() + " " + Main.getArena.get(aName).getUseSchematicFloors());
+		//System.out.println(BlockParty.getArena.get(aName).getAutoGenerateFloors() + " " + BlockParty.getArena.get(aName).getUseSchematicFloors());
 		if(!(BlockParty.getArena.get(aName).getAutoGenerateFloors()) && (BlockParty.getArena.get(aName).getUseSchematicFloors())){
 			setShFloor(aName);
 		}
@@ -306,7 +306,7 @@ public class Period {
 						else
 						{
 							counter++;
-							//Main.getArena.get(aName).setStart(false);
+							//BlockParty.getArena.get(aName).setStart(false);
 							Bukkit.getScheduler().cancelTask(cd);
 							start(aName, counter, b);
 						}
@@ -343,9 +343,9 @@ public class Period {
 					is = BlockParty.inv.get(p.getName());
 					Inventory inv = p.getInventory();
 					inv.setContents(is);
-					//inv.addItem(getItem(Main.getArena.get(aName).getRewardItems().get(0)));
+					//inv.addItem(getItem(BlockParty.getArena.get(aName).getRewardItems().get(0)));
 					//is = inv.getContents();
-					//Main.inv.put(Players.getPlayersOnFloor(aName).get(0), is);
+					//BlockParty.inv.put(Players.getPlayersOnFloor(aName).get(0), is);
 					for(int item : (BlockParty.getArena.get(aName).getRewardItems()))
 					{
 						inv.addItem(getItem(item));

@@ -81,12 +81,12 @@ public class WinnerCountdown {
 	}
 	
 	/*public static void shootFireworks(String arenaName){
-		Location max = Main.getArena.get(arenaName).getLocMax();
-		Location min = Main.getArena.get(arenaName).getLocMin();
-		max.setY(Main.getArena.get(arenaName).getLocMax().getBlockX() + 10);
-		min.setY(Main.getArena.get(arenaName).getLocMax().getBlockX() + 10);
-		Firework fwMax = (Firework) Main.getArena.get(arenaName).getWorld().spawn(max, Firework.class);
-		Firework fwMin = (Firework) Main.getArena.get(arenaName).getWorld().spawn(min, Firework.class);
+		Location max = BlockParty.getArena.get(arenaName).getLocMax();
+		Location min = BlockParty.getArena.get(arenaName).getLocMin();
+		max.setY(BlockParty.getArena.get(arenaName).getLocMax().getBlockX() + 10);
+		min.setY(BlockParty.getArena.get(arenaName).getLocMax().getBlockX() + 10);
+		Firework fwMax = (Firework) BlockParty.getArena.get(arenaName).getWorld().spawn(max, Firework.class);
+		Firework fwMin = (Firework) BlockParty.getArena.get(arenaName).getWorld().spawn(min, Firework.class);
 		FireworkMeta fmMax = fwMax.getFireworkMeta();
 		FireworkMeta fmMin = fwMax.getFireworkMeta();
 		Random r = new Random();

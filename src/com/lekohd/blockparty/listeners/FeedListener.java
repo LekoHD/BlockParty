@@ -16,6 +16,8 @@ public class FeedListener implements Listener{
 	public void onFeed(final FoodLevelChangeEvent e){
 		if(BlockParty.onFloorPlayers.containsKey(e.getEntity().getName()))
 			e.setFoodLevel(20);
+		if(BlockParty.inLobbyPlayers.containsKey(e.getEntity().getName()))
+			e.setFoodLevel(20);
 	}
 	
 }

@@ -31,7 +31,7 @@ public class Arena {
 			cfg.set("configuration.UseSchematicFloors", false);
 			cfg.set("configuration.floor.length", 2);
 			cfg.set("configuration.floor.width", 2);
-			cfg.set("configuration.EnabledFloors", Main.floors);
+			cfg.set("configuration.EnabledFloors", BlockParty.floors);
 			try {
 				cfg.save(arena);
 			} catch (IOException e) {
@@ -163,7 +163,7 @@ public class Arena {
 	}*/
 	
 	public static void join(Player p, String arenaName){
-		/*if(!Main.inLobbyPlayers.containsKey(p) && !(Main.inGamePlayers.containsKey(p)))
+		/*if(!BlockParty.inLobbyPlayers.containsKey(p) && !(BlockParty.inGamePlayers.containsKey(p)))
 		{
 			File arena = new File("plugins//BlockParty//Arenas//" + arenaName + ".yml");
 			if(Arena.exists(arenaName, p, arena))
@@ -192,7 +192,7 @@ public class Arena {
 					String world = (String) cfg.get("spawns.Lobby.World");
 					loc = new Location(Bukkit.getWorld(world), xPos, yPos, zPos, (float) yaw, (float) pitch);
 					p.teleport(loc);
-					Main.inLobbyPlayers.put(p, arenaName);
+					BlockParty.inLobbyPlayers.put(p, arenaName);
 					p.sendMessage("§3[BlockParty] §8You have joined Arena " + arenaName);
 				}
 				else

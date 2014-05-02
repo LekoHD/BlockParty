@@ -51,8 +51,13 @@ public class Bonus {
 						}
 						else
 						{
-							p.sendMessage("§3[BlockParty] §8Your effect has expired");
-							Bukkit.getScheduler().cancelTask(dc);
+							if(duration > -1)
+							{
+								p.sendMessage("§3[BlockParty] §8Your effect has expired");
+								Bukkit.getScheduler().cancelTask(dc);
+							}
+							else
+								Bukkit.getScheduler().cancelTask(dc);
 						}
 					}
 				}

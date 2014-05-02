@@ -371,7 +371,7 @@ public class Config {
 			{
 				if(!Players.reachedMaxPlayers(arenaName))
 				{
-					if(gameProgress.equalsIgnoreCase("inLobby"))
+					if(gameProgress.equalsIgnoreCase("inLobby") || gameProgress.equalsIgnoreCase("Countdown"))
 					{
 						p.teleport(lobbySpawn);
 						BlockParty.inLobbyPlayers.put(p.getName(), arenaName);

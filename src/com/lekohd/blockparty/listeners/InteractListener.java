@@ -28,33 +28,34 @@ public class InteractListener implements Listener{
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onInteract(final PlayerInteractEvent e) {
-		if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
-		{
-			Player p = e.getPlayer();
-			if(BlockParty.onFloorPlayers.containsKey(p.getName()))
-			{
-				if(p.getItemInHand().getType() == Material.DIAMOND_BOOTS)
-					{
-						Bonus.playEf(p, "walk");
-						p.getInventory().remove(Material.DIAMOND_BOOTS);
-					}
-				if(e.getPlayer().getItemInHand().getType() == Material.GOLD_BOOTS)
-					{
-						Bonus.playEf(p, "jump");
-						p.getInventory().remove(Material.GOLD_BOOTS);
-					}
-			}
-			if(BlockParty.inLobbyPlayers.containsKey(p.getName()))
-			{
-				if(e.getPlayer().getItemInHand().getType() == Material.FIREBALL)
-				{
-					Vote.openInv(p, BlockParty.inLobbyPlayers.get(p.getName()));
-				}
-			}
-		}
-		if(e.getClickedBlock() == null) return;
+		
 		if(e.getAction() == Action.RIGHT_CLICK_BLOCK)
 		{
+			if(e.getAction() == Action.RIGHT_CLICK_AIR)
+			{
+				Player p = e.getPlayer();
+				if(BlockParty.onFloorPlayers.containsKey(p.getName()))
+				{
+					if(p.getItemInHand().getType() == Material.DIAMOND_BOOTS)
+						{
+							Bonus.playEf(p, "walk");
+							p.getInventory().remove(Material.DIAMOND_BOOTS);
+						}
+					if(e.getPlayer().getItemInHand().getType() == Material.GOLD_BOOTS)
+						{
+							Bonus.playEf(p, "jump");
+							p.getInventory().remove(Material.GOLD_BOOTS);
+						}
+				}
+				if(BlockParty.inLobbyPlayers.containsKey(p.getName()))
+				{
+					if(e.getPlayer().getItemInHand().getType() == Material.FIREBALL)
+					{
+						Vote.openInv(p, BlockParty.inLobbyPlayers.get(p.getName()));
+					}
+				}
+			}
+			if(e.getClickedBlock() == null) return;
 			if(e.getClickedBlock().getType() == Material.SIGN || e.getClickedBlock().getType() == Material.SIGN_POST)
 			{
 				Sign sign = (Sign) e.getClickedBlock().getState();
