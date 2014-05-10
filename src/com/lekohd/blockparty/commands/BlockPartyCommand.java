@@ -94,7 +94,7 @@ public class BlockPartyCommand implements CommandExecutor{
 		    			if((BlockParty.inLobbyPlayers.containsKey(p.getName())) && !(BlockParty.inGamePlayers.containsKey(p.getName())))
 		    			{
 		    				if(Players.getPlayerAmountInLobby(BlockParty.inLobbyPlayers.get(p.getName())) <= 1){
-								Bukkit.getPlayer(Players.getPlayersInLobby(BlockParty.inLobbyPlayers.get(p.getName())).get(0)).sendMessage("§3[BlockParty] §8" + p.getName() + " leaved the game");
+								Bukkit.getPlayer(Players.getPlayersInLobby(BlockParty.inLobbyPlayers.get(p.getName())).get(0)).sendMessage("§3[BlockParty] §8" + p.getName() + " left the game");
 							}
 							else
 							{

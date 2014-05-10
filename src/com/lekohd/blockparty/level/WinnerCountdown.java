@@ -48,7 +48,10 @@ public class WinnerCountdown {
 							BlockParty.inGamePlayers.remove(Players.getPlayersOnFloor(aName).get(0));
 							BlockParty.onFloorPlayers.remove(Players.getPlayersOnFloor(aName).get(0));
 							BlockParty.getArena.get(aName).setGameProgress("inLobby");
-							Start.start(aName);
+							if(BlockParty.getArena.get(aName).getAutoRestart())
+								Start.start(aName);
+							if(BlockParty.getArena.get(aName).getAutoKick())
+								kickPlayers(aName);
 						}
 						else if(Players.getPlayerAmountOnFloor(aName) > 1)
 						{
@@ -66,7 +69,10 @@ public class WinnerCountdown {
 								p.getInventory().addItem(BlockParty.getArena.get(aName).getVoteItem());
 								p.updateInventory();
 								BlockParty.getArena.get(aName).setGameProgress("inLobby");
-								Start.start(aName);
+								if(BlockParty.getArena.get(aName).getAutoRestart())
+									Start.start(aName);
+								if(BlockParty.getArena.get(aName).getAutoKick())
+									kickPlayers(aName);
 							}
 						}
 					}
@@ -78,6 +84,44 @@ public class WinnerCountdown {
 				}
 			}
 		}, 0L, 20L);
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static void kickPlayers(String arenaName){
+		if(Players.getPlayerAmountOnFloor(arenaName) == 1)
+		{
+			String name = Players.getPlayersOnFloor(arenaName).get(0);
+			Player p = Bukkit.getPlayer(name);
+			BlockParty.inLobbyPlayers.remove(name);
+			BlockParty.inLobbyPlayers.remove(name);
+			p.teleport(BlockParty.locs.get(name));
+			BlockParty.locs.remove(name);
+			p.setGameMode(BlockParty.gm.get(name));
+			BlockParty.gm.remove(name);
+			p.getInventory().clear();
+			p.getInventory().setContents(BlockParty.inv.get(name));
+			if(Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+				BarAPI.removeBar(p);
+			p.sendMessage("§3[BlockParty] §8You left the arena!");
+		}
+		else if(Players.getPlayerAmountOnFloor(arenaName) > 1)
+		{
+			for(String name : Players.getPlayersOnFloor(arenaName))
+			{
+				Player p = Bukkit.getPlayer(name);
+				BlockParty.inLobbyPlayers.remove(p.getName());
+				BlockParty.inLobbyPlayers.remove(p.getName());
+				p.teleport(BlockParty.locs.get(p.getName()));
+				BlockParty.locs.remove(p.getName());
+				p.setGameMode(BlockParty.gm.get(p.getName()));
+				BlockParty.gm.remove(p.getName());
+				p.getInventory().clear();
+				p.getInventory().setContents(BlockParty.inv.get(p.getName()));
+				if(Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+					BarAPI.removeBar(p);
+    			p.sendMessage("§3[BlockParty] §8You left the arena!");
+			}
+		}
 	}
 	
 	/*public static void shootFireworks(String arenaName){

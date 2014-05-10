@@ -48,6 +48,8 @@ public class Config {
 	public boolean useBoosts=true;
 	public boolean fallingBlock = true;
 	public boolean useSongs = true;
+	public boolean autoRestart = true;
+	public boolean autoKick = false;
 	public ArrayList<String> enabledFloors = new ArrayList<>();
 	public ArrayList<Integer> rewardItems = new ArrayList<>();
 	public ArrayList<String> songs = new ArrayList<>();
@@ -149,6 +151,8 @@ public class Config {
 			cfg.set("configuration.MinPlayers", 2);
 			cfg.set("configuration.MaxPlayers", 15);
 			cfg.set("configuration.Countdown", 30);
+			cfg.set("configuration.AutoRestart", true);
+			cfg.set("configuration.AutoKick", false);
 			cfg.set("configuration.OutBlock", 7);
 			cfg.set("configuration.TimeToSearch", 8);
 			cfg.set("configuration.TimeReductionPerLevel", 0.5);
@@ -606,6 +610,8 @@ public class Config {
 				songs = (ArrayList<String>) cfg.get("configuration.Songs");
 				cfg.set("configuration.useSongs", true);
 				useSongs = cfg.getBoolean("configuration.UseSongs");
+				autoRestart = cfg.getBoolean("configuration.AutoRestart");
+				autoKick = cfg.getBoolean("configuration.AutoKick");
 				if(cfg.getString("spawns.Game.World") != null)
 					world = Bukkit.getWorld(cfg.getString("spawns.Game.World"));
 			}
@@ -614,6 +620,14 @@ public class Config {
 	
 		public boolean getUseSongs(){
 			return useSongs;
+		}
+		
+		public boolean getAutoRestart(){
+			return autoRestart;
+		}
+		
+		public boolean getAutoKick(){
+			return autoKick;
 		}
 		
 		public ArrayList<String> getSongs(){

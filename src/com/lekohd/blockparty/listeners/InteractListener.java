@@ -1,5 +1,7 @@
 package com.lekohd.blockparty.listeners;
 
+import me.confuser.barapi.BarAPI;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -28,11 +30,20 @@ public class InteractListener implements Listener{
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onInteract(final PlayerInteractEvent e) {
-		
-		if(e.getAction() == Action.RIGHT_CLICK_BLOCK)
+		if(e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR)
 		{
-			if(e.getAction() == Action.RIGHT_CLICK_AIR)
+			if(BlockParty.inLobbyPlayers.containsKey(e.getPlayer().getName()))
 			{
+				if(e.getPlayer().getItemInHand().getType() == Material.FIREBALL)
+				{
+					Vote.openInv(e.getPlayer(), BlockParty.inLobbyPlayers.get(e.getPlayer().getName()));
+				}
+			}
+		}
+
+		if(e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR)
+		{
+			
 				Player p = e.getPlayer();
 				if(BlockParty.onFloorPlayers.containsKey(p.getName()))
 				{
@@ -46,24 +57,25 @@ public class InteractListener implements Listener{
 							Bonus.playEf(p, "jump");
 							p.getInventory().remove(Material.GOLD_BOOTS);
 						}
-				}
-				if(BlockParty.inLobbyPlayers.containsKey(p.getName()))
+				if(BlockParty.inLobbyPlayers.containsKey(e.getPlayer().getName()))
 				{
 					if(e.getPlayer().getItemInHand().getType() == Material.FIREBALL)
 					{
-						Vote.openInv(p, BlockParty.inLobbyPlayers.get(p.getName()));
+						Vote.openInv(e.getPlayer(), BlockParty.inLobbyPlayers.get(e.getPlayer().getName()));
 					}
 				}
 			}
+				if(e.getAction() == Action.RIGHT_CLICK_BLOCK)
+				{
 			if(e.getClickedBlock() == null) return;
 			if(e.getClickedBlock().getType() == Material.SIGN || e.getClickedBlock().getType() == Material.SIGN_POST)
 			{
 				Sign sign = (Sign) e.getClickedBlock().getState();
+				// TODO BUG FIX
 				if(sign.getLine(0).equals("§6[BlockParty]"))
 				{
 					if(sign.getLine(3).equalsIgnoreCase("§2Join"))
 					{
-						Player p = e.getPlayer();
 						if(p.hasPermission("blockparty.user"))
 			    		{
 		    				if(!BlockParty.inLobbyPlayers.containsKey(p.getName()) && !BlockParty.inGamePlayers.containsKey(p.getName()))
@@ -96,7 +108,6 @@ public class InteractListener implements Listener{
 				{
 					if(sign.getLine(1).equalsIgnoreCase("§4Leave"))
 					{
-						Player p = e.getPlayer();
 						if(p.hasPermission("blockparty.user"))
 			    		{
 			    			if(!BlockParty.inLobbyPlayers.containsKey(p.getName()))
@@ -127,6 +138,8 @@ public class InteractListener implements Listener{
 			    				p.getInventory().clear();
 			    				p.getInventory().setContents(BlockParty.inv.get(p.getName()));
 			    				BlockParty.inv.remove(p.getName());
+			    				if(Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+			    					BarAPI.removeBar(p);
 				    			p.sendMessage("§3[BlockParty] §8You leaved the arena!");
 			    			}
 			    		}
@@ -134,6 +147,8 @@ public class InteractListener implements Listener{
 				}
 			}
 		}
+		}
+		if(e.getClickedBlock() == null) return;
 		if(e.getClickedBlock().getType() == Material.BEACON)
 		{
 			Player p = e.getPlayer();
