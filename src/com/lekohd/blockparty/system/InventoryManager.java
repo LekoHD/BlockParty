@@ -69,14 +69,12 @@ public class InventoryManager {
 			YamlConfiguration config = new YamlConfiguration();
 
 			if (file.exists()) {
-				if ((items == null) || (armor == null)) {
-					config.load(file);
-					List<?> itemsList = config.getList("items");
-					List<?> armorList = config.getList("armor");
-					exp = config.getInt("exp");
-					items = (ItemStack[]) itemsList.toArray(new ItemStack[itemsList.size()]);
-					armor = (ItemStack[]) armorList.toArray(new ItemStack[armorList.size()]);
-				}
+				config.load(file);
+				List<?> itemsList = config.getList("items");
+				List<?> armorList = config.getList("armor");
+				exp = config.getInt("exp");
+				items = (ItemStack[]) itemsList.toArray(new ItemStack[itemsList.size()]);
+				armor = (ItemStack[]) armorList.toArray(new ItemStack[armorList.size()]);
 				p.getInventory().setContents(items);
 				p.getInventory().setArmorContents(armor);
 				p.setLevel(exp);
@@ -139,14 +137,12 @@ public class InventoryManager {
 			YamlConfiguration config = new YamlConfiguration();
 
 			if (file.exists()) {
-				if ((items == null) || (armor == null)) {
-					config.load(file);
-					List<?> itemsList = config.getList("items");
-					List<?> armorList = config.getList("armor");
-					exp = config.getInt("exp");
-					items = (ItemStack[]) itemsList.toArray(new ItemStack[itemsList.size()]);
-					armor = (ItemStack[]) armorList.toArray(new ItemStack[armorList.size()]);
-				}
+				config.load(file);
+				List<?> itemsList = config.getList("items");
+				List<?> armorList = config.getList("armor");
+				exp = config.getInt("exp");
+				items = (ItemStack[]) itemsList.toArray(new ItemStack[itemsList.size()]);
+				armor = (ItemStack[]) armorList.toArray(new ItemStack[armorList.size()]);
 				p.getInventory().setContents(items);
 				p.getInventory().setArmorContents(armor);
 				p.setLevel(exp);

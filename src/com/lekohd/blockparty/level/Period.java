@@ -256,6 +256,9 @@ public class Period {
 								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(
 										"§3[BlockParty] §8You will get you reward when you leave the arena!");
 
+								Bukkit.getPlayer((String) Players.getPlayersInLobby(aName).get(0)).sendMessage(
+										"§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
+							
 								WinnerCountdown.start(aName);
 							}
 						} else {
