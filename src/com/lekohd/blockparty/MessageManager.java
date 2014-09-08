@@ -1,5 +1,7 @@
 package com.lekohd.blockparty;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

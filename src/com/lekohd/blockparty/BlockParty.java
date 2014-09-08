@@ -1,5 +1,8 @@
 package com.lekohd.blockparty;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
+import com.lekohd.blockparty.system.Metrics;
 import com.lekohd.blockparty.commands.BlockPartyCommand;
 import com.lekohd.blockparty.floor.LoadFloor;
 import com.lekohd.blockparty.listeners.BlockPlaceListener;
@@ -17,6 +20,7 @@ import com.lekohd.blockparty.system.Config;
 import com.lekohd.blockparty.system.InventoryManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,11 +34,13 @@ import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BlockParty extends JavaPlugin {
 	public File inventoryFolder;
+	public static PluginDescriptionFile pdfFile;
 	public static Player p;
 	public static HashMap<String, String> inGamePlayers = new HashMap<String, String>();
 	public static HashMap<String, String> inLobbyPlayers = new HashMap<String, String>();
@@ -90,9 +96,16 @@ public class BlockParty extends JavaPlugin {
 			}
 		}
 		
+		pdfFile = getDescription();
+		
 		registerInventories();
 		
 		inventoryManager = new InventoryManager(instance);
+		
+		try {
+			new Metrics(this).start();
+		} catch (IOException e) {
+		}
 	}
 
 	public void onDisable() {

@@ -1,5 +1,7 @@
 package com.lekohd.blockparty.bonus;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.system.Config;
 import java.util.Random;

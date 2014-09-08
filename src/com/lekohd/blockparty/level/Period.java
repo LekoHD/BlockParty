@@ -1,5 +1,7 @@
 package com.lekohd.blockparty.level;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.bonus.Boosts;
 import com.lekohd.blockparty.floor.FloorBlock;

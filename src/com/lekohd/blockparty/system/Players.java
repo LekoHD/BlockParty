@@ -1,5 +1,7 @@
 package com.lekohd.blockparty.system;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
 import com.lekohd.blockparty.BlockParty;
 import java.util.ArrayList;
 import org.bukkit.Bukkit;

@@ -1,5 +1,7 @@
 package com.lekohd.blockparty.listeners;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.music.Songs;
 import com.lekohd.blockparty.system.Arena;

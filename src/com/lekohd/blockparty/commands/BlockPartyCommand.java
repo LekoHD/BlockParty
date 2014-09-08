@@ -1,5 +1,7 @@
 package com.lekohd.blockparty.commands;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.floor.AddFloor;
 import com.lekohd.blockparty.floor.RemoveFloor;
@@ -26,7 +28,7 @@ public class BlockPartyCommand implements CommandExecutor {
 				p.sendMessage("");
 				p.sendMessage("§7BlockParty indev §6" + BlockParty.getInstance().getDescription().getVersion());
 				p.sendMessage("");
-				p.sendMessage("§8Developer: §3LekoHD");
+				p.sendMessage("§8Developers: §3" + BlockParty.pdfFile.getAuthors());
 				p.sendMessage("§8Commands: §3/blockparty help");
 				return true;
 			}

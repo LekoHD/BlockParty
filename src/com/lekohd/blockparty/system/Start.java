@@ -1,5 +1,7 @@
 package com.lekohd.blockparty.system;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
 import java.util.logging.Logger;
 
 import com.lekohd.blockparty.BlockParty;

@@ -1,5 +1,7 @@
 package com.lekohd.blockparty.floor;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.system.Config;
 import java.io.File;

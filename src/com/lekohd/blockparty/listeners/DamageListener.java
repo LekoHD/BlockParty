@@ -1,5 +1,7 @@
 package com.lekohd.blockparty.listeners;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
 import com.lekohd.blockparty.BlockParty;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

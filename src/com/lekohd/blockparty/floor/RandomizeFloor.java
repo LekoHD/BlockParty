@@ -1,5 +1,7 @@
 package com.lekohd.blockparty.floor;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
 import java.util.Random;
 
 import org.bukkit.Location;
