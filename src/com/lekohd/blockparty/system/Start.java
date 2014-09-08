@@ -26,8 +26,6 @@ public class Start {
 				countdown(arenaName);
 			} else {
 				Bukkit.getScheduler().cancelTask(cd);
-
-				
 				countdown(arenaName);
 				BlockParty.logger.info("Game Progress is NOT inLobby");
 			}

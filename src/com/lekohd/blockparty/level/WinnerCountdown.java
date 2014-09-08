@@ -26,18 +26,6 @@ public class WinnerCountdown {
 					if (WinnerCountdown.number != 1.0D) {
 						WinnerCountdown.number -= 1.0D;
 					} else {
-						// Notify players of who won
-						if (Players.getPlayerAmountOnFloor(arenaName) >= 1) {
-							for (String winner : Players.getPlayersOnFloor(arenaName)) {
-								for (String name : Players.getPlayersOnFloor(arenaName)) {
-									Player p = Bukkit.getPlayer(name);
-									p.sendMessage("§3[BlockParty] §8Player " + winner + " won the game.");
-								}
-								Player p = Bukkit.getPlayer(winner);
-								p.sendMessage("§3[BlockParty] §8Player " + winner + " won the game.");
-							}
-						}
-
 						Bukkit.getScheduler().cancelTask(WinnerCountdown.cd);
 						if (Players.getPlayerAmountOnFloor(arenaName) == 1) {
 							if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {

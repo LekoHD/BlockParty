@@ -264,6 +264,16 @@ public class Period {
 								//Bukkit.getPlayer((String) Players.getPlayersInLobby(aName).get(0)).sendMessage(
 								//		"§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
 							
+								if (Players.getPlayerAmountInLobby(aName) != 1) {
+									for (String name : Players.getPlayersInLobby(aName)) {
+										Player p = Bukkit.getPlayer(name);
+										p.sendMessage("§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
+									}
+								} else {
+									Bukkit.getPlayer((String) Players.getPlayersInLobby(aName).get(0)).sendMessage(
+											"§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
+								}
+								
 								WinnerCountdown.start(aName);
 							}
 						} else {
@@ -303,6 +313,7 @@ public class Period {
 				Bukkit.getPlayer((String) Players.getPlayersInLobby(aName).get(0)).sendMessage(
 						"§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
 			}
+
 			WinnerCountdown.start(aName);
 		}
 	}
