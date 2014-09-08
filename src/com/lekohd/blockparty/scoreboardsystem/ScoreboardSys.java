@@ -8,12 +8,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
-/*
- * Copyright (C) 2014 Leon167 and XxChxppellxX 
- */
- 
 public class ScoreboardSys {
-
 	@SuppressWarnings("deprecation")
 	public static void setScore(Player p) {
 		Scoreboard playerboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -28,15 +23,7 @@ public class ScoreboardSys {
 		Score s6 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Kit:"));
 		Score s7 = objective.getScore(Bukkit.getOfflinePlayer(""));
 		Score s8 = objective.getScore(Bukkit.getOfflinePlayer("§3" + ChatColor.GREEN + "------------"));
-		/*if(economy != null)
-		{
-			Score s9 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Guthaben:"));
-			Score s10 = objective.getScore(Bukkit.getOfflinePlayer("§3" + (int)Math.round(economy.getBalance(p.getName())) + ChatColor.GRAY + " Taler"));
-			Score s11 = objective.getScore(Bukkit.getOfflinePlayer("§4" + ChatColor.GREEN + "------------"));
-			s9.setScore(6);
-			s10.setScore(5);
-			s11.setScore(4);
-		}*/
+
 		Score s12 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Navigiere mit"));
 		Score s13 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "dem Compass"));
 		Score s14 = objective.getScore(Bukkit.getOfflinePlayer("§5" + ChatColor.GREEN + "------------"));

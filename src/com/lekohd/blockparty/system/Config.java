@@ -1,5 +1,11 @@
 package com.lekohd.blockparty.system;
 
+import com.lekohd.blockparty.BlockParty;
+import com.lekohd.blockparty.floor.FloorPoints;
+import com.lekohd.blockparty.music.Songs;
+import com.lekohd.blockparty.sign.Signs;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.bukkit.selections.Selection;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,10 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
 import me.confuser.barapi.BarAPI;
-
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -21,752 +26,712 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.lekohd.blockparty.BlockParty;
-import com.lekohd.blockparty.floor.FloorPoints;
-import com.lekohd.blockparty.sign.Signs;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.Selection;
-
-/*
- * Copyright (C) 2014 Leon167 and XxChxppellxX 
- */
- 
 public class Config {
-
 	public File arena;
-	public String arenaName;
+	public static String arenaName;
 	public FileConfiguration cfg;
-	public Location gameSpawn, lobbySpawn;
-	public Location locMax, locMin;
+	public Location gameSpawn;
+	public Location lobbySpawn;
+	public Location locMax;
+	public Location locMin;
 	public int lessMinimum;
 	public World world;
-	public int floorLength, floorWidth;
-	public int minPlayers, maxPlayers, countdown, timeToSearch, level, boostDuration;
+	public int floorLength;
+	public int floorWidth;
+	public int minPlayers;
+	public int maxPlayers;
+	public int countdown;
+	public int timeToSearch;
+	public int level;
+	public int boostDuration;
 	public double timeReductionPerLevel;
-	public boolean autoGenerateFloors, useSchematicFloors;
+	public boolean autoGenerateFloors;
+	public boolean useSchematicFloors;
 	public boolean isEnabled = false;
-	public boolean useBoosts=true;
+	public boolean useBoosts = true;
 	public boolean fallingBlock = true;
 	public boolean useSongs = true;
 	public boolean autoRestart = true;
 	public boolean autoKick = false;
-	public ArrayList<String> enabledFloors = new ArrayList<>();
-	public ArrayList<Integer> rewardItems = new ArrayList<>();
-	public ArrayList<String> songs = new ArrayList<>();
+	public ArrayList<String> enabledFloors = new ArrayList<String>();
+	public ArrayList<Integer> rewardItems = new ArrayList<Integer>();
+	public ArrayList<String> songs = new ArrayList<String>();
 	public int outBlock;
-	public HashMap<String, Integer> votedSongs = new HashMap<>();
+	public HashMap<String, Integer> votedSongs = new HashMap<String, Integer>();
 
-	
-	public String getMostVotedSong(){
+	public String getMostVotedSong() {
 		String song = null;
-		if(votedSongs.size() == 0)
-		{
+		int ri;
+		if (this.votedSongs.size() == 0) {
 			Random r = new Random();
-			int ri = r.nextInt(songs.size());
-			votedSongs.clear();
-			return songs.get(ri);
+			ri = r.nextInt(this.songs.size());
+			return (String) this.songs.get(ri);
 		}
-		else if(votedSongs.size() == 1)
-		{
-			if(songs.size()>1){
-				for (String name : songs){
-					if(votedSongs.containsKey(name))
-					{
-						votedSongs.clear();
+		if (this.votedSongs.size() == 1) {
+			if (this.songs.size() > 1) {
+				for (String name : this.songs) {
+					if (this.votedSongs.containsKey(name)) {
 						return name;
 					}
 				}
+			} else {
+				return (String) this.songs.get(0);
 			}
-			else
-			{
-				votedSongs.clear();
-				return songs.get(0);
-			}
-		}
-		else if(votedSongs.size() > 1)
-		{
-			for (String name : songs){
-				if(votedSongs.containsKey(name))
-				{
-					if(song == null){
+		} else if (this.votedSongs.size() > 1) {
+			for (String name : this.songs) {
+				if (this.votedSongs.containsKey(name)) {
+					if (song == null) {
 						song = name;
-						continue;
+					} else if (((Integer) this.votedSongs.get(name)).intValue() > ((Integer) this.votedSongs.get(song)).intValue()) {
+						song = name;
 					}
-					if(votedSongs.get(name) > votedSongs.get(song))
-						song = name;
 				}
 			}
-			votedSongs.clear();
 			return song;
 		}
-		votedSongs.clear();
 		return null;
 	}
-	
-	public void vote(String song){
+
+	public void vote(String song) {
 		int value = 0;
-		if(votedSongs.containsKey(song))
-		{
-			value = votedSongs.get(song);
-			votedSongs.put(song, value + 1);
-		}
-		else
-		{
-			votedSongs.put(song, 1);
+		if (this.votedSongs.containsKey(song)) {
+			value = ((Integer) this.votedSongs.get(song)).intValue();
+			this.votedSongs.put(song, Integer.valueOf(value + 1));
+		} else {
+			this.votedSongs.put(song, Integer.valueOf(1));
 		}
 	}
-	
-	public Location getGameSpawn(){
-		return gameSpawn;
+
+	public Location getGameSpawn() {
+		return this.gameSpawn;
 	}
-	
-	public Location getLobbySpawn(){
-		return lobbySpawn;
+
+	public Location getLobbySpawn() {
+		return this.lobbySpawn;
 	}
-	
-	public Config(String aName){
-		arenaName=aName;
-		arena = new File("plugins//BlockParty//Arenas//" + arenaName + ".yml");
+
+	public Config(String aName) {
+		Config.arenaName = aName;
+		this.arena = new File("plugins//BlockParty//Arenas//" + Config.arenaName + ".yml");
 	}
-	
-	public void loadCfg(){
-		if(!arena.exists())
-		{
-			System.err.print("ERROR in BlockParty: Arena " + arenaName + " doesn't exists! Please check your configs!");
-		}
-		else
-		{
-			cfg = YamlConfiguration.loadConfiguration(arena);
+
+	public void loadCfg() {
+		if (!this.arena.exists()) {
+			System.err.print("ERROR in BlockParty: Arena " + Config.arenaName + " doesn't exists! Please check your configs!");
+		} else {
+			this.cfg = YamlConfiguration.loadConfiguration(this.arena);
 		}
 	}
-	
-	public String create(){
-		if(arena.exists())
-		{
-			return "§3[BlockParty] §8Arena " + arenaName + " already exists!";
+
+	public String create() {
+		if (this.arena.exists()) {
+			return "§3[BlockParty] §8Arena " + Config.arenaName + " already exists!";
 		}
-		else
-		{
-			cfg = YamlConfiguration.loadConfiguration(arena);
-			cfg.set("configuration.MinPlayers", 2);
-			cfg.set("configuration.MaxPlayers", 15);
-			cfg.set("configuration.Countdown", 30);
-			cfg.set("configuration.AutoRestart", true);
-			cfg.set("configuration.AutoKick", false);
-			cfg.set("configuration.OutBlock", 7);
-			cfg.set("configuration.TimeToSearch", 8);
-			cfg.set("configuration.TimeReductionPerLevel", 0.5);
-			cfg.set("configuration.Level", 15);
-			cfg.set("configuration.UseBoosts", true);
-			cfg.set("configuration.BoostDuration", 10);
-			cfg.set("configuration.FallingBlocks", true);
-			cfg.set("configuration.AutoGenerateFloors", true);
-			cfg.set("configuration.UseSchematicFloors", true);
-			enabledFloors.add("example");
-			cfg.set("configuration.EnabledFloors", enabledFloors);
-			rewardItems.add(264);
-			cfg.set("configuration.RewardItems", rewardItems);
-			cfg.set("configuration.UseSongs", true);
-			songs.add("Hold The Line");
-			cfg.set("configuration.Songs", songs);
-			cfg.set("dontChange.Game", false);
-			cfg.set("dontChange.Lobby", false);
-			cfg.set("floor.floorPoints", false);
-			
-			try {
-				cfg.save(arena);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		this.cfg = YamlConfiguration.loadConfiguration(this.arena);
+		this.cfg.set("configuration.MinPlayers", Integer.valueOf(2));
+		this.cfg.set("configuration.MaxPlayers", Integer.valueOf(15));
+		this.cfg.set("configuration.Countdown", Integer.valueOf(30));
+		this.cfg.set("configuration.AutoRestart", Boolean.valueOf(true));
+		this.cfg.set("configuration.AutoKick", Boolean.valueOf(false));
+		this.cfg.set("configuration.OutBlock", Integer.valueOf(7));
+		this.cfg.set("configuration.TimeToSearch", Integer.valueOf(8));
+		this.cfg.set("configuration.TimeReductionPerLevel", Double.valueOf(0.5D));
+		this.cfg.set("configuration.Level", Integer.valueOf(15));
+		this.cfg.set("configuration.UseBoosts", Boolean.valueOf(true));
+		this.cfg.set("configuration.BoostDuration", Integer.valueOf(10));
+		this.cfg.set("configuration.FallingBlocks", Boolean.valueOf(true));
+		this.cfg.set("configuration.AutoGenerateFloors", Boolean.valueOf(true));
+		this.cfg.set("configuration.UseSchematicFloors", Boolean.valueOf(true));
+		this.enabledFloors.add("example");
+		this.cfg.set("configuration.EnabledFloors", this.enabledFloors);
+		this.rewardItems.add(Integer.valueOf(264));
+		this.cfg.set("configuration.RewardItems", this.rewardItems);
+		this.cfg.set("configuration.UseSongs", Boolean.valueOf(true));
+		this.songs.add("Hold The Line");
+		this.cfg.set("configuration.Songs", this.songs);
+		this.cfg.set("dontChange.Game", Boolean.valueOf(false));
+		this.cfg.set("dontChange.Lobby", Boolean.valueOf(false));
+		this.cfg.set("floor.floorPoints", Boolean.valueOf(false));
+		try {
+			this.cfg.save(this.arena);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		load();
+		return "§3[BlockParty] §8Arena " + Config.arenaName + " was successfully created!";
+	}
+
+	public String setSpawn(Player p, String pos) {
+		if (this.isEnabled) {
+			if (!this.arena.exists()) {
+				return "§3[BlockParty] §8Arena " + Config.arenaName + " doesn't exists!";
 			}
-			this.load();
-			return "§3[BlockParty] §8Arena " + arenaName + " was successfully created!";
-		}
-	}
-	public String setSpawn(Player p, String pos){
-		if(isEnabled){
-		if(!arena.exists())
-		{
-			return "§3[BlockParty] §8Arena " + arenaName + " doesn't exists!";
-		}
-		else
-		{
 			Location loc = p.getLocation();
-			cfg.set("spawns." + pos + ".xPos", loc.getX());
-			cfg.set("spawns." + pos + ".yPos", loc.getY());
-			cfg.set("spawns." + pos + ".zPos", loc.getZ());
-			cfg.set("spawns." + pos + ".Yaw", loc.getYaw());
-			cfg.set("spawns." + pos + ".Pitch", loc.getPitch());
-			cfg.set("spawns." + pos + ".World", loc.getWorld().getName());
-			if(pos.equalsIgnoreCase("Lobby")){
-				if(cfg.getBoolean("dontChange.Game")){
-					cfg.set("dontChange." + pos, true);
-					cfg.set("dontChange.Game", true);
+			this.cfg.set("spawns." + pos + ".xPos", Double.valueOf(loc.getX()));
+			this.cfg.set("spawns." + pos + ".yPos", Double.valueOf(loc.getY()));
+			this.cfg.set("spawns." + pos + ".zPos", Double.valueOf(loc.getZ()));
+			this.cfg.set("spawns." + pos + ".Yaw", Float.valueOf(loc.getYaw()));
+			this.cfg.set("spawns." + pos + ".Pitch", Float.valueOf(loc.getPitch()));
+			this.cfg.set("spawns." + pos + ".World", loc.getWorld().getName());
+			if (pos.equalsIgnoreCase("Lobby")) {
+				if (this.cfg.getBoolean("dontChange.Game")) {
+					this.cfg.set("dontChange." + pos, Boolean.valueOf(true));
+					this.cfg.set("dontChange.Game", Boolean.valueOf(true));
+				} else {
+					this.cfg.set("dontChange." + pos, Boolean.valueOf(true));
+					this.cfg.set("dontChange.Game", Boolean.valueOf(false));
 				}
-				else
-				{
-					cfg.set("dontChange." + pos, true);
-					cfg.set("dontChange.Game", false);
+				this.lobbySpawn = loc;
+				this.world = Bukkit.getWorld(this.cfg.getString("spawns.Lobby.World"));
+			} else {
+				if (this.cfg.getBoolean("dontChange.Lobby")) {
+					this.cfg.set("dontChange." + pos, Boolean.valueOf(true));
+					this.cfg.set("dontChange.Lobby", Boolean.valueOf(true));
+				} else {
+					this.cfg.set("dontChange." + pos, Boolean.valueOf(true));
+					this.cfg.set("dontChange.Lobby", Boolean.valueOf(false));
 				}
-				lobbySpawn=loc;
-				world = Bukkit.getWorld(cfg.getString("spawns.Lobby.World"));
+				this.gameSpawn = loc;
+				this.world = Bukkit.getWorld(this.cfg.getString("spawns.Game.World"));
 			}
-			else
-			{
-				if(cfg.getBoolean("dontChange.Lobby")){
-					cfg.set("dontChange." + pos, true);
-					cfg.set("dontChange.Lobby", true);
-				}
-				else
-				{
-					cfg.set("dontChange." + pos, true);
-					cfg.set("dontChange.Lobby", false);
-				}
-				gameSpawn=loc;
-				world = Bukkit.getWorld(cfg.getString("spawns.Game.World"));
-			}
-			cfg.set("dontChange." + pos, true);
+			this.cfg.set("dontChange." + pos, Boolean.valueOf(true));
 			try {
-				cfg.save(arena);
+				this.cfg.save(this.arena);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return ("§3[BlockParty] §8" + pos + " Spawn was set for Arena " + arenaName);
+			return "§3[BlockParty] §8" + pos + " Spawn was set for Arena " + Config.arenaName;
 		}
-		}
-		return ("§3[BlockParty] §8Arena is disabled. /bp enable " + arenaName + " to enable!");
+		return "§3[BlockParty] §8Arena is disabled. /bp enable " + Config.arenaName + " to enable!";
 	}
-	
-	public String delete(){
-		if(arena.exists())
-		{
-			arena.delete();
-			return "§3[BlockParty] §8Arena " + arenaName + " was successfully deleted!";
+
+	public String delete() {
+		if (this.arena.exists()) {
+			this.arena.delete();
+			return "§3[BlockParty] §8Arena " + Config.arenaName + " was successfully deleted!";
 		}
-		else
-		{
-			return "§3[BlockParty] §8Arena " + arenaName + " doesn't exists!";
-		}
+		return "§3[BlockParty] §8Arena " + Config.arenaName + " doesn't exists!";
 	}
-	
-	public boolean exists(Player p)
-	{
-		if(arena.exists())
-		{
-			if((cfg.getBoolean("dontChange.Lobby")) && (cfg.getBoolean("dontChange.Game")))
-			{
-				if(cfg.getBoolean("floor.floorPoints"))
-				{
+
+	public boolean exists(Player p) {
+		if (this.arena.exists()) {
+			if ((this.cfg.getBoolean("dontChange.Lobby")) && (this.cfg.getBoolean("dontChange.Game"))) {
+				if (this.cfg.getBoolean("floor.floorPoints")) {
 					return true;
 				}
-				else
-				{
-					p.sendMessage("§3[BlockParty] §8You have to set the floor first!");
-					return false;
-				}
-				
-			}
-			else
-			{
-				p.sendMessage("§3[BlockParty] §8You have to set all spawns first!");
+				p.sendMessage("§3[BlockParty] §8You have to set the floor first!");
 				return false;
 			}
-		}
-		else
-		{
-			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " doesn't exists!");
+			p.sendMessage("§3[BlockParty] §8You have to set all spawns first!");
 			return false;
 		}
+		p.sendMessage("§3[BlockParty] §8Arena " + Config.arenaName + " doesn't exists!");
+		return false;
 	}
-	
-	public void loadGameSpawn(){
-		
-			if(isEnabled){
-				if(arena.exists())
-				{
-					if (cfg.getBoolean("dontChange.Game")){
-					Location loc;
-					try {
-						cfg.load(arena);
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InvalidConfigurationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					double xPos = (double) cfg.get("spawns.Game.xPos");
-					double yPos = (double) cfg.get("spawns.Game.yPos");
-					double zPos = (double) cfg.get("spawns.Game.zPos");
-					double yaw = (double) cfg.get("spawns.Game.Yaw");
-					double pitch = (double) cfg.get("spawns.Game.Pitch");
-					String w = (String) cfg.get("spawns.Game.World");
-					loc = new Location(Bukkit.getWorld(w), xPos, yPos, zPos, (float) yaw, (float) pitch);
-					world = Bukkit.getWorld(cfg.getString("spawns.Game.World"));
-				    gameSpawn=loc;
+
+	public void loadGameSpawn() {
+		if ((this.isEnabled) && (this.arena.exists())) {
+			if (this.cfg.getBoolean("dontChange.Game")) {
+				try {
+					this.cfg.load(this.arena);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (InvalidConfigurationException e) {
+					e.printStackTrace();
 				}
-				else
-				{
-					gameSpawn=null;
-				}
+				double xPos = ((Double) this.cfg.get("spawns.Game.xPos")).doubleValue();
+				double yPos = ((Double) this.cfg.get("spawns.Game.yPos")).doubleValue();
+				double zPos = ((Double) this.cfg.get("spawns.Game.zPos")).doubleValue();
+				double yaw = ((Double) this.cfg.get("spawns.Game.Yaw")).doubleValue();
+				double pitch = ((Double) this.cfg.get("spawns.Game.Pitch")).doubleValue();
+				String w = (String) this.cfg.get("spawns.Game.World");
+				Location loc = new Location(Bukkit.getWorld(w), xPos, yPos, zPos, (float) yaw, (float) pitch);
+				this.world = Bukkit.getWorld(this.cfg.getString("spawns.Game.World"));
+				this.gameSpawn = loc;
+			} else {
+				this.gameSpawn = null;
 			}
 		}
 	}
 
 	public void loadLobbySpawn() {
-		
-			if(isEnabled){
-				if(arena.exists())
-				{
-					if (cfg.getBoolean("dontChange.Lobby")){
-					Location loc;
-					try {
-						cfg.load(arena);
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InvalidConfigurationException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					double xPos = (double) cfg.get("spawns.Lobby.xPos");
-					double yPos = (double) cfg.get("spawns.Lobby.yPos");
-					double zPos = (double) cfg.get("spawns.Lobby.zPos");
-					double yaw = (double) cfg.get("spawns.Lobby.Yaw");
-					double pitch = (double) cfg.get("spawns.Lobby.Pitch");
-					String w = (String) cfg.get("spawns.Lobby.World");
-					loc = new Location(Bukkit.getWorld(w), xPos, yPos, zPos, (float) yaw, (float) pitch);
-					world = Bukkit.getWorld(cfg.getString("spawns.Game.World"));
-				    lobbySpawn=loc;
+		if ((this.isEnabled) && (this.arena.exists())) {
+			if (this.cfg.getBoolean("dontChange.Lobby")) {
+				try {
+					this.cfg.load(this.arena);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (InvalidConfigurationException e) {
+					e.printStackTrace();
 				}
-				else
-				{
-					lobbySpawn=null;
-				}
+				double xPos = ((Double) this.cfg.get("spawns.Lobby.xPos")).doubleValue();
+				double yPos = ((Double) this.cfg.get("spawns.Lobby.yPos")).doubleValue();
+				double zPos = ((Double) this.cfg.get("spawns.Lobby.zPos")).doubleValue();
+				double yaw = ((Double) this.cfg.get("spawns.Lobby.Yaw")).doubleValue();
+				double pitch = ((Double) this.cfg.get("spawns.Lobby.Pitch")).doubleValue();
+				String w = (String) this.cfg.get("spawns.Lobby.World");
+				Location loc = new Location(Bukkit.getWorld(w), xPos, yPos, zPos, (float) yaw, (float) pitch);
+				this.world = Bukkit.getWorld(this.cfg.getString("spawns.Game.World"));
+				this.lobbySpawn = loc;
+			} else {
+				this.lobbySpawn = null;
 			}
 		}
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public ItemStack getVoteItem(){
+
+	public ItemStack getVoteItem() {
 		ItemStack item = new ItemStack(Material.FIREBALL, 1);
-	    ItemMeta meta = item.getItemMeta();
-	    meta.setDisplayName("§6Vote for a Song!");
-		List lores = new ArrayList();
-	    lores.add("Click me!");
-	    meta.setLore(lores);
-	    item.setItemMeta(meta);
-	    return item;
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName("§6Vote for a Song!");
+		List<String> lores = new ArrayList<String>();
+		lores.add("Click me!");
+		meta.setLore(lores);
+		item.setItemMeta(meta);
+		return item;
 	}
-	
-	@SuppressWarnings("deprecation")
-	public void join(Player p){
-		if(isEnabled){
-		if(!BlockParty.inLobbyPlayers.containsKey(p.getName()) && !(BlockParty.inGamePlayers.containsKey(p.getName())))
-		{
-			if(this.exists(p))
-			{
-				if(!Players.reachedMaxPlayers(arenaName))
-				{
-					if(gameProgress.equalsIgnoreCase("inLobby") || gameProgress.equalsIgnoreCase("Countdown"))
-					{
-						p.teleport(lobbySpawn);
-						BlockParty.inLobbyPlayers.put(p.getName(), arenaName);
-						BlockParty.inv.put(p.getName(), p.getInventory().getContents());
+
+	public static ItemStack getItem(int id) {
+		@SuppressWarnings("deprecation")
+		ItemStack item = new ItemStack(id, 1);
+		return item;
+	}
+
+	public static void leave(Player p) {
+		if (BlockParty.inGamePlayers.containsKey(p.getName()) || BlockParty.onFloorPlayers.containsKey(p.getName())) {
+			p.sendMessage("§3[BlockParty] §8You can not leave the current game.");
+			return;
+		}
+
+		if (!BlockParty.inLobbyPlayers.containsKey(p.getName())) {
+			BlockParty.inventoryManager.restoreInv(p);
+			BlockParty.inventoriesToRestore.remove(p.getPlayer().getName());
+
+			p.sendMessage("§3[BlockParty] §8You are not in an arena!");
+			return;
+		}
+
+		// make sure they are in the lobby before allowing them to leave
+		if (Players.getPlayerAmountInLobby((String) BlockParty.inLobbyPlayers.get(p.getName())) <= 1) {
+			Bukkit.getPlayer((String) Players.getPlayersInLobby((String) BlockParty.inLobbyPlayers.get(p.getName())).get(0)).sendMessage(
+					"§3[BlockParty] §8" + p.getName() + " left the game");
+		} else {
+			for (String name : Players.getPlayersInLobby((String) BlockParty.inLobbyPlayers.get(p.getName()))) {
+				Bukkit.getPlayer(name).sendMessage("§3[BlockParty] §8" + p.getName() + " has left the game");
+			}
+		}
+
+		if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
+			Songs.stop(p);
+		}
+
+		// Remove player from lobby since they left
+		BlockParty.inLobbyPlayers.remove(p.getName());
+		BlockParty.inGamePlayers.remove(p.getName());
+		BlockParty.onFloorPlayers.remove(p.getName());
+
+		p.teleport((Location) BlockParty.locs.get(p.getName()));
+		BlockParty.locs.remove(p.getName());
+
+		p.setGameMode(GameMode.SURVIVAL);
+		// p.setGameMode((GameMode) BlockParty.gm.get(p.getName()));
+		BlockParty.gm.remove(p.getName());
+
+		BlockParty.inventoryManager.restoreInv(p);
+		BlockParty.inventoriesToRestore.remove(p.getPlayer().getName());
+
+		// Give awards to player if they got any
+		if (BlockParty.awards.containsKey(p.getPlayer().getName())) {
+			p.getInventory().addItem(new ItemStack[] { ((Config) BlockParty.getArena.get(arenaName)).getVoteItem() });
+
+			for (ItemStack stack : BlockParty.awards.get(p.getName())) {
+				if (stack != null) {
+					p.getInventory().addItem(new ItemStack[] { stack });
+					System.out.print(stack.toString());
+				}
+			}
+		}
+
+		if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+			BarAPI.removeBar(p);
+		}
+
+		p.sendMessage("§3[BlockParty] §8You left the arena!");
+		return;
+	}
+
+	public void join(Player p) {
+		if (this.isEnabled) {
+			if ((!BlockParty.inLobbyPlayers.containsKey(p.getName())) && (!BlockParty.inGamePlayers.containsKey(p.getName()))) {
+				if (exists(p)) {
+					if (!Players.reachedMaxPlayers(Config.arenaName)) {
+						p.teleport(this.lobbySpawn);
+						BlockParty.inLobbyPlayers.put(p.getName(), Config.arenaName);
+
+						BlockParty.inventoryManager.storeInv(p);
+						BlockParty.inventoriesToRestore.add(p.getPlayer().getName());
+
 						p.getInventory().clear();
-						p.getInventory().addItem(this.getVoteItem());
+						p.getInventory().addItem(new ItemStack[] { getVoteItem() });
 						p.updateInventory();
-						Start.start(arenaName);
-						Signs.updateJoin(arenaName, false);
-						if(Bukkit.getPluginManager().isPluginEnabled("BarAPI")){
-							BarAPI.setMessage(p,"Waiting ...", (float) 100);
+
+						//Play music while they wait :D
+						String song = ((Config) BlockParty.getArena.get(arenaName)).getMostVotedSong();
+						if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
+							Songs.stop(p);
+							Songs.play(p, song);
 						}
-						p.sendMessage("§3[BlockParty] §8You have joined Arena " + arenaName);
-						if(Players.getPlayerAmountInLobby(arenaName) <= 1){
-							Bukkit.getPlayer(Players.getPlayersInLobby(arenaName).get(0)).sendMessage("§3[BlockParty] §8" + p.getName() + " joined the game");
+						
+						// Allow players to join mid game and wait for next round
+						if (((Config) BlockParty.getArena.get(arenaName)).getGameProgress().equalsIgnoreCase("inLobby")) {
+							Start.start(Config.arenaName);
+							Signs.updateJoin(Config.arenaName, false);
+						}else{
+							if (Players.getPlayerAmountOnFloor(arenaName) == 0) {
+								//Force lobby since somewhere it was not reset right
+								((Config) BlockParty.getArena.get(arenaName)).setStart(false);
+								((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inLobby");
+								
+								Start.start(Config.arenaName);
+								Signs.updateJoin(Config.arenaName, false);
+							}							
 						}
-						else
-						{
-							for (String name : Players.getPlayersInLobby(arenaName)){
+						
+						if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+							BarAPI.setMessage(p, "Waiting ...", 100.0F);
+						}
+						p.sendMessage("§3[BlockParty] §8You have joined Arena " + Config.arenaName);
+						if (Players.getPlayerAmountInLobby(Config.arenaName) <= 1) {
+							Bukkit.getPlayer((String) Players.getPlayersInLobby(Config.arenaName).get(0)).sendMessage(
+									"§3[BlockParty] §8" + p.getName() + " joined the game");
+						} else {
+							for (String name : Players.getPlayersInLobby(Config.arenaName)) {
 								Player player = Bukkit.getPlayer(name);
 								player.sendMessage("§3[BlockParty] §8" + p.getName() + " joined the game");
 							}
 						}
+					} else {
+						Signs.updateJoin(Config.arenaName, true);
+						p.sendMessage("§3[BlockParty] §8The Arena " + Config.arenaName + " is full!");
 					}
-					else
-					{
-						p.sendMessage("§3[BlockParty] §8You can not join during a game");
-					}
-				}
-				else
-				{
-					Signs.updateJoin(arenaName, true);
-					p.sendMessage("§3[BlockParty] §8The Arena " + arenaName + " is full!");
-				}
-			}
-		} else {
-			p.sendMessage("§3[BlockParty] §8You are already in an arena!");
-		}
-		}
-		else
-		{
-			p.sendMessage("§3[BlockParty] §8Arena is disabled. /bp enable " + arenaName + " to enable!");
-		}
-	}
-	
-	  public boolean lessThanMinimum(){
-		  if(Players.getPlayerAmountInLobby(arenaName) >= lessMinimum)
-		  {
-			  return false;
-		  }
-		  return true;
-	  }
-	  
-	  public void loadMinPlayers(){
-		  if(isEnabled){
-			if(arena.exists())
-			{
-				try {
-					cfg.load(arena);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvalidConfigurationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				lessMinimum = cfg.getInt("configuration.MinPlayers");
-			}
-		  }
-	  }
-	  
-	  public void loadMin(){
-		  
-			  if(isEnabled){
-				if(!arena.exists())
-				{
-					System.out.println("ERROR: Arena " + arenaName + " doesn't exists!");
-				}
-				else
-				{
-					if (cfg.getBoolean("floor.floorPoints")){
-					World world = Bukkit.getWorld("floor.min.World");
-					double xPos = (double) cfg.get("floor.min.xPos");
-					double yPos = (double) cfg.get("floor.min.yPos");
-					double zPos = (double) cfg.get("floor.min.zPos");
-					Location loc = new Location(world, xPos, yPos, zPos);
-					this.locMin = loc;
-				}
-			  }
-		  }
-		}
-		public void loadMax(){
-			
-				if(isEnabled){
-					if(!arena.exists())
-					{
-						System.out.println("ERROR: Arena " + arenaName + " doesn't exists!");
-					}
-					else
-					{
-						if (cfg.getBoolean("floor.floorPoints")){
-						World world = Bukkit.getWorld("floor.max.World");
-						double xPos = (double) cfg.get("floor.max.xPos");
-						double yPos = (double) cfg.get("floor.max.yPos");
-						double zPos = (double) cfg.get("floor.max.zPos");
-						Location loc = new Location(world, xPos, yPos, zPos);
-						this.locMax = loc;
-					}
-				}
-			}
-		}
-		
-		public void set(Location min, Location max){
-			cfg.set("floor.min.xPos", min.getX());
-			cfg.set("floor.min.yPos", min.getY());
-			cfg.set("floor.min.zPos", min.getZ());
-			cfg.set("floor.min.World", min.getWorld().getName());
-			
-			cfg.set("floor.max.xPos", max.getX());
-			cfg.set("floor.max.yPos", max.getY());
-			cfg.set("floor.max.zPos", max.getZ());
-			cfg.set("floor.max.World", max.getWorld().getName());
-			
-			cfg.set("floor.floorPoints", true);
-			
-			try {
-				cfg.save(arena);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			this.loadMax();
-			this.loadMin();
-		}
-		
-		public Location getLocMin(){
-			return locMin;
-		}
-		
-		public Location getLocMax(){
-			return locMax;
-		}
-		
-		public World getWorld(){
-			//World world = Bukkit.getWorld(cfg.getString("spawns.Game.World"));
-			return world;
-		}
-		
-		
-		public boolean checkConditions(Player p){
-			
-			WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-			Selection selection = worldEdit.getSelection(p);
-			 
-			if (selection != null) {
-			    World world = selection.getWorld();
-			    if(selection.getHeight() == 1)
-			    {
-
-			    	if(world.equals(this.getWorld()))
-					{
-						Location min = selection.getMinimumPoint();
-						Location max = selection.getMaximumPoint();
-						FloorPoints.set(min, max, arenaName);
-						cfg.set("configuration.floor.length", selection.getLength());
-						cfg.set("configuration.floor.width", selection.getWidth());
-						floorLength = selection.getLength();
-						floorWidth = selection.getWidth();
-						//this.set(min, max);
-						p.sendMessage("§3[BlockParty] §8Floor was set for Arena " + arenaName); 
-						return true;
-					}
-			    	else
-			    	{
-			    		p.sendMessage("§3[BlockParty] §8Arena and Floor must be in the same world");
-			    	}
-					    	
-			    }
-				else
-				{
-				p.sendMessage("§3[BlockParty] §8The Floor must be 1 block high!");
 				}
 			} else {
-				p.sendMessage("§3[BlockParty] §8Select a region with WorldEdit first.");
+				p.sendMessage("§3[BlockParty] §8You are already in an arena!");
+			}
+		} else {
+			p.sendMessage("§3[BlockParty] §8Arena is disabled. /bp enable " + Config.arenaName + " to enable!");
+		}
+	}
+
+	public boolean lessThanMinimum() {
+		if (Players.getPlayerAmountInLobby(Config.arenaName) >= this.lessMinimum) {
+			return false;
+		}
+		return true;
+	}
+
+	public void loadMinPlayers() {
+		if ((this.isEnabled) && (this.arena.exists())) {
+			try {
+				this.cfg.load(this.arena);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InvalidConfigurationException e) {
+				e.printStackTrace();
+			}
+			this.lessMinimum = this.cfg.getInt("configuration.MinPlayers");
+		}
+	}
+
+	public void loadMin() {
+		if (this.isEnabled) {
+			if (!this.arena.exists()) {
+				System.out.println("ERROR: Arena " + Config.arenaName + " doesn't exists!");
+			} else if (this.cfg.getBoolean("floor.floorPoints")) {
+				World world = Bukkit.getWorld("floor.min.World");
+				double xPos = ((Double) this.cfg.get("floor.min.xPos")).doubleValue();
+				double yPos = ((Double) this.cfg.get("floor.min.yPos")).doubleValue();
+				double zPos = ((Double) this.cfg.get("floor.min.zPos")).doubleValue();
+				Location loc = new Location(world, xPos, yPos, zPos);
+				this.locMin = loc;
+			}
+		}
+	}
+
+	public void loadMax() {
+		if (this.isEnabled) {
+			if (!this.arena.exists()) {
+				System.out.println("ERROR: Arena " + Config.arenaName + " doesn't exists!");
+			} else if (this.cfg.getBoolean("floor.floorPoints")) {
+				World world = Bukkit.getWorld("floor.max.World");
+				double xPos = ((Double) this.cfg.get("floor.max.xPos")).doubleValue();
+				double yPos = ((Double) this.cfg.get("floor.max.yPos")).doubleValue();
+				double zPos = ((Double) this.cfg.get("floor.max.zPos")).doubleValue();
+				Location loc = new Location(world, xPos, yPos, zPos);
+				this.locMax = loc;
+			}
+		}
+	}
+
+	public void set(Location min, Location max) {
+		this.cfg.set("floor.min.xPos", Double.valueOf(min.getX()));
+		this.cfg.set("floor.min.yPos", Double.valueOf(min.getY()));
+		this.cfg.set("floor.min.zPos", Double.valueOf(min.getZ()));
+		this.cfg.set("floor.min.World", min.getWorld().getName());
+
+		this.cfg.set("floor.max.xPos", Double.valueOf(max.getX()));
+		this.cfg.set("floor.max.yPos", Double.valueOf(max.getY()));
+		this.cfg.set("floor.max.zPos", Double.valueOf(max.getZ()));
+		this.cfg.set("floor.max.World", max.getWorld().getName());
+
+		this.cfg.set("floor.floorPoints", Boolean.valueOf(true));
+		try {
+			this.cfg.save(this.arena);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		loadMax();
+		loadMin();
+	}
+
+	public Location getLocMin() {
+		return this.locMin;
+	}
+
+	public Location getLocMax() {
+		return this.locMax;
+	}
+
+	public World getWorld() {
+		return this.world;
+	}
+
+	public boolean checkConditions(Player p) {
+		WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+		Selection selection = worldEdit.getSelection(p);
+		if (selection != null) {
+			World world = selection.getWorld();
+			if (selection.getHeight() == 1) {
+				if (world.equals(getWorld())) {
+					Location min = selection.getMinimumPoint();
+					Location max = selection.getMaximumPoint();
+					FloorPoints.set(min, max, Config.arenaName);
+					this.cfg.set("configuration.floor.length", Integer.valueOf(selection.getLength()));
+					this.cfg.set("configuration.floor.width", Integer.valueOf(selection.getWidth()));
+					this.floorLength = selection.getLength();
+					this.floorWidth = selection.getWidth();
+
+					p.sendMessage("§3[BlockParty] §8Floor was set for Arena " + Config.arenaName);
+					return true;
+				}
+				p.sendMessage("§3[BlockParty] §8Arena and Floor must be in the same world");
+			} else {
+				p.sendMessage("§3[BlockParty] §8The Floor must be 1 block high!");
+			}
+		} else {
+			p.sendMessage("§3[BlockParty] §8Select a region with WorldEdit first.");
+		}
+		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void load() {
+		if ((this.isEnabled) && (this.arena.exists())) {
+			try {
+				this.cfg.load(this.arena);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InvalidConfigurationException e) {
+				e.printStackTrace();
+			}
+			this.enabledFloors.clear();
+			this.rewardItems.clear();
+			this.floorLength = this.cfg.getInt("configuration.floor.length");
+			this.floorWidth = this.cfg.getInt("configuration.floor.width");
+			this.minPlayers = this.cfg.getInt("configuration.MinPlayers");
+			this.maxPlayers = this.cfg.getInt("configuration.MaxPlayers");
+			this.countdown = this.cfg.getInt("configuration.Countdown");
+			this.outBlock = this.cfg.getInt("configuration.OutBlock");
+			this.timeToSearch = this.cfg.getInt("configuration.TimeToSearch");
+			this.timeReductionPerLevel = this.cfg.getDouble("configuration.TimeReductionPerLevel");
+			this.level = this.cfg.getInt("configuration.Level");
+			this.useBoosts = this.cfg.getBoolean("configuration.UseBoosts");
+			this.boostDuration = this.cfg.getInt("configuration.BoostDuration");
+			this.fallingBlock = this.cfg.getBoolean("configuration.FallingBlocks");
+			this.autoGenerateFloors = this.cfg.getBoolean("configuration.AutoGenerateFloors");
+			this.useSchematicFloors = this.cfg.getBoolean("configuration.UseSchematicFloors");
+			this.enabledFloors = ((ArrayList<String>) this.cfg.get("configuration.EnabledFloors"));
+			this.rewardItems = ((ArrayList<Integer>) this.cfg.get("configuration.RewardItems"));
+			this.songs = ((ArrayList<String>) this.cfg.get("configuration.Songs"));
+			this.cfg.set("configuration.useSongs", Boolean.valueOf(true));
+			this.useSongs = this.cfg.getBoolean("configuration.UseSongs");
+			this.autoRestart = this.cfg.getBoolean("configuration.AutoRestart");
+			this.autoKick = this.cfg.getBoolean("configuration.AutoKick");
+			if (this.cfg.getString("spawns.Game.World") != null) {
+				this.world = Bukkit.getWorld(this.cfg.getString("spawns.Game.World"));
+			}
+		}
+	}
+
+	public boolean getUseSongs() {
+		return this.useSongs;
+	}
+
+	public boolean getAutoRestart() {
+		return this.autoRestart;
+	}
+
+	public boolean getAutoKick() {
+		return this.autoKick;
+	}
+
+	public ArrayList<String> getSongs() {
+		return this.songs;
+	}
+
+	public int getOutBlock() {
+		return this.outBlock;
+	}
+
+	public boolean getFallingBlocks() {
+		return this.fallingBlock;
+	}
+
+	public boolean getUseBoosts() {
+		return this.useBoosts;
+	}
+
+	public int getFloorLength() {
+		return this.floorLength;
+	}
+
+	public int getBoostDuration() {
+		return this.boostDuration;
+	}
+
+	public int getFloorWidth() {
+		return this.floorWidth;
+	}
+
+	public int getMaxPlayers() {
+		return this.maxPlayers;
+	}
+
+	public int getCountdown() {
+		return this.countdown;
+	}
+
+	public int getMinPlayers() {
+		return this.minPlayers;
+	}
+
+	public int getTimeToSearch() {
+		return this.timeToSearch;
+	}
+
+	public double getTimeReductionPerLevel() {
+		return this.timeReductionPerLevel;
+	}
+
+	public int getLevel() {
+		return this.level;
+	}
+
+	public boolean getAutoGenerateFloors() {
+		return this.autoGenerateFloors;
+	}
+
+	public boolean getUseSchematicFloors() {
+		return this.useSchematicFloors;
+	}
+
+	public boolean reachedMaxPlayers() {
+		if (this.arena.exists()) {
+			if (Players.getPlayerAmountInLobby(Config.arenaName) >= this.maxPlayers) {
+				return true;
 			}
 			return false;
 		}
-		
-		@SuppressWarnings("unchecked")
-		public void load(){
-			if(isEnabled){
-			if(!arena.exists())
-			{
-				//System.out.println("ERROR: Arena " + arenaName + " doesn't exists!");
-			}
-			else
-			{
-				try {
-					cfg.load(arena);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvalidConfigurationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				enabledFloors.clear();
-				rewardItems.clear();
-				floorLength = cfg.getInt("configuration.floor.length");
-				floorWidth = cfg.getInt("configuration.floor.width");
-				minPlayers = cfg.getInt("configuration.MinPlayers");
-				maxPlayers = cfg.getInt("configuration.MaxPlayers");
-				countdown = cfg.getInt("configuration.Countdown");
-				outBlock = cfg.getInt("configuration.OutBlock");
-				timeToSearch = cfg.getInt("configuration.TimeToSearch");
-				timeReductionPerLevel = cfg.getDouble("configuration.TimeReductionPerLevel");
-				level = cfg.getInt("configuration.Level");
-				useBoosts = cfg.getBoolean("configuration.UseBoosts");
-				boostDuration = cfg.getInt("configuration.BoostDuration");
-				fallingBlock = cfg.getBoolean("configuration.FallingBlocks");
-				autoGenerateFloors = cfg.getBoolean("configuration.AutoGenerateFloors");
-				useSchematicFloors = cfg.getBoolean("configuration.UseSchematicFloors");
-				enabledFloors = (ArrayList<String>) cfg.get("configuration.EnabledFloors");
-				rewardItems = (ArrayList<Integer>) cfg.get("configuration.RewardItems");
-				songs = (ArrayList<String>) cfg.get("configuration.Songs");
-				cfg.set("configuration.useSongs", true);
-				useSongs = cfg.getBoolean("configuration.UseSongs");
-				autoRestart = cfg.getBoolean("configuration.AutoRestart");
-				autoKick = cfg.getBoolean("configuration.AutoKick");
-				if(cfg.getString("spawns.Game.World") != null)
-					world = Bukkit.getWorld(cfg.getString("spawns.Game.World"));
-			}
-			}
+		return true;
+	}
+
+	public void enable() {
+		this.isEnabled = true;
+	}
+
+	public void disable() {
+		this.isEnabled = false;
+	}
+
+	public boolean ex() {
+		return this.arena.exists();
+	}
+
+	public ArrayList<String> getFloors() {
+		return this.enabledFloors;
+	}
+
+	public ArrayList<Integer> getRewardItems() {
+		return this.rewardItems;
+	}
+
+	public void addFloor(String floorName) {
+		this.enabledFloors.add(floorName);
+		this.cfg.set("configuration.EnabledFloors", this.enabledFloors);
+		try {
+			this.cfg.save(this.arena);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	
-		public boolean getUseSongs(){
-			return useSongs;
+	}
+
+	public void removeFloor(String floorName) {
+		this.enabledFloors.remove(floorName);
+		this.cfg.set("configuration.EnabledFloors", this.enabledFloors);
+		try {
+			this.cfg.save(this.arena);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		public boolean getAutoRestart(){
-			return autoRestart;
-		}
-		
-		public boolean getAutoKick(){
-			return autoKick;
-		}
-		
-		public ArrayList<String> getSongs(){
-			return songs;
-		}
-		
-		public int getOutBlock(){
-			return outBlock;
-		}
-		
-		public boolean getFallingBlocks(){
-			return fallingBlock;
-		}
-		
-		public boolean getUseBoosts(){
-			return useBoosts;
-		}
-		
-		public int getFloorLength(){
-			return floorLength;
-		}
-		
-		public int getBoostDuration(){
-			return boostDuration;
-		}
-		
-		public int getFloorWidth(){
-			return floorWidth;
-		}
-		
-		public int getMaxPlayers(){
-			return maxPlayers;
-		}
-		public int getCountdown(){
-			return countdown;
-		}
-		public int getMinPlayers(){
-			return minPlayers;
-		}
-		public int getTimeToSearch(){
-			return timeToSearch;
-		}
-		public double getTimeReductionPerLevel(){
-			return timeReductionPerLevel;
-		}
-		public int getLevel(){
-			return level;
-		}
-		
-		public boolean getAutoGenerateFloors(){
-			return autoGenerateFloors;
-		}
-		
-		public boolean getUseSchematicFloors(){
-			return useSchematicFloors;
-		}
-		
-		public boolean reachedMaxPlayers(){
-			if(arena.exists())
-			{
-			    if(Players.getPlayerAmountInLobby(arenaName) >= maxPlayers)
-			    {
-			    	return true;
-			    }
-			    else
-			    {
-			    	return false;
-			    }
-			}
-			return true;
-		}
-		
-		public void enable(){
-			isEnabled = true;
-		}
-		
-		public void disable(){
-			isEnabled = false;
-		}
-		
-		public boolean ex(){
-			return arena.exists();
-		}
-		
-		public ArrayList<String> getFloors(){
-			return enabledFloors;
-		}
-		
-		public ArrayList<Integer> getRewardItems(){
-			return rewardItems;
-		}
-		
-		public void addFloor(String floorName){
-			enabledFloors.add(floorName);
-			cfg.set("configuration.EnabledFloors", enabledFloors);
-			try {
-				cfg.save(arena);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		public void removeFloor(String floorName){
-			enabledFloors.remove(floorName);
-			cfg.set("configuration.EnabledFloors", enabledFloors);
-			try {
-				cfg.save(arena);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		public boolean aborted(){
-			  return abort;
-		  }
-		  
-		  public void abort(){
-			  abort = true;
-		  }
-	    public void unAbort(){
-			  abort = false;
-		  }
-	    public boolean abort = false;
-	    public String gameProgress = "inLobby";
-	    public String getGameProgress(){
-	  	  return gameProgress;
-	    }
-	    public void setGameProgress (String pro){
-	  	  gameProgress = pro;
-	    }
-	    
-	    public boolean getStart(){
-	    	return setStart;
-	    }
-	    public boolean setStart = false;
-	    
-	    public void setStart(boolean s){
-	    	setStart = s;
-	    }
+	}
+
+	public boolean aborted() {
+		return this.abort;
+	}
+
+	public void abort() {
+		this.abort = true;
+	}
+
+	public void unAbort() {
+		this.abort = false;
+	}
+
+	public boolean abort = false;
+	public String gameProgress = "inLobby";
+
+	public String getGameProgress() {
+		return this.gameProgress;
+	}
+
+	public void setGameProgress(String pro) {
+		this.gameProgress = pro;
+	}
+
+	public boolean getStart() {
+		return this.setStart;
+	}
+
+	public boolean setStart = false;
+
+	public void setStart(boolean s) {
+		this.setStart = s;
+	}
 }

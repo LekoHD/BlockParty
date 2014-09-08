@@ -1,2 +1,4 @@
 enabledArenas: []
-    
+
+# None, Survival, Creative, Adventure 
+forcegamemode: Survival
