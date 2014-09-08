@@ -1,10 +1,13 @@
 package com.lekohd.blockparty.system;
+
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.floor.LoadFloor;
 import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,8 +16,7 @@ import org.kitteh.vanish.staticaccess.VanishNoPacket;
 
 @SuppressWarnings("deprecation")
 public class Arena {
-	
-	
+
 	public static void create(Player p, String arenaName) {
 		if (!BlockParty.getArena.containsKey(arenaName)) {
 			Config conf = new Config(arenaName);
@@ -47,13 +49,17 @@ public class Arena {
 	}
 
 	public static void join(Player p, String arenaName) {
-		//Alert if in vanish mode
-		try {
-			if (VanishNoPacket.isVanished(p.getName())) {
-				p.sendMessage("§3[BlockParty] §8Cannot join arena when you are in Vanish Mode.");
-				return;
+		// Alert if in vanish mode
+		if (Bukkit.getPluginManager().isPluginEnabled("VanishNoPacket")) {
+			try {
+
+				if (VanishNoPacket.isVanished(p.getName())) {
+					p.sendMessage("§3[BlockParty] §8Cannot join arena when you are in Vanish Mode.");
+					return;
+				}
+			} catch (Exception ex) {
 			}
-		} catch (Exception ex){}
+		}
 
 		if ((!BlockParty.inLobbyPlayers.containsKey(p.getName())) && (!BlockParty.inGamePlayers.containsKey(p.getName()))) {
 			if (BlockParty.getArena.containsKey(arenaName)) {

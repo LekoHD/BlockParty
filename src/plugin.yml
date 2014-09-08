@@ -1,7 +1,7 @@
 name : BlockParty
-version : 0.5
-authors: [Leon167, XxChxppellxX]
-description: Official BlockParty plugin
+version : 0.7.5
+authors: [Leon167, XxChxppellxX, ScriptJunkie]
+description: Official BlockParty Plugin!
 website: http://www.Cloud-Mine.de
 main: com.lekohd.blockparty.BlockParty
 
@@ -10,6 +10,7 @@ depend:
 softdepend:
   - BarAPI
   - NoteBlockAPI
+  - VanishNoPacket
 
 commands:
   blockparty:
