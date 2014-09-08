@@ -56,7 +56,7 @@ public class RandomizeFloor {
 		int z = getRandomLoc(zMin, zMax);
 
 		World world = FloorPoints.getWorld(arenaName);
-		System.out.print(x + " - " + y + " - " + z + " - " + world.getBlockAt(x, y, z).getType().toString());
+		//System.out.print(x + " - " + y + " - " + z + " - " + world.getBlockAt(x, y, z).getType().toString());
 		return world.getBlockAt(x, y, z);
 	}
 

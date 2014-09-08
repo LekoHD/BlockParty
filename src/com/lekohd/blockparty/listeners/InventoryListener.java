@@ -55,7 +55,7 @@ public class InventoryListener implements Listener {
 	public void playerJoin(PlayerJoinEvent event) {
 		// upon reboot inventory will be written to file in order to restore
 		if (BlockParty.inventoryManager.restoreFromFile(event.getPlayer())) {
-			System.out.print("[BlockParty] Restored Player Inventory");
+			//System.out.print("[BlockParty] Restored Player Inventory");
 			BlockParty.inventoriesToRestore.remove(event.getPlayer().getName());
 		}
 	}

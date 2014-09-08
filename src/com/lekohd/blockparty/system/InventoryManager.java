@@ -64,7 +64,7 @@ public class InventoryManager {
 	public void restoreInv(Player p) {
 		try {
 			File file = new File(this.dir, p.getName() + ".inv");
-			System.out.print(this.dir);
+			//System.out.print(this.dir);
 			ItemStack[] items = (ItemStack[]) this.items.remove(p);
 			ItemStack[] armor = (ItemStack[]) this.armor.remove(p);
 			int exp = 0;
@@ -132,7 +132,7 @@ public class InventoryManager {
 	public boolean restoreFromFile(Player p) {
 		try {
 			File file = new File(this.dir, p.getName() + ".inv");
-			System.out.print(this.dir);
+			//System.out.print(this.dir);
 			ItemStack[] items = (ItemStack[]) this.items.remove(p);
 			ItemStack[] armor = (ItemStack[]) this.armor.remove(p);
 			int exp = 0;

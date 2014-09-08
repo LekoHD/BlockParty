@@ -252,14 +252,17 @@ public class Period {
 								if ((((Config) BlockParty.getArena.get(aName)).getUseBoosts()) && (b != null)) {
 									b.remove();
 								}
+								
 								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(
 										"§3[BlockParty] §8Congratulations! You won the game.");
+								
 								giveReward(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), aName);
+								
 								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(
 										"§3[BlockParty] §8You will get you reward when you leave the arena!");
 
-								Bukkit.getPlayer((String) Players.getPlayersInLobby(aName).get(0)).sendMessage(
-										"§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
+								//Bukkit.getPlayer((String) Players.getPlayersInLobby(aName).get(0)).sendMessage(
+								//		"§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
 							
 								WinnerCountdown.start(aName);
 							}
