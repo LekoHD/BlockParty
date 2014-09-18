@@ -1,4 +1,5 @@
 package com.lekohd.blockparty.listeners;
+
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
@@ -12,10 +13,37 @@ public class CommandListener implements Listener {
 	@EventHandler
 	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent e) {
 		Player p = e.getPlayer();
-		if ((BlockParty.inGamePlayers.containsKey(p.getName())) || (BlockParty.onFloorPlayers.containsKey(p.getName())) || (BlockParty.inLobbyPlayers.containsKey(p.getName()))) {
+		String[] commandArgs = e.getMessage().split("");
+
+		if (BlockParty.inGamePlayers.containsKey(p.getName())) {
 			if (!p.isOp()) {
-				e.setCancelled(true);
+				if (!p.hasPermission("blockparty.admin") || !p.hasPermission("blockparty.cmdbypass")) {
+					if (!checkCommand(commandArgs[0]))
+						e.setCancelled(true);
+
+				}
+				return;
+			} else {
+
 			}
+		}
+	}
+
+	//need to put commands in config.
+	private boolean checkCommand(String command) {
+		switch (command) {
+		case "/msg":
+			return true;
+		case "/ban":
+			return true;
+		case "/mute":
+			return true;
+		case "/a":
+			return true;
+		case "/kick":
+			return true;
+		default:
+			return false;
 		}
 	}
 }

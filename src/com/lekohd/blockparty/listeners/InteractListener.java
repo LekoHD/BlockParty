@@ -1,7 +1,5 @@
 package com.lekohd.blockparty.listeners;
-/*
- * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
- */
+
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.bonus.Bonus;
 import com.lekohd.blockparty.bonus.Item;
@@ -17,6 +15,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class InteractListener implements Listener {
+	/*
+	 * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+	 */
 	public int duration = 10;
 
 	@SuppressWarnings("deprecation")

@@ -1,7 +1,5 @@
 package com.lekohd.blockparty.music;
-/*
- * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
- */
+
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.system.Config;
 import java.util.ArrayList;
@@ -15,6 +13,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class Vote {
+	/*
+	 * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void openInv(Player p, String arenaName) {
 		int lines = 1;

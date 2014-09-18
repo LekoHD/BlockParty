@@ -34,5 +34,6 @@ public class DisconnectListener implements Listener {
 		if (BlockParty.onFloorPlayers.containsKey(e.getPlayer().getName())) {
 			BlockParty.onFloorPlayers.remove(e.getPlayer().getName());
 		}
+		BlockParty.inventoriesToRestore.add(e.getPlayer().getPlayer().getName());
 	}
 }

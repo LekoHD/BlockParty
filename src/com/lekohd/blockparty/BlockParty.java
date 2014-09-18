@@ -162,7 +162,7 @@ public class BlockParty extends JavaPlugin {
 						for (String floor : conf.getFloors()) {
 							floors.add(new LoadFloor(floor));
 							getFloor.put(name, floors);
-							System.out.print("[BlockParty] Floor Loaded = " + floor);
+							//System.out.print("[BlockParty] "+ name +" Floor " + floor + "Loaded");
 						}
 					}
 					MessageManager.getInstance().log("Arena " + name + " loaded!");

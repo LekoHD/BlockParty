@@ -13,8 +13,9 @@ import com.lekohd.blockparty.sign.Signs;
 import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Config;
 import com.lekohd.blockparty.system.Players;
+
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import me.confuser.barapi.BarAPI;
@@ -28,7 +29,7 @@ public class Period {
 	public static Logger logger;
 	public static double number = 16.0D;
 	public static int periods = 15;
-	public static int counter = 0;
+	public static int period = 0;
 	public static double multiplier = 0.5D;
 	public static int cd;
 	static int num = 6;
@@ -117,9 +118,10 @@ public class Period {
 	public static void stop(String arenaName) {
 		final String aName = arenaName;
 		final Boosts b = new Boosts();
-		// Bukkit.getScheduler().cancelTasks(BlockParty.instance);
+		//Bukkit.getScheduler().cancelTasks(BlockParty.instance);
 		Bukkit.getScheduler().cancelTask(Period.cd);
 		Bukkit.getScheduler().cancelTask(Period.dc);
+		Bukkit.getScheduler().cancelTask(WinnerCountdown.cd);
 
 		((Config) BlockParty.getArena.get(aName)).setStart(false);
 		((Config) BlockParty.getArena.get(aName)).setGameProgress("inLobby");
@@ -153,18 +155,17 @@ public class Period {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void start(String arenaName, int c, final Boosts bo) {
+	public void start(String arenaName, int currPeriod, final Boosts bo) {
 		final String aName = arenaName;
 		final Boosts b = new Boosts();
 
-		counter = c;
+		period = currPeriod;
 		number = ((Config) BlockParty.getArena.get(arenaName)).getTimeToSearch() + 10;
 		multiplier = ((Config) BlockParty.getArena.get(arenaName)).getTimeReductionPerLevel();
 		periods = ((Config) BlockParty.getArena.get(arenaName)).getLevel();
 		setStart = ((Config) BlockParty.getArena.get(arenaName)).getStart();
 
 		final Block randomBlock = RandomizeFloor.randomizedItem(aName);
-		//final Byte randomNum = Byte.valueOf(RandomizeFloor.randomizedItem(aName));
 		for (String name : Players.getPlayersOnFloor(aName)) {
 			Player p = Bukkit.getPlayer(name);
 			FloorBlock.givePlayer(p, randomBlock);
@@ -173,15 +174,21 @@ public class Period {
 			}else{
 				p.sendMessage("§3[BlockParty] §8Next Block is " + randomBlock.getType().name() + " !");
 			}
-			p.setLevel(counter + 1);
+			p.setLevel(period + 1);
 		}
-		number -= counter * multiplier;
-		final double numb = number;
+		
 
-		if ((counter <= periods) && (number > 10.0D)) {
+		number -= period * multiplier;
+		final double numb = number;
+		
+		//debug - force game to end
+		//number = 1.0D;
+
+		if ((period <= periods) && (number > 10.0D)) {
 			Period.cd = Bukkit.getScheduler().scheduleSyncRepeatingTask(BlockParty.getInstance(), new Runnable() {
 				public void run() {
 					if (Period.number != 0.0D) {
+						//System.out.print(Period.number);
 						if (Period.number > 1.0D) {
 							Period.number -= 1.0D;
 
@@ -229,7 +236,7 @@ public class Period {
 									}
 								}
 								if ((((Config) BlockParty.getArena.get(aName)).getUseBoosts())
-										&& ((Period.counter == 3) || (Period.counter == 7) || (Period.counter == 11) || (Period.counter == 15))) {
+										&& ((Period.period == 3) || (Period.period == 7) || (Period.period == 11) || (Period.period == 15))) {
 									Boosts.place(aName);
 									if (Players.getPlayerAmountOnFloor(aName) != 1) {
 										for (String name : Players.getPlayersOnFloor(aName)) {
@@ -255,35 +262,26 @@ public class Period {
 								
 								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(
 										"§3[BlockParty] §8Congratulations! You won the game.");
-								
-								giveReward(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), aName);
-								
 								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(
 										"§3[BlockParty] §8You will get you reward when you leave the arena!");
+								giveReward(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), aName);
 
-								//Bukkit.getPlayer((String) Players.getPlayersInLobby(aName).get(0)).sendMessage(
-								//		"§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
-							
-								if (Players.getPlayerAmountInLobby(aName) != 1) {
-									for (String name : Players.getPlayersInLobby(aName)) {
-										Player p = Bukkit.getPlayer(name);
-										p.sendMessage("§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
-									}
-								} else {
-									Bukkit.getPlayer((String) Players.getPlayersInLobby(aName).get(0)).sendMessage(
-											"§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
-								}
-								
 								WinnerCountdown.start(aName);
+								Config.broadcastLobby("§3[BlockParty] §8Players" + getWinners(aName) + " won the game.", aName);
 							}
 						} else {
-							Period.counter += 1;
+							Period.period += 1;
 							Bukkit.getScheduler().cancelTask(Period.cd);
-							Period.this.start(aName, Period.counter, bo);
+							Period.this.start(aName, Period.period, bo);
 						}
 					} else {
+						System.out.println("[BlockParty] ERROR: Period countdown is less than 1 | start number = " + Period.number);
+
+						Period.period += 1;
 						Bukkit.getScheduler().cancelTask(Period.cd);
-						System.out.println("[BlockParty] ERROR: The countdown is less than 1");
+						Period.this.start(aName, Period.period, bo);
+
+						//System.out.println("[BlockParty] ERROR: The countdown is less than 1 (period)");
 					}
 				}
 			}, 0L, 20L);
@@ -320,7 +318,7 @@ public class Period {
 
 	public String getWinners(String arenaName) {
 		String names = "";
-		for (String name : Players.getPlayersInGame(arenaName)) {
+		for (String name : Players.getPlayersOnFloor(arenaName)) {
 			names = names + " " + name;
 		}
 		return names;
@@ -332,31 +330,47 @@ public class Period {
 		return item;
 	}
 
+	public static int getRandomInt(int lower, int upper) {
+		Random random = new Random();
+		return random.nextInt((upper - lower)) + lower;
+	}
+	
 	public static void giveReward(Player p, String arenaName) {
 		BlockParty.inventoryManager.restoreInv(p);
 		BlockParty.inventoriesToRestore.remove(p.getPlayer().getName());
 
-		if (((Config) BlockParty.getArena.get(arenaName)).getRewardItems().size() > 1) {
-			for (Iterator<?> localIterator3 = ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().iterator(); localIterator3.hasNext();) {
-				int item = ((Integer) localIterator3.next()).intValue();
-				p.getInventory().addItem(new ItemStack[] { getItem(item) });
-			}
-		} else {
+		//ArrayList<Integer> rewards = ((Config) BlockParty.getArena.get(arenaName)).getRewardItems();
+		int totalRewardsAvail = ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().size();
+		
+		if(totalRewardsAvail > 1){
+			p.getInventory().addItem(new ItemStack[] { getItem(((Integer) ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().get(getRandomInt(0, totalRewardsAvail))).intValue()) });
+		}else{
 			p.getInventory().addItem(new ItemStack[] { getItem(((Integer) ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().get(0)).intValue()) });
 		}
+		
+		
+		//Award All Items OR Only a random one.
+		//if (((Config) BlockParty.getArena.get(arenaName)).getRewardItems().size() > 1) {
+		//	for (Iterator<?> localIterator3 = ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().iterator(); localIterator3.hasNext();) {
+		//		int item = ((Integer) localIterator3.next()).intValue();
+		//		p.getInventory().addItem(new ItemStack[] { getItem(item) });
+		//	}
+		//} else {
+		//	p.getInventory().addItem(new ItemStack[] { getItem(((Integer) ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().get(0)).intValue()) });
+		//}
 
 		BlockParty.inventoryManager.storeInv(p);
 		BlockParty.inventoriesToRestore.add(p.getPlayer().getName());
 	}
 
-	public static void telBackToLobby(String arenaName) {
-		for (String name : Players.getPlayersInGame(arenaName)) {
-			if (!Players.getPlayersInGame(arenaName).contains(name)) {
-				Player p = Bukkit.getPlayer(name);
-				p.teleport(Arena.getLobbySpawn(arenaName));
-				BlockParty.inGamePlayers.remove(p.getName());
-				BlockParty.inLobbyPlayers.put(p.getName(), arenaName);
-			}
-		}
-	}
+	//public static void telBackToLobby(String arenaName) {
+	//	for (String name : Players.getPlayersInGame(arenaName)) {
+	//		if (!Players.getPlayersInGame(arenaName).contains(name)) {
+	//			Player p = Bukkit.getPlayer(name);
+	//			p.teleport(Arena.getLobbySpawn(arenaName));
+	//			BlockParty.onFloorPlayers.remove(p.getName());
+	//			BlockParty.inLobbyPlayers.put(p.getName(), arenaName);
+	//		}
+	//	}
+	//}
 }

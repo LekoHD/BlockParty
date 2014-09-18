@@ -1,4 +1,5 @@
 package com.lekohd.blockparty.listeners;
+
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
@@ -11,7 +12,6 @@ import me.confuser.barapi.BarAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -24,37 +24,42 @@ public class MoveListener implements Listener {
 		if (BlockParty.onFloorPlayers.containsKey(e.getPlayer().getName())) {
 			Location loc = e.getTo();
 			loc.setY(e.getTo().getBlockY() - 1);
-			if (loc.getBlock().getTypeId() == ((Config) BlockParty.getArena.get(BlockParty.onFloorPlayers.get(e.getPlayer().getName()))).getOutBlock()) {
-				if (Players.getPlayerAmountOnFloor((String) BlockParty.onFloorPlayers.get(e.getPlayer().getName())) > 1) {
-					if (Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) {
-						Songs.stop(e.getPlayer());
-					}
-					e.getPlayer().getInventory().clear();
-					e.getPlayer()
-							.getInventory()
-							.addItem(
-									new ItemStack[] { ((Config) BlockParty.getArena.get(BlockParty.onFloorPlayers.get(e.getPlayer().getName()))).getVoteItem() });
-					e.getPlayer().updateInventory();
-					BlockParty.inLobbyPlayers.put(e.getPlayer().getName(), (String) BlockParty.onFloorPlayers.get(e.getPlayer().getName()));
-					World world = e.getPlayer().getWorld();
-					world.strikeLightning(e.getPlayer().getLocation());
+			try {
+				if (loc.getBlock().getTypeId() == (BlockParty.getArena.get(BlockParty.onFloorPlayers.get(e.getPlayer().getName()))).getOutBlock()) {
 					if (Players.getPlayerAmountOnFloor((String) BlockParty.onFloorPlayers.get(e.getPlayer().getName())) > 1) {
-						for (String name : Players.getPlayersOnFloor((String) BlockParty.onFloorPlayers.get(e.getPlayer().getName()))) {
-							Player p = Bukkit.getPlayer(name);
-							p.sendMessage("§3[BlockParty] §8" + e.getPlayer().getName() + " was §4ELIMINATED");
+						if (Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) {
+							Songs.stop(e.getPlayer());
 						}
-					} else {
-						Bukkit.getPlayer((String) Players.getPlayersOnFloor((String) BlockParty.onFloorPlayers.get(e.getPlayer().getName())).get(0))
-								.sendMessage("§3[BlockParty] §8" + e.getPlayer().getName() + " was §4ELIMINATED");
-					}
-					e.getPlayer().sendMessage("§3[BlockParty] §8You were §4ELIMINATED");
-					e.getPlayer().teleport(Arena.getLobbySpawn((String) BlockParty.onFloorPlayers.get(e.getPlayer().getName())));
-					BlockParty.inGamePlayers.remove(e.getPlayer().getName());
-					BlockParty.onFloorPlayers.remove(e.getPlayer().getName());
-					if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
-						BarAPI.setMessage(e.getPlayer(), "Waiting ...", 100.0F);
+						e.getPlayer().getInventory().clear();
+						e.getPlayer()
+								.getInventory()
+								.addItem(
+										new ItemStack[] { ((Config) BlockParty.getArena.get(BlockParty.onFloorPlayers.get(e.getPlayer().getName())))
+												.getVoteItem() });
+						e.getPlayer().updateInventory();
+						BlockParty.inLobbyPlayers.put(e.getPlayer().getName(), (String) BlockParty.onFloorPlayers.get(e.getPlayer().getName()));
+						World world = e.getPlayer().getWorld();
+						world.strikeLightning(e.getPlayer().getLocation());
+						Config.broadcastInGame("§3[BlockParty] §8" + e.getPlayer().getName() + " was §4ELIMINATED", Config.arenaName);
+
+						// e.getPlayer().sendMessage("§3[BlockParty] §8You were §4ELIMINATED");
+						e.getPlayer().teleport(Arena.getLobbySpawn((String) BlockParty.onFloorPlayers.get(e.getPlayer().getName())));
+						BlockParty.onFloorPlayers.remove(e.getPlayer().getName());
+						if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+							BarAPI.setMessage(e.getPlayer(), "Waiting ...", 100.0F);
+						}
 					}
 				}
+			} catch (Exception ex) {
+				Config.broadcastInGame("§3[BlockParty] §8" + e.getPlayer().getName() + " was §4ELIMINATED", Config.arenaName);
+
+				// e.getPlayer().sendMessage("§3[BlockParty] §8You were §4ELIMINATED");
+				if (BlockParty.onFloorPlayers.containsKey(e.getPlayer().getName())) {
+					BlockParty.onFloorPlayers.remove(e.getPlayer().getName());
+				}
+
+				BlockParty.inLobbyPlayers.put(e.getPlayer().getName(), Config.arenaName);
+				Arena.leave(e.getPlayer());
 			}
 		}
 	}

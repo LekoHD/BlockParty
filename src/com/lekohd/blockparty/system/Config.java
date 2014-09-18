@@ -1,4 +1,5 @@
 package com.lekohd.blockparty.system;
+
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
@@ -303,7 +304,7 @@ public class Config {
 	}
 
 	public static void leave(Player p) {
-		if (BlockParty.inGamePlayers.containsKey(p.getName()) || BlockParty.onFloorPlayers.containsKey(p.getName())) {
+		if (BlockParty.onFloorPlayers.containsKey(p.getName())) {
 			p.sendMessage("§3[BlockParty] §8You can not leave the current game.");
 			return;
 		}
@@ -316,46 +317,28 @@ public class Config {
 			return;
 		}
 
-		// make sure they are in the lobby before allowing them to leave
-		if (Players.getPlayerAmountInLobby((String) BlockParty.inLobbyPlayers.get(p.getName())) <= 1) {
-			Bukkit.getPlayer((String) Players.getPlayersInLobby((String) BlockParty.inLobbyPlayers.get(p.getName())).get(0)).sendMessage(
-					"§3[BlockParty] §8" + p.getName() + " left the game");
-		} else {
-			for (String name : Players.getPlayersInLobby((String) BlockParty.inLobbyPlayers.get(p.getName()))) {
-				Bukkit.getPlayer(name).sendMessage("§3[BlockParty] §8" + p.getName() + " has left the game");
-			}
-		}
-
-		if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
-			Songs.stop(p);
-		}
-
 		// Remove player from lobby since they left
 		BlockParty.inLobbyPlayers.remove(p.getName());
 		BlockParty.inGamePlayers.remove(p.getName());
 		BlockParty.onFloorPlayers.remove(p.getName());
 
+		broadcastInGame("§3[BlockParty] §8" + p.getName() + " has left the game", (String) BlockParty.inGamePlayers.get(p.getName()));
+
+		if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
+			Songs.stop(p);
+		}
+
 		p.teleport((Location) BlockParty.locs.get(p.getName()));
 		BlockParty.locs.remove(p.getName());
 
+		// Due to 1.8 glitch we have to force gamemode or they cant break blocks
+		// when they leave arena.
 		p.setGameMode(GameMode.SURVIVAL);
 		// p.setGameMode((GameMode) BlockParty.gm.get(p.getName()));
 		BlockParty.gm.remove(p.getName());
 
 		BlockParty.inventoryManager.restoreInv(p);
 		BlockParty.inventoriesToRestore.remove(p.getPlayer().getName());
-
-		// Give awards to player if they got any
-		if (BlockParty.awards.containsKey(p.getPlayer().getName())) {
-			p.getInventory().addItem(new ItemStack[] { ((Config) BlockParty.getArena.get(arenaName)).getVoteItem() });
-
-			for (ItemStack stack : BlockParty.awards.get(p.getName())) {
-				if (stack != null) {
-					p.getInventory().addItem(new ItemStack[] { stack });
-					System.out.print(stack.toString());
-				}
-			}
-		}
 
 		if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 			BarAPI.removeBar(p);
@@ -367,64 +350,71 @@ public class Config {
 
 	public void join(Player p) {
 		if (this.isEnabled) {
-			if ((!BlockParty.inLobbyPlayers.containsKey(p.getName())) && (!BlockParty.inGamePlayers.containsKey(p.getName()))) {
+			if (!BlockParty.inGamePlayers.containsKey(p.getName())) {
 				if (exists(p)) {
 					if (!Players.reachedMaxPlayers(Config.arenaName)) {
+
+						// Save Player Info
+						BlockParty.locs.put(p.getName(), p.getLocation());
+						BlockParty.gm.put(p.getName(), p.getGameMode());
+
+						// Reset game mode so they cannot fly
+						p.setGameMode(GameMode.ADVENTURE);
+
+						// TP to arena
 						p.teleport(this.lobbySpawn);
+
+						// notify everyone someone joined
+						broadcastInGame("§3[BlockParty] §8" + p.getName() + " joined the game!", Config.arenaName);
+
+						// Add to game at this point
+						BlockParty.inGamePlayers.put(p.getName(), Config.arenaName);
 						BlockParty.inLobbyPlayers.put(p.getName(), Config.arenaName);
 
+						// Archive Inventory
 						BlockParty.inventoryManager.storeInv(p);
 						BlockParty.inventoriesToRestore.add(p.getPlayer().getName());
-
 						p.getInventory().clear();
 						p.getInventory().addItem(new ItemStack[] { getVoteItem() });
 						p.updateInventory();
 
-						//Play music while they wait :D
+						// Play music while they wait :D
 						String song = ((Config) BlockParty.getArena.get(arenaName)).getMostVotedSong();
 						if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
 							Songs.stop(p);
 							Songs.play(p, song);
 						}
-						
-						// Allow players to join mid game and wait for next round
-						if (((Config) BlockParty.getArena.get(arenaName)).getGameProgress().equalsIgnoreCase("inLobby")) {
-							Start.start(Config.arenaName);
-							Signs.updateJoin(Config.arenaName, false);
-						}else{
-							if (Players.getPlayerAmountOnFloor(arenaName) == 0) {
-								//Force lobby since somewhere it was not reset right
-								((Config) BlockParty.getArena.get(arenaName)).setStart(false);
-								((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inLobby");
-								
-								Start.start(Config.arenaName);
-								Signs.updateJoin(Config.arenaName, false);
-							}							
-						}
-						
+
 						if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 							BarAPI.setMessage(p, "Waiting ...", 100.0F);
 						}
-						p.sendMessage("§3[BlockParty] §8You have joined Arena " + Config.arenaName);
-						if (Players.getPlayerAmountInLobby(Config.arenaName) <= 1) {
-							Bukkit.getPlayer((String) Players.getPlayersInLobby(Config.arenaName).get(0)).sendMessage(
-									"§3[BlockParty] §8" + p.getName() + " joined the game");
+
+						// Allow players to watch while game in progress
+						if (((Config) BlockParty.getArena.get(arenaName)).getGameProgress().equalsIgnoreCase("inLobby")) {
+							Start.start(Config.arenaName);
+							Signs.updateJoin(Config.arenaName, false);
 						} else {
-							for (String name : Players.getPlayersInLobby(Config.arenaName)) {
-								Player player = Bukkit.getPlayer(name);
-								player.sendMessage("§3[BlockParty] §8" + p.getName() + " joined the game");
+							// Something broke if this ever happens :\
+							if (Players.getPlayerAmountOnFloor(arenaName) == 0) {
+								((Config) BlockParty.getArena.get(arenaName)).setStart(false);
+								((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inLobby");
+
+								Start.start(Config.arenaName);
+								Signs.updateJoin(Config.arenaName, false);
 							}
 						}
+
+						p.sendMessage("§3[BlockParty] §8You have joined Arena " + Config.arenaName);
 					} else {
 						Signs.updateJoin(Config.arenaName, true);
 						p.sendMessage("§3[BlockParty] §8The Arena " + Config.arenaName + " is full!");
 					}
 				}
 			} else {
-				p.sendMessage("§3[BlockParty] §8You are already in an arena!");
+				p.sendMessage("§3[BlockParty] §8You are already in a game!");
 			}
 		} else {
-			p.sendMessage("§3[BlockParty] §8Arena is disabled. /bp enable " + Config.arenaName + " to enable!");
+			p.sendMessage("§3[BlockParty] §8Arena is currently disabled!");
 		}
 	}
 
@@ -539,6 +529,27 @@ public class Config {
 			p.sendMessage("§3[BlockParty] §8Select a region with WorldEdit first.");
 		}
 		return false;
+	}
+
+	public static void broadcastLobby(String mes, String arenaName) {
+		for (String name : Players.getPlayersInLobby(arenaName)) {
+			Player p = Bukkit.getPlayer(name);
+			p.sendMessage(mes);
+		}
+	}
+
+	public static void broadcastFloor(String mes, String arenaName) {
+		for (String name : Players.getPlayersInLobby(arenaName)) {
+			Player p = Bukkit.getPlayer(name);
+			p.sendMessage(mes);
+		}
+	}
+
+	public static void broadcastInGame(String mes, String arenaName) {
+		for (String name : Players.getPlayersInGame(arenaName)) {
+			Player p = Bukkit.getPlayer(name);
+			p.sendMessage(mes);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -656,7 +667,8 @@ public class Config {
 
 	public boolean reachedMaxPlayers() {
 		if (this.arena.exists()) {
-			if (Players.getPlayerAmountInLobby(Config.arenaName) >= this.maxPlayers) {
+			int totalPlayersInGame = Players.getPlayerAmountInLobby(Config.arenaName) + Players.getPlayerAmountOnFloor(Config.arenaName);
+			if (totalPlayersInGame >= this.maxPlayers) {
 				return true;
 			}
 			return false;

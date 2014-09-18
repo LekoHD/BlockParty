@@ -19,7 +19,7 @@ public class ScoreboardSys {
 		objective.setDisplayName("§6BlockParty");
 		Score s1 = objective.getScore(Bukkit.getOfflinePlayer("§1" + ChatColor.GREEN + "------------"));
 		Score s2 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Level:"));
-		Score s3 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "CloudMine 24/7"));
+		Score s3 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Server"));
 		Score s4 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "2.0"));
 		Score s5 = objective.getScore(Bukkit.getOfflinePlayer("§2" + ChatColor.GREEN + "------------"));
 		Score s6 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Kit:"));

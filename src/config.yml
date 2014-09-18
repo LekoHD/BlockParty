@@ -2,3 +2,10 @@ enabledArenas: []
 
 # None, Survival, Creative, Adventure 
 forcegamemode: Survival
+defaultTPLocation: xyz
+bypassCommands:
+- msg
+- ban
+- kick
+- mute
+- a

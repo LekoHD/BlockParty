@@ -1,4 +1,5 @@
 package com.lekohd.blockparty.system;
+
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
@@ -32,13 +33,6 @@ public class Start {
 		}
 	}
 
-	public static void message(String mes, String arenaName) {
-		for (String name : Players.getPlayersInLobby(arenaName)) {
-			Player p = Bukkit.getPlayer(name);
-			p.sendMessage(mes);
-		}
-	}
-
 	public static void level(String arenaName, int lev) {
 		for (String name : Players.getPlayersInLobby(arenaName)) {
 			Player p = Bukkit.getPlayer(name);
@@ -59,7 +53,6 @@ public class Start {
 				p.getInventory().clear();
 				p.updateInventory();
 				BlockParty.inLobbyPlayers.remove(p.getName());
-				BlockParty.inGamePlayers.put(name, arenaName);
 				BlockParty.onFloorPlayers.put(name, arenaName);
 				p.sendMessage("§3[BlockParty] §8The game has started!");
 				if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
@@ -80,7 +73,7 @@ public class Start {
 
 	public static void stopGameInProgress(String arenaName, Player sender) {
 		// Remove all users in games and end them.
-		
+		Bukkit.getScheduler().cancelTasks(BlockParty.instance);
 		WinnerCountdown.start(arenaName);
 		for (String name : Players.getPlayersInGame(arenaName)) {
 			Player p = Bukkit.getPlayer(name);
@@ -92,7 +85,6 @@ public class Start {
 			Arena.leave(p);
 			p.sendMessage("§3[BlockParty] §8The game has ended by an admin!");
 		}
-
 	}
 
 	public static void telOutOfArena(String arenaName) {
@@ -121,6 +113,7 @@ public class Start {
 				if (Start.number != 0) {
 					if (Start.number != 1) {
 						Start.number -= 1;
+
 						if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 							if (Players.getPlayerAmountInLobby(arenaName) != 1) {
 								for (String name : Players.getPlayersInLobby(arenaName)) {
@@ -133,15 +126,22 @@ public class Start {
 							}
 						}
 						if ((Start.number == 20) || (Start.number == 30)) {
-							Start.message("§3[BlockParty] §8" + Start.number + " seconds left!", arenaName);
+							Config.broadcastLobby("§3[BlockParty] §8" + Start.number + " seconds left!", arenaName);
 						}
 						Start.level(arenaName, Start.number);
 						if (Start.number < 11) {
-							Start.message("§3[BlockParty] §8" + Start.number + " seconds left!", arenaName);
+							Config.broadcastLobby("§3[BlockParty] §8" + Start.number + " seconds left!", arenaName);
 						}
 						if (((Config) BlockParty.getArena.get(arenaName)).lessThanMinimum()) {
-							Start.message("§3[BlockParty] §8Less Players than the minimum!", arenaName);
+							Config.broadcastLobby("§3[BlockParty] §8Not enough players to start the game!", arenaName);
+							for (String name : Players.getPlayersInLobby(arenaName)) {
+								Player p = Bukkit.getPlayer(name);
+								if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+									BarAPI.setMessage(p, "Waiting ...", 100.0F);
+								}
+							}
 
+							((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inLobby");
 							start(arenaName);
 							Bukkit.getScheduler().cancelTask(Start.cd);
 						}
@@ -157,7 +157,8 @@ public class Start {
 					}
 				} else {
 					Bukkit.getScheduler().cancelTask(Start.cd);
-					System.err.println("[BlockParty] ERROR: The countdown is less than 1");
+					startGame(arenaName, null);
+					System.err.println("[BlockParty] ERROR: Start countdown is less than 1 | start number = " + Start.number);
 				}
 			}
 		}, 0L, 20L);

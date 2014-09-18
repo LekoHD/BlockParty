@@ -1,4 +1,5 @@
 package com.lekohd.blockparty.commands;
+
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
@@ -9,7 +10,9 @@ import com.lekohd.blockparty.floor.SaveFloor;
 import com.lekohd.blockparty.level.Period;
 import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Config;
+import com.lekohd.blockparty.system.Players;
 import com.lekohd.blockparty.system.Start;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -61,15 +64,54 @@ public class BlockPartyCommand implements CommandExecutor {
 			}
 
 			if (args.length == 1) {
+				if (args[0].equalsIgnoreCase("status")) {
+					if (p.hasPermission("blockparty.admin")) {
+						String response = "";
+						if (!BlockParty.arenaNames.isEmpty()) {
+							for (String arenaName : BlockParty.arenaNames) {
+								if (Players.getPlayerAmountInGame(arenaName) >= 1) {
+									response += "§3[BlockParty] §8Arena §e" + arenaName + "§8 is running!\n\n";
+
+									if (Players.getPlayerAmountOnFloor(arenaName) >= 1) {
+										response += "§6Current Players On Floor:\n";
+										for (String name : Players.getPlayersOnFloor(arenaName)) {
+											response += "§4" + name + "\n";
+										}
+									}
+
+									if (Players.getPlayerAmountInLobby(arenaName) >= 1) {
+										response += "§6Current Players In Lobby:\n";
+										for (String name : Players.getPlayersInLobby(arenaName)) {
+											response += "§4" + name + "\n";
+										}
+									}
+								} else {
+									response += "§3[BlockParty] §8Arena " + arenaName + " is not currently active!";
+								}
+
+								p.sendMessage(response);
+								return true;
+							}
+						} else {
+							p.sendMessage("§3[BlockParty] §8No Arena's enabled!");
+						}
+					} else {
+						p.sendMessage("§4You don't have the permissions to do that");
+						return true;
+					}
+				}
+
 				if (args[0].equalsIgnoreCase("leave")) {
 					if (p.hasPermission("blockparty.user")) {
 						Arena.leave(p);
 					}
 				}
+				
 				if ((args[0].equalsIgnoreCase("reload")) && (p.hasPermission("blockparty.admin"))) {
 					Arena.reload(p);
 					return true;
 				}
+				
 				if ((args[0].equalsIgnoreCase("tutorial")) && (p.hasPermission("blockparty.admin"))) {
 					p.sendMessage(ChatColor.GREEN + "----" + " §6BlockParty " + ChatColor.AQUA + "Tutorial " + ChatColor.GREEN + "----");
 					p.sendMessage("§8 - Use §3/bp create <arenaName> §8to create your arena");
@@ -84,7 +126,7 @@ public class BlockPartyCommand implements CommandExecutor {
 					p.sendMessage("§8 - If you want to use Schematics: /bp tutorial schematics");
 				}
 			}
-			
+
 			if (args.length == 2) {
 				if (args[0].equalsIgnoreCase("join")) {
 					if (p.hasPermission("blockparty.user")) {
@@ -141,6 +183,7 @@ public class BlockPartyCommand implements CommandExecutor {
 						p.sendMessage("§4You don't have the permissions to do that");
 					}
 				}
+
 				if (args[0].equalsIgnoreCase("delete")) {
 					if (p.hasPermission("blockparty.admin")) {
 						Arena.delete(args[1], p);
@@ -216,9 +259,9 @@ public class BlockPartyCommand implements CommandExecutor {
 		} else {
 			ConsoleCommandSender cs = (ConsoleCommandSender) sender;
 			cs.sendMessage("");
-			cs.sendMessage("§7BlockParty indev §6" + BlockParty.getInstance().getDescription().getVersion());
+			cs.sendMessage("§7BlockParty §6" + BlockParty.getInstance().getDescription().getVersion());
 			cs.sendMessage("");
-			cs.sendMessage("§8Developer: §3LekoHD");
+			cs.sendMessage("§8Developer: §3LekoHD, ScriptJunkie");
 			cs.sendMessage("§8Commands: §3/blockparty help");
 			return true;
 		}

@@ -5,10 +5,7 @@ package com.lekohd.blockparty.system;
  */
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.floor.LoadFloor;
-import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -49,7 +46,6 @@ public class Arena {
 	}
 
 	public static void join(Player p, String arenaName) {
-		// Alert if in vanish mode
 		if (Bukkit.getPluginManager().isPluginEnabled("VanishNoPacket")) {
 			try {
 
@@ -61,17 +57,10 @@ public class Arena {
 			}
 		}
 
-		if ((!BlockParty.inLobbyPlayers.containsKey(p.getName())) && (!BlockParty.inGamePlayers.containsKey(p.getName()))) {
-			if (BlockParty.getArena.containsKey(arenaName)) {
-				BlockParty.locs.put(p.getName(), p.getLocation());
-				BlockParty.gm.put(p.getName(), p.getGameMode());
-				p.setGameMode(GameMode.ADVENTURE);
-				BlockParty.getArena.get(arenaName).join(p);
-			} else {
-				p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " isn't enabled or doesn't exists!");
-			}
+		if (BlockParty.getArena.containsKey(arenaName)) {
+			BlockParty.getArena.get(arenaName).join(p);
 		} else {
-			p.sendMessage("§3[BlockParty] §8You are already in a game!");
+			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " does not exist at this time!");
 		}
 	}
 
@@ -116,7 +105,7 @@ public class Arena {
 				cfg.set("enabledArenas", BlockParty.arenaNames);
 			}
 			BlockParty.getInstance().saveConfig();
-			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " enabled!");
+			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " loaded!");
 		} else {
 			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " doesn't exists!");
 		}
@@ -143,33 +132,11 @@ public class Arena {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public static void reload(Player p) {
-		BlockParty.loadConfig();
-		FileConfiguration cfg = BlockParty.getInstance().getConfig();
-		BlockParty.arenaNames.clear();
-		BlockParty.arenaNames = (ArrayList<String>) cfg.get("enabledArenas");
-		if (!BlockParty.arenaNames.isEmpty()) {
-			for (String name : BlockParty.arenaNames) {
-				Config conf = new Config(name);
-				conf.enable();
-				conf.loadCfg();
-				conf.loadGameSpawn();
-				conf.loadLobbySpawn();
-				conf.loadMinPlayers();
-				conf.loadMax();
-				conf.loadMin();
-				conf.load();
-				BlockParty.getArena.put(name, conf);
-				if (conf.getFloors() != null) {
-					for (String floor : conf.getFloors()) {
-						BlockParty.floors.clear();
-						BlockParty.floors.add(new LoadFloor(floor));
-						BlockParty.getFloor.put(name, BlockParty.floors);
-					}
-				}
-			}
+		for (String name : BlockParty.arenaNames) {
+			p.sendMessage("§3[BlockParty] §8reloading "+name);
+			Arena.enable(name, p);
 		}
-		p.sendMessage("§3[BlockParty] §8reloaded!");
+		p.sendMessage("§3[BlockParty] §8configs reloaded!");
 	}
 }

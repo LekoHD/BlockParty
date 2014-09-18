@@ -49,8 +49,6 @@ public class InventoryListener implements Listener {
 		}
 	}
 	
-	
-
 	@EventHandler
 	public void playerJoin(PlayerJoinEvent event) {
 		// upon reboot inventory will be written to file in order to restore
