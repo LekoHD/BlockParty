@@ -40,18 +40,18 @@ public class MoveListener implements Listener {
 						BlockParty.inLobbyPlayers.put(e.getPlayer().getName(), (String) BlockParty.onFloorPlayers.get(e.getPlayer().getName()));
 						World world = e.getPlayer().getWorld();
 						world.strikeLightning(e.getPlayer().getLocation());
-						Config.broadcastInGame("§3[BlockParty] §8" + e.getPlayer().getName() + " was §4ELIMINATED", Config.arenaName);
+						Config.broadcastInGame(BlockParty.messageManager.PERIOD_ELIMINATED.replace("$PLAYER$", e.getPlayer().getName()), Config.arenaName);
 
 						// e.getPlayer().sendMessage("§3[BlockParty] §8You were §4ELIMINATED");
 						e.getPlayer().teleport(Arena.getLobbySpawn((String) BlockParty.onFloorPlayers.get(e.getPlayer().getName())));
 						BlockParty.onFloorPlayers.remove(e.getPlayer().getName());
 						if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
-							BarAPI.setMessage(e.getPlayer(), "Waiting ...", 100.0F);
+							BarAPI.setMessage(e.getPlayer(), BlockParty.messageManager.BAR_WAITING, 100.0F);
 						}
 					}
 				}
 			} catch (Exception ex) {
-				Config.broadcastInGame("§3[BlockParty] §8" + e.getPlayer().getName() + " was §4ELIMINATED", Config.arenaName);
+				Config.broadcastInGame(BlockParty.messageManager.PERIOD_ELIMINATED.replace("$PLAYER$", e.getPlayer().getName()), Config.arenaName);
 
 				// e.getPlayer().sendMessage("§3[BlockParty] §8You were §4ELIMINATED");
 				if (BlockParty.onFloorPlayers.containsKey(e.getPlayer().getName())) {

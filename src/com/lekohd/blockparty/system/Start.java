@@ -28,7 +28,7 @@ public class Start {
 			} else {
 				Bukkit.getScheduler().cancelTask(cd);
 				countdown(arenaName);
-				BlockParty.logger.info("Game Progress is NOT inLobby");
+				//BlockParty.logger.info("Game Progress is NOT inLobby");
 			}
 		}
 	}
@@ -42,7 +42,7 @@ public class Start {
 
 	public static void startGame(String arenaName, Player sender) {
 		if ((Players.getPlayerAmountInLobby(arenaName) == 0) && (sender != null)) {
-			sender.sendMessage("§3[BlockParty] §8You can not start a game with 0 players in the Lobby");
+			sender.sendMessage(BlockParty.messageManager.START_ERROR_ZERO_PAYERS);
 		} else {
 			String song = ((Config) BlockParty.getArena.get(arenaName)).getMostVotedSong();
 			((Config) BlockParty.getArena.get(arenaName)).votedSongs.clear();
@@ -54,7 +54,7 @@ public class Start {
 				p.updateInventory();
 				BlockParty.inLobbyPlayers.remove(p.getName());
 				BlockParty.onFloorPlayers.put(name, arenaName);
-				p.sendMessage("§3[BlockParty] §8The game has started!");
+				p.sendMessage(BlockParty.messageManager.START_SUCCESS);
 				if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
 					Songs.stop(p);
 					Songs.play(p, song);
@@ -78,12 +78,12 @@ public class Start {
 		for (String name : Players.getPlayersInGame(arenaName)) {
 			Player p = Bukkit.getPlayer(name);
 			Arena.leave(p);
-			p.sendMessage("§3[BlockParty] §8The game has ended by an admin!");
+			p.sendMessage(BlockParty.messageManager.STOP_GAME_FORCED);
 		}
 		for (String name : Players.getPlayersInLobby(arenaName)) {
 			Player p = Bukkit.getPlayer(name);
 			Arena.leave(p);
-			p.sendMessage("§3[BlockParty] §8The game has ended by an admin!");
+			p.sendMessage(BlockParty.messageManager.STOP_GAME_FORCED);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class Start {
 				p.teleport((Location) BlockParty.locs.get(p.getName()));
 				BlockParty.locs.remove(p.getName());
 			} else {
-				p.sendMessage("§3[BlockParty] §8Cannot load your old location. Please type /spawn");
+				p.sendMessage(BlockParty.messageManager.LEAVE_LOCATION_NOT_FOUND);
 			}
 		}
 	}
@@ -118,7 +118,7 @@ public class Start {
 							if (Players.getPlayerAmountInLobby(arenaName) != 1) {
 								for (String name : Players.getPlayersInLobby(arenaName)) {
 									Player p = Bukkit.getPlayer(name);
-									BarAPI.setMessage(p, "Game starts soon", Start.number * 10.0F / 3.0F);
+									BarAPI.setMessage(p, BlockParty.messageManager.BAR_STARTS_SOON, Start.number * 10.0F / 3.0F);
 								}
 							} else {
 								BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersInLobby(arenaName).get(0)), "Game starts soon",
@@ -126,18 +126,18 @@ public class Start {
 							}
 						}
 						if ((Start.number == 20) || (Start.number == 30)) {
-							Config.broadcastLobby("§3[BlockParty] §8" + Start.number + " seconds left!", arenaName);
+							Config.broadcastLobby(BlockParty.messageManager.BAR_TIMER.replace("$TIMER$", ""+Start.number), arenaName);
 						}
 						Start.level(arenaName, Start.number);
 						if (Start.number < 11) {
-							Config.broadcastLobby("§3[BlockParty] §8" + Start.number + " seconds left!", arenaName);
+							Config.broadcastLobby(BlockParty.messageManager.BAR_TIMER.replace("$TIMER$", ""+Start.number), arenaName);
 						}
 						if (((Config) BlockParty.getArena.get(arenaName)).lessThanMinimum()) {
-							Config.broadcastLobby("§3[BlockParty] §8Not enough players to start the game!", arenaName);
+							Config.broadcastLobby(BlockParty.messageManager.START_ERROR_LESS_THEN_MIN_PLAYERS, arenaName);
 							for (String name : Players.getPlayersInLobby(arenaName)) {
 								Player p = Bukkit.getPlayer(name);
 								if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
-									BarAPI.setMessage(p, "Waiting ...", 100.0F);
+									BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
 								}
 							}
 

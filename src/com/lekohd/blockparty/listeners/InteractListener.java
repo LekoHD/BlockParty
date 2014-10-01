@@ -59,7 +59,7 @@ public class InteractListener implements Listener {
 							if (p.hasPermission("blockparty.user")) {
 								Arena.join(p, removeColorCodes(sign.getLine(2)));
 							} else {
-								p.sendMessage("§4You don't have the permissions to do that");
+								p.sendMessage(BlockParty.messageManager.NO_PERMISSION);
 							}
 						}
 					}

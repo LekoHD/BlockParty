@@ -56,6 +56,7 @@ public class Config {
 	public boolean useSongs = true;
 	public boolean autoRestart = true;
 	public boolean autoKick = false;
+	public boolean fireworksEnabled = true;
 	public ArrayList<String> enabledFloors = new ArrayList<String>();
 	public ArrayList<Integer> rewardItems = new ArrayList<Integer>();
 	public ArrayList<String> songs = new ArrayList<String>();
@@ -120,7 +121,7 @@ public class Config {
 
 	public void loadCfg() {
 		if (!this.arena.exists()) {
-			System.err.print("ERROR in BlockParty: Arena " + Config.arenaName + " doesn't exists! Please check your configs!");
+			System.err.print("[BlockParty] ERROR : Arena " + Config.arenaName + " doesn't exists!");
 		} else {
 			this.cfg = YamlConfiguration.loadConfiguration(this.arena);
 		}
@@ -128,7 +129,7 @@ public class Config {
 
 	public String create() {
 		if (this.arena.exists()) {
-			return "§3[BlockParty] §8Arena " + Config.arenaName + " already exists!";
+			return (BlockParty.messageManager.ARENA_EXISTS_ALREADY).replace("$ARENANAME$", Config.arenaName);
 		}
 		this.cfg = YamlConfiguration.loadConfiguration(this.arena);
 		this.cfg.set("configuration.MinPlayers", Integer.valueOf(2));
@@ -155,19 +156,21 @@ public class Config {
 		this.cfg.set("dontChange.Game", Boolean.valueOf(false));
 		this.cfg.set("dontChange.Lobby", Boolean.valueOf(false));
 		this.cfg.set("floor.floorPoints", Boolean.valueOf(false));
+		this.cfg.set("configuration.EnableFireworksOnWon", Boolean.valueOf(true));
+
 		try {
 			this.cfg.save(this.arena);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		load();
-		return "§3[BlockParty] §8Arena " + Config.arenaName + " was successfully created!";
+		return (BlockParty.messageManager.ARENA_CREATED).replace("$ARENANAME$", Config.arenaName);
 	}
 
 	public String setSpawn(Player p, String pos) {
 		if (this.isEnabled) {
 			if (!this.arena.exists()) {
-				return "§3[BlockParty] §8Arena " + Config.arenaName + " doesn't exists!";
+				return (BlockParty.messageManager.ARENT_DOES_NOT_EXIST).replace("$ARENANAME$", Config.arenaName);
 			}
 			Location loc = p.getLocation();
 			this.cfg.set("spawns." + pos + ".xPos", Double.valueOf(loc.getX()));
@@ -205,15 +208,15 @@ public class Config {
 			}
 			return "§3[BlockParty] §8" + pos + " Spawn was set for Arena " + Config.arenaName;
 		}
-		return "§3[BlockParty] §8Arena is disabled. /bp enable " + Config.arenaName + " to enable!";
+		return (BlockParty.messageManager.ARENA_DISABLED.replace("$ARENANAME$", Config.arenaName));
 	}
 
 	public String delete() {
 		if (this.arena.exists()) {
 			this.arena.delete();
-			return "§3[BlockParty] §8Arena " + Config.arenaName + " was successfully deleted!";
+			return (BlockParty.messageManager.ARENA_DELETED).replace("$ARENANAME$", Config.arenaName);
 		}
-		return "§3[BlockParty] §8Arena " + Config.arenaName + " doesn't exists!";
+		return (BlockParty.messageManager.ARENT_DOES_NOT_EXIST).replace("$ARENANAME$", Config.arenaName);
 	}
 
 	public boolean exists(Player p) {
@@ -222,13 +225,13 @@ public class Config {
 				if (this.cfg.getBoolean("floor.floorPoints")) {
 					return true;
 				}
-				p.sendMessage("§3[BlockParty] §8You have to set the floor first!");
+				p.sendMessage(BlockParty.messageManager.ARENA_FLOOR_ERROR);
 				return false;
 			}
-			p.sendMessage("§3[BlockParty] §8You have to set all spawns first!");
+			p.sendMessage(BlockParty.messageManager.ARENA_SPAWN_ERROR);
 			return false;
 		}
-		p.sendMessage("§3[BlockParty] §8Arena " + Config.arenaName + " doesn't exists!");
+		p.sendMessage(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", arenaName));
 		return false;
 	}
 
@@ -289,9 +292,9 @@ public class Config {
 	public ItemStack getVoteItem() {
 		ItemStack item = new ItemStack(Material.FIREBALL, 1);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName("§6Vote for a Song!");
+		meta.setDisplayName(BlockParty.messageManager.VOTE_ITEM_FIREBALL_DISPLAY_NAME);
 		List<String> lores = new ArrayList<String>();
-		lores.add("Click me!");
+		lores.add(BlockParty.messageManager.VOTE_ITEM_FIREBALL_LORE);
 		meta.setLore(lores);
 		item.setItemMeta(meta);
 		return item;
@@ -305,7 +308,7 @@ public class Config {
 
 	public static void leave(Player p) {
 		if (BlockParty.onFloorPlayers.containsKey(p.getName())) {
-			p.sendMessage("§3[BlockParty] §8You can not leave the current game.");
+			p.sendMessage(BlockParty.messageManager.LEAVE_CANNOT);
 			return;
 		}
 
@@ -313,7 +316,7 @@ public class Config {
 			BlockParty.inventoryManager.restoreInv(p);
 			BlockParty.inventoriesToRestore.remove(p.getPlayer().getName());
 
-			p.sendMessage("§3[BlockParty] §8You are not in an arena!");
+			p.sendMessage(BlockParty.messageManager.LEAVE_NOT_IN_ARENA);
 			return;
 		}
 
@@ -322,7 +325,7 @@ public class Config {
 		BlockParty.inGamePlayers.remove(p.getName());
 		BlockParty.onFloorPlayers.remove(p.getName());
 
-		broadcastInGame("§3[BlockParty] §8" + p.getName() + " has left the game", (String) BlockParty.inGamePlayers.get(p.getName()));
+		broadcastInGame(BlockParty.messageManager.LEAVE_ARENA_BROADCAST.replace("$PLAYER$", p.getName()), (String) BlockParty.inGamePlayers.get(p.getName()));
 
 		if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
 			Songs.stop(p);
@@ -344,7 +347,7 @@ public class Config {
 			BarAPI.removeBar(p);
 		}
 
-		p.sendMessage("§3[BlockParty] §8You left the arena!");
+		p.sendMessage(BlockParty.messageManager.LEAVE_ARENA_PLAYER);
 		return;
 	}
 
@@ -365,7 +368,7 @@ public class Config {
 						p.teleport(this.lobbySpawn);
 
 						// notify everyone someone joined
-						broadcastInGame("§3[BlockParty] §8" + p.getName() + " joined the game!", Config.arenaName);
+						broadcastInGame(BlockParty.messageManager.JOIN_SUCCESS_BROADCAST.replace("$PLAYER$", p.getName()), Config.arenaName);
 
 						// Add to game at this point
 						BlockParty.inGamePlayers.put(p.getName(), Config.arenaName);
@@ -386,7 +389,7 @@ public class Config {
 						}
 
 						if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
-							BarAPI.setMessage(p, "Waiting ...", 100.0F);
+							BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
 						}
 
 						// Allow players to watch while game in progress
@@ -404,17 +407,17 @@ public class Config {
 							}
 						}
 
-						p.sendMessage("§3[BlockParty] §8You have joined Arena " + Config.arenaName);
+						p.sendMessage(BlockParty.messageManager.JOIN_SUCCESS_PLAYER.replace("$ARENANAME$", Config.arenaName));
 					} else {
 						Signs.updateJoin(Config.arenaName, true);
-						p.sendMessage("§3[BlockParty] §8The Arena " + Config.arenaName + " is full!");
+						p.sendMessage(BlockParty.messageManager.JOIN_ERROR_FULL.replace("$ARENANAME$", Config.arenaName));
 					}
 				}
 			} else {
-				p.sendMessage("§3[BlockParty] §8You are already in a game!");
+				p.sendMessage(BlockParty.messageManager.JOIN_ERROR_FULL.replace("$ARENANAME$", Config.arenaName));
 			}
 		} else {
-			p.sendMessage("§3[BlockParty] §8Arena is currently disabled!");
+			p.sendMessage(BlockParty.messageManager.JOIN_ARENA_IS_DISABLED.replace("$ARENANAME$", Config.arenaName));
 		}
 	}
 
@@ -443,7 +446,7 @@ public class Config {
 	public void loadMin() {
 		if (this.isEnabled) {
 			if (!this.arena.exists()) {
-				System.out.println("ERROR: Arena " + Config.arenaName + " doesn't exists!");
+				System.out.println(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", Config.arenaName));
 			} else if (this.cfg.getBoolean("floor.floorPoints")) {
 				World world = Bukkit.getWorld("floor.min.World");
 				double xPos = ((Double) this.cfg.get("floor.min.xPos")).doubleValue();
@@ -458,7 +461,7 @@ public class Config {
 	public void loadMax() {
 		if (this.isEnabled) {
 			if (!this.arena.exists()) {
-				System.out.println("ERROR: Arena " + Config.arenaName + " doesn't exists!");
+				System.out.println(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", Config.arenaName));
 			} else if (this.cfg.getBoolean("floor.floorPoints")) {
 				World world = Bukkit.getWorld("floor.max.World");
 				double xPos = ((Double) this.cfg.get("floor.max.xPos")).doubleValue();
@@ -518,15 +521,15 @@ public class Config {
 					this.floorLength = selection.getLength();
 					this.floorWidth = selection.getWidth();
 
-					p.sendMessage("§3[BlockParty] §8Floor was set for Arena " + Config.arenaName);
+					p.sendMessage(BlockParty.messageManager.SETUP_FLOOR_SET.replace("$ARENANAME$", Config.arenaName));
 					return true;
 				}
-				p.sendMessage("§3[BlockParty] §8Arena and Floor must be in the same world");
+				p.sendMessage(BlockParty.messageManager.SETUP_FLOOR_ERROR_SAME_WORLD);
 			} else {
-				p.sendMessage("§3[BlockParty] §8The Floor must be 1 block high!");
+				p.sendMessage(BlockParty.messageManager.SETUP_FLOOR_ERROR_MIN_HEIGHT);
 			}
 		} else {
-			p.sendMessage("§3[BlockParty] §8Select a region with WorldEdit first.");
+			p.sendMessage(BlockParty.messageManager.SETUP_FLOOR_ERROR_WORLD_EDIT_SELECT);
 		}
 		return false;
 	}
@@ -539,7 +542,7 @@ public class Config {
 	}
 
 	public static void broadcastFloor(String mes, String arenaName) {
-		for (String name : Players.getPlayersInLobby(arenaName)) {
+		for (String name : Players.getPlayersOnFloor(arenaName)) {
 			Player p = Bukkit.getPlayer(name);
 			p.sendMessage(mes);
 		}
@@ -587,6 +590,8 @@ public class Config {
 			this.useSongs = this.cfg.getBoolean("configuration.UseSongs");
 			this.autoRestart = this.cfg.getBoolean("configuration.AutoRestart");
 			this.autoKick = this.cfg.getBoolean("configuration.AutoKick");
+			this.fireworksEnabled = this.cfg.getBoolean("configuration.EnableFireworksOnWon");
+
 			if (this.cfg.getString("spawns.Game.World") != null) {
 				this.world = Bukkit.getWorld(this.cfg.getString("spawns.Game.World"));
 			}
@@ -603,6 +608,10 @@ public class Config {
 
 	public boolean getAutoKick() {
 		return this.autoKick;
+	}
+
+	public boolean getFireworksEnabled() {
+		return this.fireworksEnabled;
 	}
 
 	public ArrayList<String> getSongs() {

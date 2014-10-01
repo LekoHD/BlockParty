@@ -1,4 +1,5 @@
 package com.lekohd.blockparty.listeners;
+
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
@@ -21,11 +22,11 @@ public class InventoryListener implements Listener {
 		if (BlockParty.inLobbyPlayers.containsKey(p.getName())) {
 			event.setCancelled(true);
 		}
-		if (BlockParty.inGamePlayers.containsKey(p.getName())) {
+		if (BlockParty.onFloorPlayers.containsKey(p.getName())) {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
 	public void onClick(InventoryClickEvent e) {
 		if (e.getSlot() == e.getRawSlot()) {
@@ -33,27 +34,31 @@ public class InventoryListener implements Listener {
 			if (BlockParty.inLobbyPlayers.containsKey(p.getName())) {
 				e.setCancelled(true);
 				p.updateInventory();
-				ItemStack item = e.getCurrentItem();
-				if (item != null) {
-					String name = ChatColor.stripColor(item.getItemMeta().getDisplayName());
-					Vote.voteFor(name, (String) BlockParty.inLobbyPlayers.get(p.getName()));
-					p.sendMessage("§3[BlockParty] §8You have voted for " + name);
-					p.getInventory().remove(Material.FIREBALL);
-					Vote.closeInv(p);
+				try {
+					ItemStack item = e.getCurrentItem();
+					if (item != null) {
+						String song = ChatColor.stripColor(item.getItemMeta().getDisplayName());
+						Vote.voteFor(song, (String) BlockParty.inLobbyPlayers.get(p.getName()));
+						p.sendMessage(BlockParty.messageManager.VOTE_FOR_SONG.replace("$SONG$", song));
+						p.getInventory().remove(Material.FIREBALL);
+						Vote.closeInv(p);
+					}
+				} catch (Exception ex) {
+					System.out.print(ex.getMessage());
 				}
 			}
-			
-			if (BlockParty.inGamePlayers.containsKey(p.getName())) {
+
+			if (BlockParty.onFloorPlayers.containsKey(p.getName())) {
 				e.setCancelled(true);
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void playerJoin(PlayerJoinEvent event) {
 		// upon reboot inventory will be written to file in order to restore
 		if (BlockParty.inventoryManager.restoreFromFile(event.getPlayer())) {
-			//System.out.print("[BlockParty] Restored Player Inventory");
+			// System.out.print("[BlockParty] Restored Player Inventory");
 			BlockParty.inventoriesToRestore.remove(event.getPlayer().getName());
 		}
 	}

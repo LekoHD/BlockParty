@@ -38,7 +38,7 @@ public class Vote {
 			ItemMeta meta = item.getItemMeta();
 			meta.setDisplayName((String) ((Config) BlockParty.getArena.get(arenaName)).getSongs().get(0));
 			List lores = new ArrayList();
-			lores.add("Click to Vote!");
+			lores.add(BlockParty.messageManager.VOTE_ITEM_FIREBALL_LORE);
 			meta.setLore(lores);
 			item.setItemMeta(meta);
 			inv.setItem(0, item);
@@ -48,7 +48,7 @@ public class Vote {
 				ItemMeta meta = item.getItemMeta();
 				meta.setDisplayName((String) ((Config) BlockParty.getArena.get(arenaName)).getSongs().get(i));
 				List lores = new ArrayList();
-				lores.add("Click to Vote!");
+				lores.add(BlockParty.messageManager.VOTE_ITEM_FIREBALL_LORE);
 				meta.setLore(lores);
 				item.setItemMeta(meta);
 				inv.setItem(i, item);

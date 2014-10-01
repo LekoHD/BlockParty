@@ -2,6 +2,7 @@ package com.lekohd.blockparty.music;
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
+import com.lekohd.blockparty.BlockParty;
 import com.xxmicloxx.NoteBlockAPI.NBSDecoder;
 import com.xxmicloxx.NoteBlockAPI.NoteBlockPlayerMain;
 import com.xxmicloxx.NoteBlockAPI.RadioSongPlayer;
@@ -15,10 +16,10 @@ public class Songs {
 		Player target = p;
 		File file = new File("plugins/BlockParty/Songs/", song + ".nbs");
 		if (!file.exists()) {
-			p.sendMessage("§3[BlockParty] §8" + song + " does not exist ..");
+			p.sendMessage(BlockParty.messageManager.SONG_NOT_EXIST.replace("$SONG$", song));
 		} else {
 			playSong(target, song + ".nbs");
-			p.sendMessage("§3[BlockParty] §8Playing song " + song);
+			p.sendMessage(BlockParty.messageManager.SONG_NOW_PLAYING.replace("$SONG$", song));
 		}
 	}
 

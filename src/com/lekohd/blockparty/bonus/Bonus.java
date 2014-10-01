@@ -1,4 +1,5 @@
 package com.lekohd.blockparty.bonus;
+
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
@@ -18,20 +19,20 @@ public class Bonus {
 		if (duration > 0) {
 			if (ef.equalsIgnoreCase("walk")) {
 				p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, duration * 20, 2));
-				p.sendMessage("§3[BlockParty] §8You walk speed has increased.");
+				p.sendMessage(BlockParty.messageManager.EFFECTS_WALKING);
 			}
 			if (ef.equalsIgnoreCase("jump")) {
 				p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, duration * 20, 3));
-				p.sendMessage("§3[BlockParty] §8You jump hight has increased.");
+				p.sendMessage(BlockParty.messageManager.EFFECTS_JUMPING);
 			}
 			if (ef.equalsIgnoreCase("nausea")) {
 				p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, duration * 20, 1));
-				p.sendMessage("§3[BlockParty] §8Ohh... This was a bad effect.");
+				p.sendMessage(BlockParty.messageManager.EFFECTS_NAUSEA);
 				return;
 			}
 			if (ef.equalsIgnoreCase("blindness")) {
 				p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, duration * 20, 1));
-				p.sendMessage("§3[BlockParty] §8Ohh... This was a bad effect.");
+				p.sendMessage(BlockParty.messageManager.EFFECTS_BLINDNESS);
 				return;
 			}
 			dc = Bukkit.getScheduler().scheduleSyncRepeatingTask(BlockParty.getInstance(), new Runnable() {
@@ -40,7 +41,7 @@ public class Bonus {
 						if (Bonus.duration > 1) {
 							Bonus.duration -= 1;
 						} else if (Bonus.duration > -1) {
-							p.sendMessage("§3[BlockParty] §8Your effect has expired");
+							p.sendMessage(BlockParty.messageManager.EFFECTS_EXPIRED);
 							Bukkit.getScheduler().cancelTask(Bonus.dc);
 						} else {
 							Bukkit.getScheduler().cancelTask(Bonus.dc);

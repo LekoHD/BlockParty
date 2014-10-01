@@ -26,7 +26,7 @@ public class SignListener implements Listener {
 							e.setLine(3, "§2Join");
 							BlockParty.signs.put(arenaName, (Sign) e.getBlock().getState());
 						} else {
-							p.sendMessage("§3[BlockParty] §8Arena " + e.getLine(1) + " isn't enabled or doesn't exists!");
+							p.sendMessage(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", e.getLine(1)));
 						}
 					}
 				}

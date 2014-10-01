@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import com.lekohd.blockparty.BlockParty;
 
 public class Item {
 	public static ItemStack walk;
@@ -17,17 +18,17 @@ public class Item {
 	public static void loadItems() {
 		walk = new ItemStack(Material.DIAMOND_BOOTS, 1);
 		ItemMeta walkmeta = walk.getItemMeta();
-		walkmeta.setDisplayName("§6Walk faster");
+		walkmeta.setDisplayName(BlockParty.messageManager.BOOST_NAME_WALK);
 		walk.setItemMeta(walkmeta);
 
 		jump = new ItemStack(Material.GOLD_BOOTS, 1);
 		ItemMeta jumpmeta = jump.getItemMeta();
-		jumpmeta.setDisplayName("§6Jump higher");
+		jumpmeta.setDisplayName(BlockParty.messageManager.BOOST_NAME_JUMP);
 		jump.setItemMeta(jumpmeta);
 
 		ender = new ItemStack(Material.ENDER_PEARL, 3);
 		ItemMeta endermeta = ender.getItemMeta();
-		endermeta.setDisplayName("§6Jump further");
+		endermeta.setDisplayName(BlockParty.messageManager.BOOST_NAME_ENDERPEARL);
 		ender.setItemMeta(endermeta);
 	}
 

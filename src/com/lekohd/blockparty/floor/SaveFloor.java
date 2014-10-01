@@ -14,7 +14,7 @@ public class SaveFloor {
 	public static void setFloor(Player p, String arenaName) {
 		File arena = new File("plugins//BlockParty//Arenas//" + arenaName + ".yml");
 		if (!arena.exists()) {
-			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " doesn't exists!");
+			p.sendMessage(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", arenaName));
 		} else {
 			FileConfiguration cfg = YamlConfiguration.loadConfiguration(arena);
 			if (checkConditions(p, arenaName)) {

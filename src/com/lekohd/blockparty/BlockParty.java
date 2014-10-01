@@ -64,15 +64,26 @@ public class BlockParty extends JavaPlugin {
 	public static Set<String> inventoriesToRestore;
 	public static Logger logger;
 	public static InventoryManager inventoryManager;
-
+	public static String defaultLanguage = "en";
+	public static MessageManager messageManager;
+	
+	
 	@SuppressWarnings("deprecation")
 	public void onEnable() {
+		logger = Logger.getLogger("Minecraft");
+
+		messageManager = new MessageManager();
+
 		instance = this;
+		File file = new File(getDataFolder(), "locale_en.yml");
+		if (!file.exists()) {
+			System.out.print("[BlockParty] Default language file not found. Creating English locale_en.yml");
+			this.saveResource("locale_en.yml", false);
+		}
+		
 		loadConfig();
 		
-		logger = Logger.getLogger("Minecraft");
-		
-		MessageManager.getInstance().log("Plugin by " + getDescription().getAuthors());
+		messageManager.log("Plugin by " + getDescription().getAuthors());
 
 		getCommand("blockparty").setExecutor(new BlockPartyCommand());
 
@@ -110,7 +121,7 @@ public class BlockParty extends JavaPlugin {
 
 	public void onDisable() {
 		Bukkit.getScheduler().cancelTasks(BlockParty.instance);
-		MessageManager.getInstance().log("Plugin disabled!");
+		messageManager.log("Plugin disabled!");
 	}
 
 	public static BlockParty getInstance() {
@@ -127,22 +138,23 @@ public class BlockParty extends JavaPlugin {
 			dir.mkdir();
 			return;
 		}
-		System.out.print("[BlockParty] Loading inventoriesToRestore");
+		System.out.print("[BlockParty] Loading Inventories To Restore");
 
 		for (File f : dir.listFiles()) {
 			if (f.getName().endsWith(".inv")) {
 				inventoriesToRestore.add(f.getName().substring(0, f.getName().indexOf(".")));
-				System.out.print("[BlockParty] inventoriesToRestore = " + f.getName().substring(0, f.getName().indexOf(".")));
+				System.out.print("[BlockParty] Inv. to Restore = " + f.getName().substring(0, f.getName().indexOf(".")));
 			}
 		}
 	}
-
 
 	@SuppressWarnings("unchecked")
 	public static void loadConfig() {
 		FileConfiguration cfg = instance.getConfig();
 		cfg.options().copyDefaults(true);
 		instance.saveConfig();
+		defaultLanguage = cfg.getString("defaultLanguage");
+		messageManager.loadLocale(defaultLanguage);
 		arenaNames = (ArrayList<String>) cfg.get("enabledArenas");
 		if (arenaNames != null) {
 			if (!arenaNames.isEmpty()) {
@@ -162,15 +174,13 @@ public class BlockParty extends JavaPlugin {
 						for (String floor : conf.getFloors()) {
 							floors.add(new LoadFloor(floor));
 							getFloor.put(name, floors);
-							//System.out.print("[BlockParty] "+ name +" Floor " + floor + "Loaded");
 						}
 					}
-					MessageManager.getInstance().log("Arena " + name + " loaded!");
+					messageManager.log("Arena " + name + " loaded!");
 				}
 			}
 		}
 	}
-
 
 	public static void sendInfoToConsole(String msg) {
 		logger.info("[BlockParty] " + msg);

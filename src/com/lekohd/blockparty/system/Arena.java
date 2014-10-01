@@ -20,7 +20,7 @@ public class Arena {
 			p.sendMessage(conf.create());
 			BlockParty.getArena.put(arenaName, conf);
 		} else {
-			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " already exists!");
+			p.sendMessage(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", arenaName));
 		}
 	}
 
@@ -28,7 +28,7 @@ public class Arena {
 		if (BlockParty.getArena.containsKey(arenaName)) {
 			p.sendMessage(BlockParty.getArena.get(arenaName).setSpawn(p, pos));
 		} else {
-			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " doesn't exists!");
+			p.sendMessage(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", arenaName));
 		}
 	}
 
@@ -37,7 +37,7 @@ public class Arena {
 			p.sendMessage(BlockParty.getArena.get(arenaName).delete());
 			BlockParty.getArena.remove(arenaName);
 		} else {
-			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " doesn't exists!");
+			p.sendMessage(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", arenaName));
 		}
 	}
 
@@ -50,7 +50,7 @@ public class Arena {
 			try {
 
 				if (VanishNoPacket.isVanished(p.getName())) {
-					p.sendMessage("§3[BlockParty] §8Cannot join arena when you are in Vanish Mode.");
+					p.sendMessage(BlockParty.messageManager.JOIN_VANISH);
 					return;
 				}
 			} catch (Exception ex) {
@@ -60,7 +60,7 @@ public class Arena {
 		if (BlockParty.getArena.containsKey(arenaName)) {
 			BlockParty.getArena.get(arenaName).join(p);
 		} else {
-			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " does not exist at this time!");
+			p.sendMessage(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", arenaName));
 		}
 	}
 
@@ -105,9 +105,9 @@ public class Arena {
 				cfg.set("enabledArenas", BlockParty.arenaNames);
 			}
 			BlockParty.getInstance().saveConfig();
-			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " loaded!");
+			p.sendMessage(BlockParty.messageManager.ARENA_ENABLED.replace("$ARENANAME$", arenaName));
 		} else {
-			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " doesn't exists!");
+			p.sendMessage(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", arenaName));
 		}
 	}
 
@@ -123,20 +123,20 @@ public class Arena {
 					cfg.set("enabledArenas", BlockParty.arenaNames);
 				}
 				BlockParty.getInstance().saveConfig();
-				p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " disabled!");
+				p.sendMessage(BlockParty.messageManager.ARENA_DISABLED.replace("$ARENANAME$", arenaName));
 			} else {
-				p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " doesn't exists!");
+				p.sendMessage(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", arenaName));
 			}
 		} else {
-			p.sendMessage("§3[BlockParty] §8Arena " + arenaName + " doesn't exists!");
+			p.sendMessage(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", arenaName));
 		}
 	}
 
 	public static void reload(Player p) {
-		for (String name : BlockParty.arenaNames) {
-			p.sendMessage("§3[BlockParty] §8reloading "+name);
-			Arena.enable(name, p);
+		for (String arenaName : BlockParty.arenaNames) {
+			p.sendMessage(BlockParty.messageManager.ARENA_RELOADING.replace("$ARENANAME$", arenaName));
+			Arena.enable(arenaName, p);
 		}
-		p.sendMessage("§3[BlockParty] §8configs reloaded!");
+		p.sendMessage(BlockParty.messageManager.ARENA_CONFIGS_RELOADED);
 	}
 }

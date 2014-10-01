@@ -1,4 +1,5 @@
 package com.lekohd.blockparty.level;
+
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
@@ -13,11 +14,9 @@ import com.lekohd.blockparty.sign.Signs;
 import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Config;
 import com.lekohd.blockparty.system.Players;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
-
 import me.confuser.barapi.BarAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -65,7 +64,7 @@ public class Period {
 	@SuppressWarnings("rawtypes")
 	public static void setShFloor(String aName) {
 		if (((ArrayList) BlockParty.getFloor.get(aName)).isEmpty()) {
-			System.err.println("Blockparty: There are no floors for Arena " + aName);
+			System.err.println(BlockParty.messageManager.ARENA_FLOOR_ERROR.replace("$ARENANAME$", aName));
 		} else if (((ArrayList) BlockParty.getFloor.get(aName)).size() == 1) {
 			((LoadFloor) ((ArrayList) BlockParty.getFloor.get(aName)).get(0)).placeFloor(aName);
 		} else {
@@ -95,10 +94,10 @@ public class Period {
 			if (Players.getPlayerAmountOnFloor(aName) != 1) {
 				for (String name : Players.getPlayersOnFloor(aName)) {
 					Player p = Bukkit.getPlayer(name);
-					BarAPI.setMessage(p, "Waiting ...", 100.0F);
+					BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
 				}
 			} else {
-				BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), "Waiting ...", 100.0F);
+				BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_WAITING, 100.0F);
 			}
 		}
 		dc = Bukkit.getScheduler().scheduleSyncRepeatingTask(BlockParty.getInstance(), new Runnable() {
@@ -118,7 +117,7 @@ public class Period {
 	public static void stop(String arenaName) {
 		final String aName = arenaName;
 		final Boosts b = new Boosts();
-		//Bukkit.getScheduler().cancelTasks(BlockParty.instance);
+		// Bukkit.getScheduler().cancelTasks(BlockParty.instance);
 		Bukkit.getScheduler().cancelTask(Period.cd);
 		Bukkit.getScheduler().cancelTask(Period.dc);
 		Bukkit.getScheduler().cancelTask(WinnerCountdown.cd);
@@ -128,29 +127,28 @@ public class Period {
 		Signs.updateGameProgress(aName, true);
 		Period.setFloor(aName, true);
 
-		
 		if ((((Config) BlockParty.getArena.get(aName)).getUseBoosts()) && (b != null)) {
 			b.remove();
 		}
 
 		for (String name : Players.getPlayersOnFloor(aName)) {
 			Player p = Bukkit.getPlayer(name);
-			p.sendMessage("§3[BlockParty] §8Congratulations! You won the game.");
+			p.sendMessage(BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_SELF);
 			if (Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) {
 				Songs.stop(p);
 			}
 			giveReward(p, arenaName);
 		}
-		
+
 		WinnerCountdown.start(aName);
 		if (Players.getPlayerAmountInLobby(aName) >= 1) {
 			for (String name : Players.getPlayersInLobby(aName)) {
 				Player p = Bukkit.getPlayer(name);
-				p.sendMessage("§3[BlockParty] §8Player " + (String) Players.getPlayersInGame(aName).get(0) + " won the game.");
+				p.sendMessage(BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_ALL.replace("$PLAYER$", (String) Players.getPlayersInGame(aName).get(0)));
 			}
 		} else if (Players.getPlayerAmountInLobby(aName) != 0) {
 			Bukkit.getPlayer((String) Players.getPlayersInLobby(aName).get(0)).sendMessage(
-					"§3[BlockParty] §8Player " + (String) Players.getPlayersInGame(aName).get(0) + " won the game.");
+					(BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_ALL).replace("$PLAYER$", (String) Players.getPlayersInGame(aName).get(0)));
 		}
 	}
 
@@ -170,36 +168,35 @@ public class Period {
 			Player p = Bukkit.getPlayer(name);
 			FloorBlock.givePlayer(p, randomBlock);
 			if (Material.STAINED_CLAY == randomBlock.getType() || Material.WOOL == randomBlock.getType()) {
-				p.sendMessage("§3[BlockParty] §8Next Block is " + FloorBlock.getName(randomBlock.getData(), randomBlock.getType()) + " !");
-			}else{
-				p.sendMessage("§3[BlockParty] §8Next Block is " + randomBlock.getType().name() + " !");
+				p.sendMessage(BlockParty.messageManager.PERIOD_NEXT_BLOCK_IS.replace("$BLOCKNAME$", FloorBlock.getName(randomBlock.getData(), randomBlock.getType())));
+			} else {
+				p.sendMessage(BlockParty.messageManager.PERIOD_NEXT_BLOCK_IS.replace("$BLOCKNAME$", randomBlock.getType().name()));
 			}
 			p.setLevel(period + 1);
 		}
-		
 
+		// 18 - 7.5 = 11.5
 		number -= period * multiplier;
 		final double numb = number;
-		
-		//debug - force game to end
-		//number = 1.0D;
+
+		// debug - force game to end
+		// number = 1.0D;
 
 		if ((period <= periods) && (number > 10.0D)) {
 			Period.cd = Bukkit.getScheduler().scheduleSyncRepeatingTask(BlockParty.getInstance(), new Runnable() {
 				public void run() {
 					if (Period.number != 0.0D) {
-						//System.out.print(Period.number);
+						// System.out.print(Period.number);
 						if (Period.number > 1.0D) {
 							Period.number -= 1.0D;
-
 							if ((Period.number > 10.0D) && (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))) {
 								if (Players.getPlayerAmountOnFloor(aName) != 1) {
 									for (String name : Players.getPlayersOnFloor(aName)) {
 										Player p = Bukkit.getPlayer(name);
-										BarAPI.setMessage(p, "Dance", (float) ((Period.number - 10.0D) / (numb - 10.0D) * 100.0D));
+										BarAPI.setMessage(p, BlockParty.messageManager.BAR_DANCE, (float) ((Period.number - 10.0D) / (numb - 10.0D) * 100.0D));
 									}
 								} else {
-									BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), "Dance",
+									BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_DANCE,
 											(float) ((Period.number - 10.0D) / (numb - 10.0D) * 100.0D));
 								}
 							}
@@ -208,10 +205,10 @@ public class Period {
 									if (Players.getPlayerAmountOnFloor(aName) != 1) {
 										for (String name : Players.getPlayersOnFloor(aName)) {
 											Player p = Bukkit.getPlayer(name);
-											BarAPI.setMessage(p, "STOP", 5);
+											BarAPI.setMessage(p, BlockParty.messageManager.BAR_STOP, 5);
 										}
 									} else {
-										BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), "STOP", 5);
+										BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_STOP, 5);
 									}
 								}
 								RemoveBlocks.remove(aName, Byte.valueOf(randomBlock.getData()), randomBlock.getType());
@@ -229,10 +226,11 @@ public class Period {
 									if (Players.getPlayerAmountOnFloor(aName) != 1) {
 										for (String name : Players.getPlayersOnFloor(aName)) {
 											Player p = Bukkit.getPlayer(name);
-											BarAPI.setMessage(p, "Waiting ...", 100.0F);
+											BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
 										}
 									} else {
-										BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), "Waiting ...", 100.0F);
+										BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_WAITING,
+												100.0F);
 									}
 								}
 								if ((((Config) BlockParty.getArena.get(aName)).getUseBoosts())
@@ -241,7 +239,7 @@ public class Period {
 									if (Players.getPlayerAmountOnFloor(aName) != 1) {
 										for (String name : Players.getPlayersOnFloor(aName)) {
 											Player p = Bukkit.getPlayer(name);
-											p.sendMessage("§3[BlockParty] §8A Boost have been summoned!");
+											p.sendMessage(BlockParty.messageManager.PERIOD_BOOSTS_SUMMONED);
 										}
 									}
 								}
@@ -259,15 +257,21 @@ public class Period {
 								if ((((Config) BlockParty.getArena.get(aName)).getUseBoosts()) && (b != null)) {
 									b.remove();
 								}
-								
-								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(
-										"§3[BlockParty] §8Congratulations! You won the game.");
-								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(
-										"§3[BlockParty] §8You will get you reward when you leave the arena!");
+
+								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_SELF);
+								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_REWARD);
 								giveReward(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), aName);
 
 								WinnerCountdown.start(aName);
-								Config.broadcastLobby("§3[BlockParty] §8Players" + getWinners(aName) + " won the game.", aName);
+								Config.broadcastLobby(BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_ALL.replace("$PLAYER$", getWinners(aName)), aName);
+							}
+							// make sure timer stops when arena is empty
+							if (Players.getPlayerAmountOnFloor(aName) == 0) {
+								Bukkit.getScheduler().cancelTask(Period.cd);
+								((Config) BlockParty.getArena.get(aName)).setStart(false);
+								((Config) BlockParty.getArena.get(aName)).setGameProgress("inLobby");
+								Signs.updateGameProgress(aName, true);
+								Period.setFloor(aName, true);
 							}
 						} else {
 							Period.period += 1;
@@ -275,13 +279,14 @@ public class Period {
 							Period.this.start(aName, Period.period, bo);
 						}
 					} else {
-						System.out.println("[BlockParty] ERROR: Period countdown is less than 1 | start number = " + Period.number);
+						System.out.println("[BlockParty] ERROR: Period countdown is less than 1 | start number = " + Period.number
+								+ ": Auto Restart Initiated.");
 
 						Period.period += 1;
 						Bukkit.getScheduler().cancelTask(Period.cd);
 						Period.this.start(aName, Period.period, bo);
 
-						//System.out.println("[BlockParty] ERROR: The countdown is less than 1 (period)");
+						// System.out.println("[BlockParty] ERROR: The countdown is less than 1 (period)");
 					}
 				}
 			}, 0L, 20L);
@@ -295,21 +300,21 @@ public class Period {
 			Signs.updateGameProgress(aName, true);
 			for (String name : Players.getPlayersOnFloor(aName)) {
 				Player p = Bukkit.getPlayer(name);
-				p.sendMessage("§3[BlockParty] §8Congratulations! You won the game.");
+				p.sendMessage(BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_SELF);
 				if (Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) {
 					Songs.stop(p);
 				}
 				giveReward(p, arenaName);
 			}
-			
+
 			if (Players.getPlayerAmountInLobby(aName) != 1) {
 				for (String name : Players.getPlayersInLobby(aName)) {
 					Player p = Bukkit.getPlayer(name);
-					p.sendMessage("§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
+					p.sendMessage(BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_ALL.replace("$PLAYER$", getWinners(aName)));
 				}
 			} else {
 				Bukkit.getPlayer((String) Players.getPlayersInLobby(aName).get(0)).sendMessage(
-						"§3[BlockParty] §8Players" + getWinners(aName) + " won the game.");
+						BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_ALL.replace("$PLAYER$", getWinners(aName)));
 			}
 
 			WinnerCountdown.start(aName);
@@ -334,43 +339,23 @@ public class Period {
 		Random random = new Random();
 		return random.nextInt((upper - lower)) + lower;
 	}
-	
+
 	public static void giveReward(Player p, String arenaName) {
 		BlockParty.inventoryManager.restoreInv(p);
 		BlockParty.inventoriesToRestore.remove(p.getPlayer().getName());
 
-		//ArrayList<Integer> rewards = ((Config) BlockParty.getArena.get(arenaName)).getRewardItems();
 		int totalRewardsAvail = ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().size();
-		
-		if(totalRewardsAvail > 1){
-			p.getInventory().addItem(new ItemStack[] { getItem(((Integer) ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().get(getRandomInt(0, totalRewardsAvail))).intValue()) });
-		}else{
+
+		if (totalRewardsAvail > 1) {
+			p.getInventory()
+					.addItem(
+							new ItemStack[] { getItem(((Integer) ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().get(
+									getRandomInt(0, totalRewardsAvail))).intValue()) });
+		} else {
 			p.getInventory().addItem(new ItemStack[] { getItem(((Integer) ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().get(0)).intValue()) });
 		}
-		
-		
-		//Award All Items OR Only a random one.
-		//if (((Config) BlockParty.getArena.get(arenaName)).getRewardItems().size() > 1) {
-		//	for (Iterator<?> localIterator3 = ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().iterator(); localIterator3.hasNext();) {
-		//		int item = ((Integer) localIterator3.next()).intValue();
-		//		p.getInventory().addItem(new ItemStack[] { getItem(item) });
-		//	}
-		//} else {
-		//	p.getInventory().addItem(new ItemStack[] { getItem(((Integer) ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().get(0)).intValue()) });
-		//}
 
 		BlockParty.inventoryManager.storeInv(p);
 		BlockParty.inventoriesToRestore.add(p.getPlayer().getName());
 	}
-
-	//public static void telBackToLobby(String arenaName) {
-	//	for (String name : Players.getPlayersInGame(arenaName)) {
-	//		if (!Players.getPlayersInGame(arenaName).contains(name)) {
-	//			Player p = Bukkit.getPlayer(name);
-	//			p.teleport(Arena.getLobbySpawn(arenaName));
-	//			BlockParty.onFloorPlayers.remove(p.getName());
-	//			BlockParty.inLobbyPlayers.put(p.getName(), arenaName);
-	//		}
-	//	}
-	//}
 }

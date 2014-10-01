@@ -75,14 +75,14 @@ public class BlockPartyCommand implements CommandExecutor {
 									if (Players.getPlayerAmountOnFloor(arenaName) >= 1) {
 										response += "§6Current Players On Floor:\n";
 										for (String name : Players.getPlayersOnFloor(arenaName)) {
-											response += "§4" + name + "\n";
+											response += "§4" + name + " - ";
 										}
 									}
 
 									if (Players.getPlayerAmountInLobby(arenaName) >= 1) {
-										response += "§6Current Players In Lobby:\n";
+										response += "\n§6Current Players In Lobby:\n";
 										for (String name : Players.getPlayersInLobby(arenaName)) {
-											response += "§4" + name + "\n";
+											response += "§4" + name + " - ";
 										}
 									}
 								} else {

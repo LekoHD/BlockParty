@@ -9,10 +9,10 @@ public class Signs {
 	public static void updateJoin(String arenaName, boolean full) {
 		if (BlockParty.signs.containsKey(arenaName)) {
 			if (full) {
-				((Sign) BlockParty.signs.get(arenaName)).setLine(3, "§4Full");
+				((Sign) BlockParty.signs.get(arenaName)).setLine(3, BlockParty.messageManager.SIGN_FULL);
 			}
 			if (!full) {
-				((Sign) BlockParty.signs.get(arenaName)).setLine(3, "§2Join");
+				((Sign) BlockParty.signs.get(arenaName)).setLine(3, BlockParty.messageManager.SIGN_JOIN);
 			}
 		}
 	}
@@ -20,10 +20,10 @@ public class Signs {
 	public static void updateGameProgress(String arenaName, boolean inLobby) {
 		if (BlockParty.signs.containsKey(arenaName)) {
 			if (inLobby) {
-				((Sign) BlockParty.signs.get(arenaName)).setLine(1, "§2In Lobby");
+				((Sign) BlockParty.signs.get(arenaName)).setLine(1, BlockParty.messageManager.SIGN_IN_LOBBY);
 			}
 			if (!inLobby) {
-				((Sign) BlockParty.signs.get(arenaName)).setLine(1, "§4In Game");
+				((Sign) BlockParty.signs.get(arenaName)).setLine(1, BlockParty.messageManager.SIGN_IN_GAME);
 			}
 		}
 	}
