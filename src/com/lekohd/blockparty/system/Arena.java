@@ -48,7 +48,6 @@ public class Arena {
 	public static void join(Player p, String arenaName) {
 		if (Bukkit.getPluginManager().isPluginEnabled("VanishNoPacket")) {
 			try {
-
 				if (VanishNoPacket.isVanished(p.getName())) {
 					p.sendMessage(BlockParty.messageManager.JOIN_VANISH);
 					return;
@@ -57,6 +56,8 @@ public class Arena {
 			}
 		}
 
+		
+		
 		if (BlockParty.getArena.containsKey(arenaName)) {
 			BlockParty.getArena.get(arenaName).join(p);
 		} else {

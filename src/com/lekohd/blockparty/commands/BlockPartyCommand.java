@@ -175,7 +175,7 @@ public class BlockPartyCommand implements CommandExecutor {
 							((Config) BlockParty.getArena.get(args[1])).abort();
 							// stop timers and cleanup here
 							Period.stop(args[1]);
-							Start.stopGameInProgress(args[1], p);
+							Config.stopGameInProgress(args[1], true);
 						} else {
 							p.sendMessage("§3[BlockParty] §8Arena " + args[1] + " isn't enabled or doesn't exists!");
 						}

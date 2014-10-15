@@ -14,6 +14,8 @@ import com.lekohd.blockparty.sign.Signs;
 import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Config;
 import com.lekohd.blockparty.system.Players;
+import com.lekohd.blockparty.system.Start;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -121,6 +123,7 @@ public class Period {
 		Bukkit.getScheduler().cancelTask(Period.cd);
 		Bukkit.getScheduler().cancelTask(Period.dc);
 		Bukkit.getScheduler().cancelTask(WinnerCountdown.cd);
+		Bukkit.getScheduler().cancelTask(Start.cd);
 
 		((Config) BlockParty.getArena.get(aName)).setStart(false);
 		((Config) BlockParty.getArena.get(aName)).setGameProgress("inLobby");
@@ -157,6 +160,8 @@ public class Period {
 		final String aName = arenaName;
 		final Boosts b = new Boosts();
 
+		// If Arena is disabled go ahead and kick all players in it currently.
+
 		period = currPeriod;
 		number = ((Config) BlockParty.getArena.get(arenaName)).getTimeToSearch() + 10;
 		multiplier = ((Config) BlockParty.getArena.get(arenaName)).getTimeReductionPerLevel();
@@ -168,7 +173,8 @@ public class Period {
 			Player p = Bukkit.getPlayer(name);
 			FloorBlock.givePlayer(p, randomBlock);
 			if (Material.STAINED_CLAY == randomBlock.getType() || Material.WOOL == randomBlock.getType()) {
-				p.sendMessage(BlockParty.messageManager.PERIOD_NEXT_BLOCK_IS.replace("$BLOCKNAME$", FloorBlock.getName(randomBlock.getData(), randomBlock.getType())));
+				p.sendMessage(BlockParty.messageManager.PERIOD_NEXT_BLOCK_IS.replace("$BLOCKNAME$",
+						FloorBlock.getName(randomBlock.getData(), randomBlock.getType())));
 			} else {
 				p.sendMessage(BlockParty.messageManager.PERIOD_NEXT_BLOCK_IS.replace("$BLOCKNAME$", randomBlock.getType().name()));
 			}
@@ -208,7 +214,8 @@ public class Period {
 											BarAPI.setMessage(p, BlockParty.messageManager.BAR_STOP, 5);
 										}
 									} else {
-										BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_STOP, 5);
+										BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)),
+												BlockParty.messageManager.BAR_STOP, 5);
 									}
 								}
 								RemoveBlocks.remove(aName, Byte.valueOf(randomBlock.getData()), randomBlock.getType());
@@ -229,8 +236,8 @@ public class Period {
 											BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
 										}
 									} else {
-										BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_WAITING,
-												100.0F);
+										BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)),
+												BlockParty.messageManager.BAR_WAITING, 100.0F);
 									}
 								}
 								if ((((Config) BlockParty.getArena.get(aName)).getUseBoosts())
@@ -258,8 +265,10 @@ public class Period {
 									b.remove();
 								}
 
-								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_SELF);
-								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_REWARD);
+								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(
+										BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_SELF);
+								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(
+										BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_REWARD);
 								giveReward(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), aName);
 
 								WinnerCountdown.start(aName);
@@ -355,7 +364,7 @@ public class Period {
 			p.getInventory().addItem(new ItemStack[] { getItem(((Integer) ((Config) BlockParty.getArena.get(arenaName)).getRewardItems().get(0)).intValue()) });
 		}
 
-		BlockParty.inventoryManager.storeInv(p);
+		BlockParty.inventoryManager.storeInv(p, false);
 		BlockParty.inventoriesToRestore.add(p.getPlayer().getName());
 	}
 }

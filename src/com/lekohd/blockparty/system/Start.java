@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.level.Period;
-import com.lekohd.blockparty.level.WinnerCountdown;
 import com.lekohd.blockparty.music.Songs;
 import com.lekohd.blockparty.sign.Signs;
 import me.confuser.barapi.BarAPI;
@@ -23,12 +22,15 @@ public class Start {
 	public static void start(String arenaName) {
 		if (!((Config) BlockParty.getArena.get(arenaName)).lessThanMinimum()) {
 			if (((Config) BlockParty.getArena.get(arenaName)).getGameProgress().equalsIgnoreCase("inLobby")) {
-				Bukkit.getScheduler().cancelTask(cd);
+				if (((Config) BlockParty.getArena.get(arenaName)).timerResetOnPlayerJoin) {
+					Bukkit.getScheduler().cancelTask(cd);
+				}
 				countdown(arenaName);
 			} else {
+				// Reset progress here as its glitched.
 				Bukkit.getScheduler().cancelTask(cd);
 				countdown(arenaName);
-				//BlockParty.logger.info("Game Progress is NOT inLobby");
+				// BlockParty.logger.info("Game Progress is NOT inLobby");
 			}
 		}
 	}
@@ -41,49 +43,35 @@ public class Start {
 	}
 
 	public static void startGame(String arenaName, Player sender) {
-		if ((Players.getPlayerAmountInLobby(arenaName) == 0) && (sender != null)) {
-			sender.sendMessage(BlockParty.messageManager.START_ERROR_ZERO_PAYERS);
-		} else {
-			String song = ((Config) BlockParty.getArena.get(arenaName)).getMostVotedSong();
-			((Config) BlockParty.getArena.get(arenaName)).votedSongs.clear();
+		if (BlockParty.getArena.get(arenaName) != null) {
+			if ((Players.getPlayerAmountInLobby(arenaName) == 0) && (sender != null)) {
+				sender.sendMessage(BlockParty.messageManager.START_ERROR_ZERO_PAYERS);
+			} else {
+				String song = ((Config) BlockParty.getArena.get(arenaName)).getMostVotedSong();
+				((Config) BlockParty.getArena.get(arenaName)).votedSongs.clear();
 
-			for (String name : Players.getPlayersInLobby(arenaName)) {
-				Player p = Bukkit.getPlayer(name);
-				p.teleport(Arena.getGameSpawn(arenaName));
-				p.getInventory().clear();
-				p.updateInventory();
-				BlockParty.inLobbyPlayers.remove(p.getName());
-				BlockParty.onFloorPlayers.put(name, arenaName);
-				p.sendMessage(BlockParty.messageManager.START_SUCCESS);
-				if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
-					Songs.stop(p);
-					Songs.play(p, song);
+				for (String name : Players.getPlayersInLobby(arenaName)) {
+					Player p = Bukkit.getPlayer(name);
+					p.teleport(Arena.getGameSpawn(arenaName));
+					p.getInventory().clear();
+					p.updateInventory();
+					BlockParty.inLobbyPlayers.remove(p.getName());
+					BlockParty.onFloorPlayers.put(name, arenaName);
+					p.sendMessage(BlockParty.messageManager.START_SUCCESS);
+					if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
+						Songs.stop(p);
+						Songs.play(p, song);
+					}
+					Bukkit.getScheduler().cancelTask(cd);
 				}
-				Bukkit.getScheduler().cancelTask(cd);
+				((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inGame");
+				Signs.updateGameProgress(arenaName, false);
+				((Config) BlockParty.getArena.get(arenaName)).setStart(false);
+				((Config) BlockParty.getArena.get(arenaName)).unAbort();
+				Period pe = new Period();
+				Period.setFloor(arenaName, true);
+				pe.delayedStart(arenaName, 0);
 			}
-			((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inGame");
-			Signs.updateGameProgress(arenaName, false);
-			((Config) BlockParty.getArena.get(arenaName)).setStart(false);
-			((Config) BlockParty.getArena.get(arenaName)).unAbort();
-			Period pe = new Period();
-			Period.setFloor(arenaName, true);
-			pe.delayedStart(arenaName, 0);
-		}
-	}
-
-	public static void stopGameInProgress(String arenaName, Player sender) {
-		// Remove all users in games and end them.
-		Bukkit.getScheduler().cancelTasks(BlockParty.instance);
-		WinnerCountdown.start(arenaName);
-		for (String name : Players.getPlayersInGame(arenaName)) {
-			Player p = Bukkit.getPlayer(name);
-			Arena.leave(p);
-			p.sendMessage(BlockParty.messageManager.STOP_GAME_FORCED);
-		}
-		for (String name : Players.getPlayersInLobby(arenaName)) {
-			Player p = Bukkit.getPlayer(name);
-			Arena.leave(p);
-			p.sendMessage(BlockParty.messageManager.STOP_GAME_FORCED);
 		}
 	}
 
@@ -104,6 +92,7 @@ public class Start {
 		if (((Config) BlockParty.getArena.get(arenaName)).getGameProgress().equalsIgnoreCase("Countdown")) {
 			return;
 		}
+
 		((Config) BlockParty.getArena.get(arenaName)).setGameProgress("Countdown");
 		String aName = arenaName;
 		number = ((Config) BlockParty.getArena.get(arenaName)).getCountdown();
@@ -114,42 +103,54 @@ public class Start {
 					if (Start.number != 1) {
 						Start.number -= 1;
 
-						if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
-							if (Players.getPlayerAmountInLobby(arenaName) != 1) {
-								for (String name : Players.getPlayersInLobby(arenaName)) {
-									Player p = Bukkit.getPlayer(name);
-									BarAPI.setMessage(p, BlockParty.messageManager.BAR_STARTS_SOON, Start.number * 10.0F / 3.0F);
-								}
-							} else {
-								BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersInLobby(arenaName).get(0)), "Game starts soon",
-										Start.number * 10.0F / 3.0F);
-							}
-						}
-						if ((Start.number == 20) || (Start.number == 30)) {
-							Config.broadcastLobby(BlockParty.messageManager.BAR_TIMER.replace("$TIMER$", ""+Start.number), arenaName);
-						}
-						Start.level(arenaName, Start.number);
-						if (Start.number < 11) {
-							Config.broadcastLobby(BlockParty.messageManager.BAR_TIMER.replace("$TIMER$", ""+Start.number), arenaName);
-						}
-						if (((Config) BlockParty.getArena.get(arenaName)).lessThanMinimum()) {
-							Config.broadcastLobby(BlockParty.messageManager.START_ERROR_LESS_THEN_MIN_PLAYERS, arenaName);
+						if (BlockParty.getArena.get(arenaName) == null) {
+							// Remove all users in games and end them.
+							//
 							for (String name : Players.getPlayersInLobby(arenaName)) {
 								Player p = Bukkit.getPlayer(name);
-								if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
-									BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
-								}
+								Arena.leave(p);
+								p.sendMessage(BlockParty.messageManager.STOP_GAME_FORCED);
 							}
 
-							((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inLobby");
-							start(arenaName);
 							Bukkit.getScheduler().cancelTask(Start.cd);
-						}
-						if (((Config) BlockParty.getArena.get(arenaName)).aborted()) {
-							Bukkit.getScheduler().cancelTask(Start.cd);
-							((Config) BlockParty.getArena.get(arenaName)).unAbort();
-							((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inLobby");
-							startGame(arenaName, null);
+						} else {
+							if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+								if (Players.getPlayerAmountInLobby(arenaName) != 1) {
+									for (String name : Players.getPlayersInLobby(arenaName)) {
+										Player p = Bukkit.getPlayer(name);
+										BarAPI.setMessage(p, BlockParty.messageManager.BAR_STARTS_SOON, Start.number * 10.0F / 3.0F);
+									}
+								} else {
+									BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersInLobby(arenaName).get(0)), "Game starts soon",
+											Start.number * 10.0F / 3.0F);
+								}
+							}
+							if ((Start.number == 20) || (Start.number == 30)) {
+								Config.broadcastLobby(BlockParty.messageManager.BAR_TIMER.replace("$TIMER$", "" + Start.number), arenaName);
+							}
+							Start.level(arenaName, Start.number);
+							if (Start.number < 11) {
+								Config.broadcastLobby(BlockParty.messageManager.BAR_TIMER.replace("$TIMER$", "" + Start.number), arenaName);
+							}
+							if (((Config) BlockParty.getArena.get(arenaName)).lessThanMinimum()) {
+								Config.broadcastLobby(BlockParty.messageManager.START_ERROR_LESS_THEN_MIN_PLAYERS, arenaName);
+								for (String name : Players.getPlayersInLobby(arenaName)) {
+									Player p = Bukkit.getPlayer(name);
+									if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+										BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
+									}
+								}
+
+								((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inLobby");
+								start(arenaName);
+								Bukkit.getScheduler().cancelTask(Start.cd);
+							}
+							if (((Config) BlockParty.getArena.get(arenaName)).aborted()) {
+								Bukkit.getScheduler().cancelTask(Start.cd);
+								((Config) BlockParty.getArena.get(arenaName)).unAbort();
+								((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inLobby");
+								startGame(arenaName, null);
+							}
 						}
 					} else {
 						Bukkit.getScheduler().cancelTask(Start.cd);
@@ -163,4 +164,5 @@ public class Start {
 			}
 		}, 0L, 20L);
 	}
+
 }

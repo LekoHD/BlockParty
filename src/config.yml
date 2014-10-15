@@ -1,8 +1,7 @@
 enabledArenas: []
 
-# None, Survival, Creative, Adventure 
-forcegamemode: Survival
 defaultLanguage: en
+timerResetOnJoin: false
 bypassCommands:
 - msg
 - ban

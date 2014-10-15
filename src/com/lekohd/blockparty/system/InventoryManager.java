@@ -1,4 +1,5 @@
 package com.lekohd.blockparty.system;
+
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
@@ -8,6 +9,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+//import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -22,6 +25,7 @@ public class InventoryManager {
 	private Map<Player, ItemStack[]> items;
 	private Map<Player, ItemStack[]> armor;
 	private Map<Player, Integer> exp;
+	//private Map<Player, Location> locs;
 
 	public InventoryManager(BlockParty blockparty) {
 		this.dir = new File("plugins//BlockParty//Inventories//");
@@ -32,7 +36,7 @@ public class InventoryManager {
 		this.exp = new HashMap<Player, Integer>();
 	}
 
-	public void storeInv(Player p) {
+	public void storeInv(Player p, Boolean setLocation) {
 		try {
 			if (this.items.containsKey(p)) {
 				return;
@@ -40,17 +44,23 @@ public class InventoryManager {
 			ItemStack[] items = p.getInventory().getContents();
 			ItemStack[] armor = p.getInventory().getArmorContents();
 			int exp = p.getLevel();
+			//Location locs = p.getLocation();
 
 			this.items.put(p, items);
 			this.armor.put(p, armor);
 			this.exp.put(p, exp);
+			//if (setLocation) {
+			//	this.locs.put(p, locs);
+			//}
 
 			File file = new File(this.dir, p.getName() + ".inv");
 			YamlConfiguration config = new YamlConfiguration();
 			config.set("items", items);
 			config.set("armor", armor);
 			config.set("exp", exp);
-
+			//if (setLocation) {
+			//	config.set("locs", locs);
+			//}
 			config.save(file);
 
 			clearInventory(p);
@@ -64,9 +74,9 @@ public class InventoryManager {
 	public void restoreInv(Player p) {
 		try {
 			File file = new File(this.dir, p.getName() + ".inv");
-			//System.out.print(this.dir);
 			ItemStack[] items = (ItemStack[]) this.items.remove(p);
 			ItemStack[] armor = (ItemStack[]) this.armor.remove(p);
+			
 			int exp = 0;
 			YamlConfiguration config = new YamlConfiguration();
 
@@ -85,13 +95,13 @@ public class InventoryManager {
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (InvalidConfigurationException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
@@ -132,7 +142,7 @@ public class InventoryManager {
 	public boolean restoreFromFile(Player p) {
 		try {
 			File file = new File(this.dir, p.getName() + ".inv");
-			//System.out.print(this.dir);
+			// System.out.print(this.dir);
 			ItemStack[] items = (ItemStack[]) this.items.remove(p);
 			ItemStack[] armor = (ItemStack[]) this.armor.remove(p);
 			int exp = 0;

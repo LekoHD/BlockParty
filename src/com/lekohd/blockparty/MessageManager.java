@@ -102,85 +102,86 @@ public class MessageManager {
 			YamlConfiguration config = new YamlConfiguration();
 			if (file.exists()) {
 				config.load(file);
-				BLOCKPARTY_COLOR = config.getString("BLOCKPARTY_COLOR");
-				BLOCKPARTY_PREFIX = BLOCKPARTY_COLOR + PLUGIN_NAME;
+				PLUGIN_NAME = "[BlockParty]";
+				BLOCKPARTY_COLOR = colorizeString(config.getString("BLOCKPARTY_COLOR"));
+				BLOCKPARTY_PREFIX = colorizeString(BLOCKPARTY_COLOR + PLUGIN_NAME);
+				
+				BOOST_NAME_WALK = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("BOOST_NAME_WALK"));
+				BOOST_NAME_JUMP = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("BOOST_NAME_JUMP"));
+				BOOST_NAME_ENDERPEARL = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("BOOST_NAME_ENDERPEARL"));
 
-				BOOST_NAME_WALK = BLOCKPARTY_PREFIX + " " + config.getString("BOOST_NAME_WALK");
-				BOOST_NAME_JUMP = BLOCKPARTY_PREFIX + " " + config.getString("BOOST_NAME_JUMP");
-				BOOST_NAME_ENDERPEARL = BLOCKPARTY_PREFIX + " " + config.getString("BOOST_NAME_ENDERPEARL");
+				EFFECTS_WALKING = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("EFFECTS_WALKING"));
+				EFFECTS_JUMPING = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("EFFECTS_JUMPING"));
+				EFFECTS_NAUSEA = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("EFFECTS_NAUSEA"));
+				EFFECTS_BLINDNESS = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("EFFECTS_BLINDNESS"));
+				EFFECTS_EXPIRED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("EFFECTS_EXPIRED"));
 
-				EFFECTS_WALKING = BLOCKPARTY_PREFIX + " " + config.getString("EFFECTS_WALKING");
-				EFFECTS_JUMPING = BLOCKPARTY_PREFIX + " " + config.getString("EFFECTS_JUMPING");
-				EFFECTS_NAUSEA = BLOCKPARTY_PREFIX + " " + config.getString("EFFECTS_NAUSEA");
-				EFFECTS_BLINDNESS = BLOCKPARTY_PREFIX + " " + config.getString("EFFECTS_BLINDNESS");
-				EFFECTS_EXPIRED = BLOCKPARTY_PREFIX + " " + config.getString("EFFECTS_EXPIRED");
+				ARENA_EXISTS_ALREADY = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("ARENA_EXISTS_ALREADY"));
+				ARENT_DOES_NOT_EXIST = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("ARENT_DOES_NOT_EXIST"));
+				ARENA_CREATED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("ARENA_CREATED"));
+				ARENA_FULL = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("ARENA_FULL"));
+				ARENA_DISABLED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("ARENA_DISABLED"));
+				ARENA_ENABLED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("ARENA_ENABLED"));
+				ARENA_RELOADING = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("ARENA_RELOADING"));
+				ARENA_CONFIGS_RELOADED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("ARENA_CONFIGS_RELOADED"));
+				ARENA_DELETED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("ARENA_DELETED"));
+				ARENA_FLOOR_ERROR = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("ARENA_FLOOR_ERROR"));
+				ARENA_SPAWN_ERROR = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("ARENA_SPAWN_ERROR"));
 
-				ARENA_EXISTS_ALREADY = BLOCKPARTY_PREFIX + " " + config.getString("ARENA_EXISTS_ALREADY");
-				ARENT_DOES_NOT_EXIST = BLOCKPARTY_PREFIX + " " + config.getString("ARENT_DOES_NOT_EXIST");
-				ARENA_CREATED = BLOCKPARTY_PREFIX + " " + config.getString("ARENA_CREATED");
-				ARENA_FULL = BLOCKPARTY_PREFIX + " " + config.getString("ARENA_FULL");
-				ARENA_DISABLED = BLOCKPARTY_PREFIX + " " + config.getString("ARENA_DISABLED");
-				ARENA_ENABLED = BLOCKPARTY_PREFIX + " " + config.getString("ARENA_ENABLED");
-				ARENA_RELOADING = BLOCKPARTY_PREFIX + " " + config.getString("ARENA_RELOADING");
-				ARENA_CONFIGS_RELOADED = BLOCKPARTY_PREFIX + " " + config.getString("ARENA_CONFIGS_RELOADED");
-				ARENA_DELETED = BLOCKPARTY_PREFIX + " " + config.getString("ARENA_DELETED");
-				ARENA_FLOOR_ERROR = BLOCKPARTY_PREFIX + " " + config.getString("ARENA_FLOOR_ERROR");
-				ARENA_SPAWN_ERROR = BLOCKPARTY_PREFIX + " " + config.getString("ARENA_SPAWN_ERROR");
+				SETUP_SPAWN_SET = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SETUP_SPAWN_SET"));
+				SETUP_FLOOR_SET = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SETUP_FLOOR_SET"));
+				SETUP_FLOOR_ERROR_SAME_WORLD = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SETUP_FLOOR_ERROR_SAME_WORLD"));
+				SETUP_FLOOR_ERROR_MIN_HEIGHT = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SETUP_FLOOR_ERROR_MIN_HEIGHT"));
+				SETUP_FLOOR_ERROR_WORLD_EDIT_SELECT = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SETUP_FLOOR_ERROR_WORLD_EDIT_SELECT"));
 
-				SETUP_SPAWN_SET = BLOCKPARTY_PREFIX + " " + config.getString("SETUP_SPAWN_SET");
-				SETUP_FLOOR_SET = BLOCKPARTY_PREFIX + " " + config.getString("SETUP_FLOOR_SET");
-				SETUP_FLOOR_ERROR_SAME_WORLD = BLOCKPARTY_PREFIX + " " + config.getString("SETUP_FLOOR_ERROR_SAME_WORLD");
-				SETUP_FLOOR_ERROR_MIN_HEIGHT = BLOCKPARTY_PREFIX + " " + config.getString("SETUP_FLOOR_ERROR_MIN_HEIGHT");
-				SETUP_FLOOR_ERROR_WORLD_EDIT_SELECT = BLOCKPARTY_PREFIX + " " + config.getString("SETUP_FLOOR_ERROR_WORLD_EDIT_SELECT");
+				JOIN_VANISH = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("JOIN_VANISH"));
+				JOIN_SUCCESS_BROADCAST = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("JOIN_SUCCESS_BROADCAST"));
+				JOIN_SUCCESS_PLAYER = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("JOIN_SUCCESS_PLAYER"));
+				JOIN_ERROR_FULL = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("JOIN_ERROR_FULL"));
+				JOIN_ERROR_IN_GAME = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("JOIN_ERROR_IN_GAME"));
+				JOIN_ARENA_IS_DISABLED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("JOIN_ARENA_IS_DISABLED"));
 
-				JOIN_VANISH = BLOCKPARTY_PREFIX + " " + config.getString("JOIN_VANISH");
-				JOIN_SUCCESS_BROADCAST = BLOCKPARTY_PREFIX + " " + config.getString("JOIN_SUCCESS_BROADCAST");
-				JOIN_SUCCESS_PLAYER = BLOCKPARTY_PREFIX + " " + config.getString("JOIN_SUCCESS_PLAYER");
-				JOIN_ERROR_FULL = BLOCKPARTY_PREFIX + " " + config.getString("JOIN_ERROR_FULL");
-				JOIN_ERROR_IN_GAME = BLOCKPARTY_PREFIX + " " + config.getString("JOIN_ERROR_IN_GAME");
-				JOIN_ARENA_IS_DISABLED = BLOCKPARTY_PREFIX + " " + config.getString("JOIN_ARENA_IS_DISABLED");
+				START_SUCCESS = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("START_SUCCESS"));
+				START_ERROR_ZERO_PAYERS = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("START_ERROR_ZERO_PAYERS"));
+				START_ERROR_LESS_THEN_MIN_PLAYERS = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("START_ERROR_LESS_THEN_MIN_PLAYERS"));
+				STOP_GAME_FORCED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("STOP_GAME_FORCED"));
 
-				START_SUCCESS = BLOCKPARTY_PREFIX + " " + config.getString("START_SUCCESS");
-				START_ERROR_ZERO_PAYERS = BLOCKPARTY_PREFIX + " " + config.getString("START_ERROR_ZERO_PAYERS");
-				START_ERROR_LESS_THEN_MIN_PLAYERS = BLOCKPARTY_PREFIX + " " + config.getString("START_ERROR_LESS_THEN_MIN_PLAYERS");
-				STOP_GAME_FORCED = BLOCKPARTY_PREFIX + " " + config.getString("STOP_GAME_FORCED");
+				LEAVE_LOCATION_NOT_FOUND = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("LEAVE_LOCATION_NOT_FOUND"));
+				LEAVE_CANNOT = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("LEAVE_CANNOT"));
+				LEAVE_NOT_IN_ARENA = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("LEAVE_NOT_IN_ARENA"));
+				LEAVE_ARENA_BROADCAST = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("LEAVE_ARENA_BROADCAST"));
+				LEAVE_ARENA_PLAYER = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("LEAVE_ARENA_PLAYER"));
 
-				LEAVE_LOCATION_NOT_FOUND = BLOCKPARTY_PREFIX + " " + config.getString("LEAVE_LOCATION_NOT_FOUND");
-				LEAVE_CANNOT = BLOCKPARTY_PREFIX + " " + config.getString("LEAVE_CANNOT");
-				LEAVE_NOT_IN_ARENA = BLOCKPARTY_PREFIX + " " + config.getString("LEAVE_NOT_IN_ARENA");
-				LEAVE_ARENA_BROADCAST = BLOCKPARTY_PREFIX + " " + config.getString("LEAVE_ARENA_BROADCAST");
-				LEAVE_ARENA_PLAYER = BLOCKPARTY_PREFIX + " " + config.getString("LEAVE_ARENA_PLAYER");
+				BAR_WAITING = colorizeString(config.getString("BAR_WAITING"));
+				BAR_DANCE = colorizeString(config.getString("BAR_DANCE"));
+				BAR_STOP = colorizeString(config.getString("BAR_STOP"));
+				BAR_STARTS_SOON = colorizeString(config.getString("BAR_STARTS_SOON"));
+				BAR_TIMER = colorizeString(config.getString("BAR_TIMER"));
 
-				BAR_WAITING = config.getString("BAR_WAITING");
-				BAR_DANCE = config.getString("BAR_DANCE");
-				BAR_STOP = config.getString("BAR_STOP");
-				BAR_STARTS_SOON = config.getString("BAR_STARTS_SOON");
-				BAR_TIMER = config.getString("BAR_TIMER");
+				PERIOD_WINNER_ANNOUNCE_SELF = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_WINNER_ANNOUNCE_SELF"));
+				PERIOD_WINNER_ANNOUNCE_ALL = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_WINNER_ANNOUNCE_ALL"));
+				PERIOD_WINNER_ANNOUNCE_REWARD = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_WINNER_ANNOUNCE_REWARD"));
+				PERIOD_NEXT_BLOCK_IS = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_NEXT_BLOCK_IS"));
+				PERIOD_BOOSTS_SUMMONED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_BOOSTS_SUMMONED"));
+				PERIOD_ELIMINATED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_ELIMINATED"));
+				PERIOD_ERROR_NO_FLOORS = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_ERROR_NO_FLOORS"));
 
-				PERIOD_WINNER_ANNOUNCE_SELF = BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_WINNER_ANNOUNCE_SELF");
-				PERIOD_WINNER_ANNOUNCE_ALL = BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_WINNER_ANNOUNCE_ALL");
-				PERIOD_WINNER_ANNOUNCE_REWARD = BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_WINNER_ANNOUNCE_REWARD");
-				PERIOD_NEXT_BLOCK_IS = BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_NEXT_BLOCK_IS");
-				PERIOD_BOOSTS_SUMMONED = BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_BOOSTS_SUMMONED");
-				PERIOD_ELIMINATED = BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_ELIMINATED");
-				PERIOD_ERROR_NO_FLOORS = BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_ERROR_NO_FLOORS");
+				SONG_NOT_EXIST = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SONG_NOT_EXIST"));
+				SONG_NOW_PLAYING = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SONG_NOW_PLAYING"));
 
-				SONG_NOT_EXIST = BLOCKPARTY_PREFIX + " " + config.getString("SONG_NOT_EXIST");
-				SONG_NOW_PLAYING = BLOCKPARTY_PREFIX + " " + config.getString("SONG_NOW_PLAYING");
+				VOTE_ITEM_INVENTORY_HEADER = colorizeString(config.getString("VOTE_ITEM_INVENTORY_HEADER"));
+				VOTE_ITEM_FIREBALL_DISPLAY_NAME = colorizeString(config.getString("VOTE_ITEM_FIREBALL_DISPLAY_NAME"));
+				VOTE_ITEM_FIREBALL_LORE = colorizeString(config.getString("VOTE_ITEM_FIREBALL_LORE"));
+				VOTE_FOR_SONG = colorizeString(config.getString("VOTE_FOR_SONG"));
 
-				VOTE_ITEM_INVENTORY_HEADER = config.getString("VOTE_ITEM_INVENTORY_HEADER");
-				VOTE_ITEM_FIREBALL_DISPLAY_NAME = config.getString("VOTE_ITEM_FIREBALL_DISPLAY_NAME");
-				VOTE_ITEM_FIREBALL_LORE = config.getString("VOTE_ITEM_FIREBALL_LORE");
-				VOTE_FOR_SONG = config.getString("VOTE_FOR_SONG");
+				SIGN_JOIN = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SIGN_JOIN"));
+				SIGN_FULL = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SIGN_FULL"));
+				SIGN_IN_LOBBY = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SIGN_IN_LOBBY"));
+				SIGN_IN_GAME = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SIGN_IN_GAME"));
+				SIGN_PLACEMENT_NOT_EXIST = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SIGN_PLACEMENT_NOT_EXIST"));
 
-				SIGN_JOIN = BLOCKPARTY_PREFIX + " " + config.getString("SIGN_JOIN");
-				SIGN_FULL = BLOCKPARTY_PREFIX + " " + config.getString("SIGN_FULL");
-				SIGN_IN_LOBBY = BLOCKPARTY_PREFIX + " " + config.getString("SIGN_IN_LOBBY");
-				SIGN_IN_GAME = BLOCKPARTY_PREFIX + " " + config.getString("SIGN_IN_GAME");
-				SIGN_PLACEMENT_NOT_EXIST = BLOCKPARTY_PREFIX + " " + config.getString("SIGN_PLACEMENT_NOT_EXIST");
-
-				NO_PERMISSION = BLOCKPARTY_PREFIX + " " + config.getString("NO_PERMISSION");
-				CONSOLE_OUTPUT_WINNER = PLUGIN_NAME + " " + config.getString("CONSOLE_OUTPUT_WINNER");
+				NO_PERMISSION = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("NO_PERMISSION"));
+				CONSOLE_OUTPUT_WINNER = colorizeString(PLUGIN_NAME + " " + config.getString("CONSOLE_OUTPUT_WINNER"));
 			} else {
 				System.out.print("[BlockParty] No locale file found. Assuming default is English (en)");
 			}
@@ -198,6 +199,11 @@ public class MessageManager {
 		// this.cfg.getInt("configuration.MinPlayers")
 	}
 
+	public static String colorizeString(String input){
+		return ChatColor.translateAlternateColorCodes('&', input);
+	}
+	
+	
 	public static enum MessageType {
 		INFO(ChatColor.GRAY, ""), ERROR(ChatColor.RED, "§cError: "), BAD(ChatColor.RED, "");
 

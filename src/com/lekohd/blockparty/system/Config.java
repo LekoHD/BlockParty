@@ -5,6 +5,8 @@ package com.lekohd.blockparty.system;
  */
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.floor.FloorPoints;
+import com.lekohd.blockparty.level.Period;
+import com.lekohd.blockparty.level.WinnerCountdown;
 import com.lekohd.blockparty.music.Songs;
 import com.lekohd.blockparty.sign.Signs;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -57,6 +59,8 @@ public class Config {
 	public boolean autoRestart = true;
 	public boolean autoKick = false;
 	public boolean fireworksEnabled = true;
+	public boolean timerResetOnPlayerJoin = true;
+	public boolean allowJoinDuringGame = true;
 	public ArrayList<String> enabledFloors = new ArrayList<String>();
 	public ArrayList<Integer> rewardItems = new ArrayList<Integer>();
 	public ArrayList<String> songs = new ArrayList<String>();
@@ -157,6 +161,8 @@ public class Config {
 		this.cfg.set("dontChange.Lobby", Boolean.valueOf(false));
 		this.cfg.set("floor.floorPoints", Boolean.valueOf(false));
 		this.cfg.set("configuration.EnableFireworksOnWon", Boolean.valueOf(true));
+		this.cfg.set("configuration.TimerResetOnPlayerJoin", Boolean.valueOf(true));
+		this.cfg.set("configuration.AllowJoinDuringGame", Boolean.valueOf(true));
 
 		try {
 			this.cfg.save(this.arena);
@@ -307,12 +313,12 @@ public class Config {
 	}
 
 	public static void leave(Player p) {
-		if (BlockParty.onFloorPlayers.containsKey(p.getName())) {
-			p.sendMessage(BlockParty.messageManager.LEAVE_CANNOT);
-			return;
-		}
+		// if (BlockParty.onFloorPlayers.containsKey(p.getName())) {
+		// p.sendMessage(BlockParty.messageManager.LEAVE_CANNOT);
+		// return;
+		// }
 
-		if (!BlockParty.inLobbyPlayers.containsKey(p.getName())) {
+		if (!BlockParty.inGamePlayers.containsKey(p.getName())) {
 			BlockParty.inventoryManager.restoreInv(p);
 			BlockParty.inventoriesToRestore.remove(p.getPlayer().getName());
 
@@ -327,8 +333,15 @@ public class Config {
 
 		broadcastInGame(BlockParty.messageManager.LEAVE_ARENA_BROADCAST.replace("$PLAYER$", p.getName()), (String) BlockParty.inGamePlayers.get(p.getName()));
 
-		if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
-			Songs.stop(p);
+		if (BlockParty.getArena.get(arenaName) != null) {
+			if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
+				Songs.stop(p);
+			}
+		} else {
+			if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI"))) {
+				Songs.stop(p);
+			}
+
 		}
 
 		p.teleport((Location) BlockParty.locs.get(p.getName()));
@@ -356,58 +369,62 @@ public class Config {
 			if (!BlockParty.inGamePlayers.containsKey(p.getName())) {
 				if (exists(p)) {
 					if (!Players.reachedMaxPlayers(Config.arenaName)) {
+						if ((allowJoinDuringGame == false && (Players.getPlayerAmountOnFloor(arenaName) <= 1)) || allowJoinDuringGame) {
+							// Save Player Info
+							BlockParty.locs.put(p.getName(), p.getLocation());
+							BlockParty.gm.put(p.getName(), p.getGameMode());
 
-						// Save Player Info
-						BlockParty.locs.put(p.getName(), p.getLocation());
-						BlockParty.gm.put(p.getName(), p.getGameMode());
+							// Reset game mode so they cannot fly
+							p.setGameMode(GameMode.ADVENTURE);
 
-						// Reset game mode so they cannot fly
-						p.setGameMode(GameMode.ADVENTURE);
+							// TP to arena
+							p.teleport(this.lobbySpawn);
 
-						// TP to arena
-						p.teleport(this.lobbySpawn);
+							// notify everyone someone joined
+							broadcastInGame(BlockParty.messageManager.JOIN_SUCCESS_BROADCAST.replace("$PLAYER$", p.getName()), Config.arenaName);
 
-						// notify everyone someone joined
-						broadcastInGame(BlockParty.messageManager.JOIN_SUCCESS_BROADCAST.replace("$PLAYER$", p.getName()), Config.arenaName);
+							// Add to game at this point
+							BlockParty.inGamePlayers.put(p.getName(), Config.arenaName);
+							BlockParty.inLobbyPlayers.put(p.getName(), Config.arenaName);
 
-						// Add to game at this point
-						BlockParty.inGamePlayers.put(p.getName(), Config.arenaName);
-						BlockParty.inLobbyPlayers.put(p.getName(), Config.arenaName);
+							// Archive Inventory
+							BlockParty.inventoryManager.storeInv(p, true);
+							BlockParty.inventoriesToRestore.add(p.getPlayer().getName());
+							p.getInventory().clear();
+							p.getInventory().addItem(new ItemStack[] { getVoteItem() });
+							p.updateInventory();
 
-						// Archive Inventory
-						BlockParty.inventoryManager.storeInv(p);
-						BlockParty.inventoriesToRestore.add(p.getPlayer().getName());
-						p.getInventory().clear();
-						p.getInventory().addItem(new ItemStack[] { getVoteItem() });
-						p.updateInventory();
+							// Play music while they wait :D
+							String song = ((Config) BlockParty.getArena.get(arenaName)).getMostVotedSong();
+							if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
+								Songs.stop(p);
+								Songs.play(p, song);
+							}
 
-						// Play music while they wait :D
-						String song = ((Config) BlockParty.getArena.get(arenaName)).getMostVotedSong();
-						if ((Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) && (((Config) BlockParty.getArena.get(arenaName)).getUseSongs())) {
-							Songs.stop(p);
-							Songs.play(p, song);
-						}
+							if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+								BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
+							}
 
-						if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
-							BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
-						}
-
-						// Allow players to watch while game in progress
-						if (((Config) BlockParty.getArena.get(arenaName)).getGameProgress().equalsIgnoreCase("inLobby")) {
-							Start.start(Config.arenaName);
-							Signs.updateJoin(Config.arenaName, false);
-						} else {
-							// Something broke if this ever happens :\
-							if (Players.getPlayerAmountOnFloor(arenaName) == 0) {
-								((Config) BlockParty.getArena.get(arenaName)).setStart(false);
-								((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inLobby");
-
+							// Allow players to watch while game in progress
+							if (((Config) BlockParty.getArena.get(arenaName)).getGameProgress().equalsIgnoreCase("inLobby")) {
 								Start.start(Config.arenaName);
 								Signs.updateJoin(Config.arenaName, false);
-							}
-						}
+							} else {
+								// Something broke if this ever happens :\
+								if (Players.getPlayerAmountOnFloor(arenaName) == 0) {
+									((Config) BlockParty.getArena.get(arenaName)).setStart(false);
+									((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inLobby");
 
-						p.sendMessage(BlockParty.messageManager.JOIN_SUCCESS_PLAYER.replace("$ARENANAME$", Config.arenaName));
+									Start.start(Config.arenaName);
+									Signs.updateJoin(Config.arenaName, false);
+								}
+							}
+
+							p.sendMessage(BlockParty.messageManager.JOIN_SUCCESS_PLAYER.replace("$ARENANAME$", Config.arenaName));
+
+						} else {
+							p.sendMessage(BlockParty.messageManager.JOIN_ERROR_FULL.replace("$ARENANAME$", Config.arenaName));
+						}
 					} else {
 						Signs.updateJoin(Config.arenaName, true);
 						p.sendMessage(BlockParty.messageManager.JOIN_ERROR_FULL.replace("$ARENANAME$", Config.arenaName));
@@ -419,6 +436,75 @@ public class Config {
 		} else {
 			p.sendMessage(BlockParty.messageManager.JOIN_ARENA_IS_DISABLED.replace("$ARENANAME$", Config.arenaName));
 		}
+	}
+
+	public static void stopGameInProgress(String arenaName, boolean inGame) {
+		// Remove all users in games and end them.
+		ArrayList<String> tempPlayers;
+
+		tempPlayers = Players.getPlayersInLobby(arenaName);
+		for (String name : tempPlayers) {
+			Player p = Bukkit.getPlayer(name);
+			Arena.leave(p);
+			p.sendMessage(BlockParty.messageManager.STOP_GAME_FORCED);
+		}
+
+		tempPlayers = Players.getPlayersInGame(arenaName);
+
+		for (String name : tempPlayers) {
+			Player p = Bukkit.getPlayer(name);
+			Arena.leave(p);
+			p.sendMessage(BlockParty.messageManager.STOP_GAME_FORCED);
+		}
+
+		tempPlayers = Players.getPlayersOnFloor(arenaName);
+		for (String name : tempPlayers) {
+			Player p = Bukkit.getPlayer(name);
+			Arena.leave(p);
+			p.sendMessage(BlockParty.messageManager.STOP_GAME_FORCED);
+		}
+
+		try {
+			Bukkit.getScheduler().cancelTask(Period.cd);
+		} catch (Exception ex) {
+		}
+		try {
+			Bukkit.getScheduler().cancelTask(Period.dc);
+		} catch (Exception ex) {
+		}
+
+		try {
+			Bukkit.getScheduler().cancelTask(Start.cd);
+		} catch (Exception ex) {
+		}
+
+		try {
+			Bukkit.getScheduler().cancelTask(WinnerCountdown.cd);
+		} catch (Exception ex) {
+		}
+	}
+
+	@SuppressWarnings("null")
+	public ArrayList<String> loadFloors() {
+		ArrayList<String> response = null;
+		File dir = new File("plugins//BlockParty//floors//", Config.arenaName);
+
+		if (!dir.exists()) {
+			dir.mkdir();
+			return null;
+		}
+		// System.out.print("[BlockParty] Loading Inventories To Restore");
+
+		for (File f : dir.listFiles()) {
+			if (f.getName().endsWith(".schematic")) {
+				response.add(f.getName().substring(0, f.getName().indexOf(".")));
+				// inventoriesToRestore.add(f.getName().substring(0,
+				// f.getName().indexOf(".")));
+				// System.out.print("[BlockParty] Inv. to Restore = " +
+				// f.getName().substring(0, f.getName().indexOf(".")));
+			}
+		}
+		return response;
 	}
 
 	public boolean lessThanMinimum() {
@@ -584,6 +670,7 @@ public class Config {
 			this.autoGenerateFloors = this.cfg.getBoolean("configuration.AutoGenerateFloors");
 			this.useSchematicFloors = this.cfg.getBoolean("configuration.UseSchematicFloors");
 			this.enabledFloors = ((ArrayList<String>) this.cfg.get("configuration.EnabledFloors"));
+			// this.enabledFloors = ((ArrayList<String>) loadFloors());
 			this.rewardItems = ((ArrayList<Integer>) this.cfg.get("configuration.RewardItems"));
 			this.songs = ((ArrayList<String>) this.cfg.get("configuration.Songs"));
 			this.cfg.set("configuration.useSongs", Boolean.valueOf(true));
@@ -591,6 +678,8 @@ public class Config {
 			this.autoRestart = this.cfg.getBoolean("configuration.AutoRestart");
 			this.autoKick = this.cfg.getBoolean("configuration.AutoKick");
 			this.fireworksEnabled = this.cfg.getBoolean("configuration.EnableFireworksOnWon");
+			this.timerResetOnPlayerJoin = this.cfg.getBoolean("configuration.TimerResetOnPlayerJoin");
+			this.allowJoinDuringGame = this.cfg.getBoolean("configuration.AllowJoinDuringGame");
 
 			if (this.cfg.getString("spawns.Game.World") != null) {
 				this.world = Bukkit.getWorld(this.cfg.getString("spawns.Game.World"));
@@ -612,6 +701,10 @@ public class Config {
 
 	public boolean getFireworksEnabled() {
 		return this.fireworksEnabled;
+	}
+
+	public boolean getTimerResetOnPlayerJoin() {
+		return this.timerResetOnPlayerJoin;
 	}
 
 	public ArrayList<String> getSongs() {
