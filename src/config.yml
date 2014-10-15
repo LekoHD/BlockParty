@@ -1,2 +1,10 @@
 enabledArenas: []
-    
+
+defaultLanguage: en
+timerResetOnJoin: false
+bypassCommands:
+- msg
+- ban
+- kick
+- mute
+- a

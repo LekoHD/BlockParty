@@ -1,5 +1,7 @@
 package com.lekohd.blockparty.scoreboardsystem;
-
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ */
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,12 +10,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
-/*
- * Copyright (C) 2014 Leon167 and XxChxppellxX 
- */
- 
 public class ScoreboardSys {
-
 	@SuppressWarnings("deprecation")
 	public static void setScore(Player p) {
 		Scoreboard playerboard = Bukkit.getScoreboardManager().getNewScoreboard();
@@ -22,21 +19,13 @@ public class ScoreboardSys {
 		objective.setDisplayName("§6BlockParty");
 		Score s1 = objective.getScore(Bukkit.getOfflinePlayer("§1" + ChatColor.GREEN + "------------"));
 		Score s2 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Level:"));
-		Score s3 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "CloudMine 24/7"));
+		Score s3 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Server"));
 		Score s4 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "2.0"));
 		Score s5 = objective.getScore(Bukkit.getOfflinePlayer("§2" + ChatColor.GREEN + "------------"));
 		Score s6 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Kit:"));
 		Score s7 = objective.getScore(Bukkit.getOfflinePlayer(""));
 		Score s8 = objective.getScore(Bukkit.getOfflinePlayer("§3" + ChatColor.GREEN + "------------"));
-		/*if(economy != null)
-		{
-			Score s9 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Guthaben:"));
-			Score s10 = objective.getScore(Bukkit.getOfflinePlayer("§3" + (int)Math.round(economy.getBalance(p.getName())) + ChatColor.GRAY + " Taler"));
-			Score s11 = objective.getScore(Bukkit.getOfflinePlayer("§4" + ChatColor.GREEN + "------------"));
-			s9.setScore(6);
-			s10.setScore(5);
-			s11.setScore(4);
-		}*/
+
 		Score s12 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Navigiere mit"));
 		Score s13 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "dem Compass"));
 		Score s14 = objective.getScore(Bukkit.getOfflinePlayer("§5" + ChatColor.GREEN + "------------"));
