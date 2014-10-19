@@ -1,2 +1,18 @@
 enabledArenas: []
-    
+
+defaultLanguage: en
+timerResetOnJoin: false
+bypassCommands:
+- msg
+- ban
+- kick
+- mute
+- a
+webPlayer:
+  enabled: false
+  mysql:
+    host: localhost
+    port: 3306
+    database: BlockParty
+    user: root
+    password: ''
