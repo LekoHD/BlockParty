@@ -1,6 +1,6 @@
 package com.lekohd.blockparty.floor;
 /*
- * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ * Copyright (C) 2014 Leon167, XxChxppellxX, CPx1989 and ScriptJunkie 
  */
 import org.bukkit.Material;
 import org.bukkit.block.Block;

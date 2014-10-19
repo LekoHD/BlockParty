@@ -1,6 +1,6 @@
 package com.lekohd.blockparty.music;
 /*
- * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ * Copyright (C) 2014 Leon167, XxChxppellxX, CPx1989 and ScriptJunkie 
  */
 import com.lekohd.blockparty.BlockParty;
 import com.xxmicloxx.NoteBlockAPI.NBSDecoder;
