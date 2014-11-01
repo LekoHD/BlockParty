@@ -1,6 +1,6 @@
 package com.lekohd.blockparty;
 /*
- * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ * Copyright (C) 2014 Leon167, XxChxppellxX, CPx1989 and ScriptJunkie 
  */
 import com.lekohd.blockparty.system.Metrics;
 import com.lekohd.blockparty.commands.BlockPartyCommand;
@@ -65,6 +65,7 @@ public class BlockParty extends JavaPlugin {
 	public static Logger logger;
 	public static InventoryManager inventoryManager;
 	public static String defaultLanguage = "en";
+	public static boolean webPlayer = false;
 	public static MessageManager messageManager;
 	
 	
@@ -98,14 +99,21 @@ public class BlockParty extends JavaPlugin {
 		pm.registerEvents(new BlockPlaceListener(), this);
 		pm.registerEvents(new DamageListener(), this);
 		pm.registerEvents(new InventoryListener(), this);
-
+		/* if (webPlayer){
+		 *	   messageManager.log("Using WebPlayer");
+		 *	   Database.initialize();
+		 * }
+		 * else { 
+		 */
 		noteBlockAPI = pm.isPluginEnabled("NoteBlockAPI");
 		pm.isPluginEnabled("BarAPI");
 		if (noteBlockAPI) {
+			// messageManager.log("Using NoteBlockAPI");
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				Songs.stop(p);
 			}
 		}
+		//} Close Else
 		
 		pdfFile = getDescription();
 		
@@ -154,6 +162,7 @@ public class BlockParty extends JavaPlugin {
 		cfg.options().copyDefaults(true);
 		instance.saveConfig();
 		defaultLanguage = cfg.getString("defaultLanguage");
+		webPlayer = cfg.getBoolean("webPlayer");
 		messageManager.loadLocale(defaultLanguage);
 		arenaNames = (ArrayList<String>) cfg.get("enabledArenas");
 		if (arenaNames != null) {

@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class InteractListener implements Listener {
 	/*
-	 * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+	 * Copyright (C) 2014 Leon167, XxChxppellxX, CPx1989 and ScriptJunkie 
 	 */
 	public int duration = 10;
 

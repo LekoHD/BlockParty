@@ -14,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class Vote {
 	/*
-	 * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+	 * Copyright (C) 2014 Leon167, XxChxppellxX, CPx1989 and ScriptJunkie 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void openInv(Player p, String arenaName) {
