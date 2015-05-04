@@ -18,12 +18,14 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class MoveListener implements Listener {
+
+    public Location loc;
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
 		if (BlockParty.onFloorPlayers.containsKey(e.getPlayer().getName())) {
-			Location loc = e.getTo();
-			loc.setY(e.getTo().getBlockY() - 1);
+			loc = e.getPlayer().getLocation();
+			loc.setY(loc.getBlockY() - 1);
 			try {
 				if (loc.getBlock().getTypeId() == (BlockParty.getArena.get(BlockParty.onFloorPlayers.get(e.getPlayer().getName()))).getOutBlock()) {
 					if (Players.getPlayerAmountOnFloor((String) BlockParty.onFloorPlayers.get(e.getPlayer().getName())) > 1) {
@@ -42,7 +44,7 @@ public class MoveListener implements Listener {
 						world.strikeLightning(e.getPlayer().getLocation());
 						Config.broadcastInGame(BlockParty.messageManager.PERIOD_ELIMINATED.replace("$PLAYER$", e.getPlayer().getName()), Config.arenaName);
 
-						// e.getPlayer().sendMessage("§3[BlockParty] §8You were §4ELIMINATED");
+						// e.getPlayer().sendMessage("ï¿½3[BlockParty] ï¿½8You were ï¿½4ELIMINATED");
 						e.getPlayer().teleport(Arena.getLobbySpawn((String) BlockParty.onFloorPlayers.get(e.getPlayer().getName())));
 						BlockParty.onFloorPlayers.remove(e.getPlayer().getName());
 						if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
@@ -53,7 +55,7 @@ public class MoveListener implements Listener {
 			} catch (Exception ex) {
 				Config.broadcastInGame(BlockParty.messageManager.PERIOD_ELIMINATED.replace("$PLAYER$", e.getPlayer().getName()), Config.arenaName);
 
-				// e.getPlayer().sendMessage("§3[BlockParty] §8You were §4ELIMINATED");
+				// e.getPlayer().sendMessage("ï¿½3[BlockParty] ï¿½8You were ï¿½4ELIMINATED");
 				if (BlockParty.onFloorPlayers.containsKey(e.getPlayer().getName())) {
 					BlockParty.onFloorPlayers.remove(e.getPlayer().getName());
 				}

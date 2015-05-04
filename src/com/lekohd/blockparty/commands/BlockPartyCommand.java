@@ -29,36 +29,36 @@ public class BlockPartyCommand implements CommandExecutor {
 			Player p = (Player) sender;
 			if (args.length == 0) {
 				p.sendMessage("");
-				p.sendMessage("ง7BlockParty indev ง6" + BlockParty.getInstance().getDescription().getVersion());
+				p.sendMessage("ยง7BlockParty indev ยง6" + BlockParty.getInstance().getDescription().getVersion());
 				p.sendMessage("");
-				p.sendMessage("ง8Developers: ง3" + BlockParty.pdfFile.getAuthors());
-				p.sendMessage("ง8Commands: ง3/blockparty help");
+				p.sendMessage("ยง8Developers: ยง3" + BlockParty.pdfFile.getAuthors());
+				p.sendMessage("ยง8Commands: ยง3/blockparty help");
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("help")) {
-				p.sendMessage(ChatColor.GREEN + "----" + " ง6BlockParty " + ChatColor.AQUA + "Commands " + ChatColor.GREEN + "----");
-				p.sendMessage("ง3/blockparty info  ง8Get all informations about the plugin");
-				p.sendMessage("ง3/blockparty join <arenaName>  ง8Join the arena");
-				p.sendMessage("ง3/blockparty leave <arenaName>  ง8Leave the arena");
+				p.sendMessage(ChatColor.GREEN + "----" + " ยง6BlockParty " + ChatColor.AQUA + "Commands " + ChatColor.GREEN + "----");
+				p.sendMessage("ยง3/blockparty info  ยง8Get all informations about the plugin");
+				p.sendMessage("ยง3/blockparty join <arenaName>  ยง8Join the arena");
+				p.sendMessage("ยง3/blockparty leave <arenaName>  ยง8Leave the arena");
 				if (p.hasPermission("blockparty.admin")) {
-					p.sendMessage("ง3/blockparty admin  ง8Show the admin commands");
+					p.sendMessage("ยง3/blockparty admin  ยง8Show the admin commands");
 				}
 				return true;
 			}
 			if (args[0].equalsIgnoreCase("admin")) {
 				if (p.hasPermission("blockparty.admin")) {
-					p.sendMessage(ChatColor.GREEN + "----" + " ง6BlockParty " + ChatColor.AQUA + "Admin-Commands " + ChatColor.GREEN + "----");
-					p.sendMessage("ง3/blockparty start <arenaName>  ง8Starts the game");
-					p.sendMessage("ง3/blockparty create <arenaName>  ง8Creates an arena");
-					p.sendMessage("ง3/blockparty delete <arenaName>  ง8Creates an arena");
-					p.sendMessage("ง3/blockparty setSpawn <arenaName> <lobby|game>  ง8Set the spawns for lobby|game");
-					p.sendMessage("ง3/blockparty setFloor <arenaName>  ง8Set the floor for an arena");
-					p.sendMessage("ง3/blockparty addFloor <arenaName> <floorName>  ง8Add a schematic floor to an arena");
-					p.sendMessage("ง3/blockparty removeFloor <arenaName> <floorName>  ง8Remove a schematic floor of an arena");
-					p.sendMessage("ง3/blockparty enable <arenaName>  ง8To enable an arena");
-					p.sendMessage("ง3/blockparty disable <arenaName>  ง8To disable an arena");
-					p.sendMessage("ง3/blockparty reload  ง8Reload the configs");
-					p.sendMessage("ง3/blockparty tutorial  ง8Shows a tutorial of How to setup an arena");
+					p.sendMessage(ChatColor.GREEN + "----" + " ยง6BlockParty " + ChatColor.AQUA + "Admin-Commands " + ChatColor.GREEN + "----");
+					p.sendMessage("ยง3/blockparty start <arenaName>  ยง8Starts the game");
+					p.sendMessage("ยง3/blockparty create <arenaName>  ยง8Creates an arena");
+					p.sendMessage("ยง3/blockparty delete <arenaName>  ยง8Creates an arena");
+					p.sendMessage("ยง3/blockparty setSpawn <arenaName> <lobby|game>  ยง8Set the spawns for lobby|game");
+					p.sendMessage("ยง3/blockparty setFloor <arenaName>  ยง8Set the floor for an arena");
+					p.sendMessage("ยง3/blockparty addFloor <arenaName> <floorName>  ยง8Add a schematic floor to an arena");
+					p.sendMessage("ยง3/blockparty removeFloor <arenaName> <floorName>  ยง8Remove a schematic floor of an arena");
+					p.sendMessage("ยง3/blockparty enable <arenaName>  ยง8To enable an arena");
+					p.sendMessage("ยง3/blockparty disable <arenaName>  ยง8To disable an arena");
+					p.sendMessage("ยง3/blockparty reload  ยง8Reload the configs");
+					p.sendMessage("ยง3/blockparty tutorial  ยง8Shows a tutorial of How to setup an arena");
 				}
 				return true;
 			}
@@ -70,33 +70,33 @@ public class BlockPartyCommand implements CommandExecutor {
 						if (!BlockParty.arenaNames.isEmpty()) {
 							for (String arenaName : BlockParty.arenaNames) {
 								if (Players.getPlayerAmountInGame(arenaName) >= 1) {
-									response += "ง3[BlockParty] ง8Arena งe" + arenaName + "ง8 is running!\n\n";
+									response += "ยง3[BlockParty] ยง8Arena ยงe" + arenaName + "ยง8 is running!\n\n";
 
 									if (Players.getPlayerAmountOnFloor(arenaName) >= 1) {
-										response += "ง6Current Players On Floor:\n";
+										response += "ยง6Current Players On Floor:\n";
 										for (String name : Players.getPlayersOnFloor(arenaName)) {
-											response += "ง4" + name + " - ";
+											response += "ยง4" + name + " - ";
 										}
 									}
 
 									if (Players.getPlayerAmountInLobby(arenaName) >= 1) {
-										response += "\nง6Current Players In Lobby:\n";
+										response += "\nยง6Current Players In Lobby:\n";
 										for (String name : Players.getPlayersInLobby(arenaName)) {
-											response += "ง4" + name + " - ";
+											response += "ยง4" + name + " - ";
 										}
 									}
 								} else {
-									response += "ง3[BlockParty] ง8Arena " + arenaName + " is not currently active!";
+									response += "ยง3[BlockParty] ยง8Arena " + arenaName + " is not currently active!";
 								}
 
 								p.sendMessage(response);
 								return true;
 							}
 						} else {
-							p.sendMessage("ง3[BlockParty] ง8No Arena's enabled!");
+							p.sendMessage("ยง3[BlockParty] ยง8No Arena's enabled!");
 						}
 					} else {
-						p.sendMessage("ง4You don't have the permissions to do that");
+						p.sendMessage("ยง4You don't have the permissions to do that");
 						return true;
 					}
 				}
@@ -113,17 +113,17 @@ public class BlockPartyCommand implements CommandExecutor {
 				}
 				
 				if ((args[0].equalsIgnoreCase("tutorial")) && (p.hasPermission("blockparty.admin"))) {
-					p.sendMessage(ChatColor.GREEN + "----" + " ง6BlockParty " + ChatColor.AQUA + "Tutorial " + ChatColor.GREEN + "----");
-					p.sendMessage("ง8 - Use ง3/bp create <arenaName> ง8to create your arena");
-					p.sendMessage("ง8 - Type in ง3/bp enable <arenaName> ง8to enable your arena");
-					p.sendMessage("ง8 - Go to the point, where you want to have the ง3Lobbyง8 spawn");
-					p.sendMessage("ง8 - And type in ง3/bp setSpawn <arenaName> lobby");
-					p.sendMessage("ง8 - Select two points with ง3WorldEditง8, where you want to have the floor");
-					p.sendMessage("ง8 - Use ง3/bp setFloor <arenaName> ง8to set the floor");
-					p.sendMessage("ง8 - Go to the point, where you want to have the ง3Gameง8 spawn (on the floor)");
-					p.sendMessage("ง8 - And type in ง3/bp setSpawn <arenaName> game");
-					p.sendMessage("ง8 - You can now start playing in your arena");
-					p.sendMessage("ง8 - If you want to use Schematics: /bp tutorial schematics");
+					p.sendMessage(ChatColor.GREEN + "----" + " ยง6BlockParty " + ChatColor.AQUA + "Tutorial " + ChatColor.GREEN + "----");
+					p.sendMessage("ยง8 - Use ยง3/bp create <arenaName> ยง8to create your arena");
+					p.sendMessage("ยง8 - Type in ยง3/bp enable <arenaName> ยง8to enable your arena");
+					p.sendMessage("ยง8 - Go to the point, where you want to have the ยง3Lobbyยง8 spawn");
+					p.sendMessage("ยง8 - And type in ยง3/bp setSpawn <arenaName> lobby");
+					p.sendMessage("ยง8 - Select two points with ยง3WorldEditยง8, where you want to have the floor");
+					p.sendMessage("ยง8 - Use ยง3/bp setFloor <arenaName> ยง8to set the floor");
+					p.sendMessage("ยง8 - Go to the point, where you want to have the ยง3Gameยง8 spawn (on the floor)");
+					p.sendMessage("ยง8 - And type in ยง3/bp setSpawn <arenaName> game");
+					p.sendMessage("ยง8 - You can now start playing in your arena");
+					p.sendMessage("ยง8 - If you want to use Schematics: /bp tutorial schematics");
 				}
 			}
 
@@ -132,28 +132,28 @@ public class BlockPartyCommand implements CommandExecutor {
 					if (p.hasPermission("blockparty.user")) {
 						Arena.join(p, args[1]);
 					} else {
-						p.sendMessage("ง4You don't have the permissions to do that");
+						p.sendMessage("ยง4You don't have the permissions to do that");
 					}
 				}
 
 				if ((args[0].equalsIgnoreCase("tutorial")) && (args[1].equalsIgnoreCase("schematics")) && (p.hasPermission("blockparty.admin"))) {
-					p.sendMessage(ChatColor.GREEN + "----" + " ง6BlockParty " + ChatColor.AQUA + "Schematics-Tutorial " + ChatColor.GREEN + "----");
-					p.sendMessage("ง8 - Create a floor Schematic, using WorldEdit, or take the example");
-					p.sendMessage("ง8 - Copy the Schematic from the WorldEdit folder to the BlockParty Floors folder");
-					p.sendMessage("ง8 - If there is no Floors folder, create one");
-					p.sendMessage("ง8 - Use ง3/bp addFloor <arenaName> <floorName>");
-					p.sendMessage("ง8 - <floorName> must be the schematic name");
-					p.sendMessage("ง8 - Go into your Arena config and change UseSchematicFloors to true");
-					p.sendMessage("ง8 - Reload or Restart your Server");
-					p.sendMessage("ง8 - Make sure your floor appears in the Arena config (enabledFloors)");
-					p.sendMessage("ง8 - Now you can start your game");
-					p.sendMessage("ง8 - Name one schematic 'start'. Than this schematic will load first");
+					p.sendMessage(ChatColor.GREEN + "----" + " ยง6BlockParty " + ChatColor.AQUA + "Schematics-Tutorial " + ChatColor.GREEN + "----");
+					p.sendMessage("ยง8 - Create a floor Schematic, using WorldEdit, or take the example");
+					p.sendMessage("ยง8 - Copy the Schematic from the WorldEdit folder to the BlockParty Floors folder");
+					p.sendMessage("ยง8 - If there is no Floors folder, create one");
+					p.sendMessage("ยง8 - Use ยง3/bp addFloor <arenaName> <floorName>");
+					p.sendMessage("ยง8 - <floorName> must be the schematic name");
+					p.sendMessage("ยง8 - Go into your Arena config and change UseSchematicFloors to true");
+					p.sendMessage("ยง8 - Reload or Restart your Server");
+					p.sendMessage("ยง8 - Make sure your floor appears in the Arena config (enabledFloors)");
+					p.sendMessage("ยง8 - Now you can start your game");
+					p.sendMessage("ยง8 - Name one schematic 'start'. Than this schematic will load first");
 				}
 				if (args[0].equalsIgnoreCase("create")) {
 					if (p.hasPermission("blockparty.admin")) {
 						Arena.create(p, args[1]);
 					} else {
-						p.sendMessage("ง4You don't have the permissions to do that");
+						p.sendMessage("ยง4You don't have the permissions to do that");
 					}
 					return true;
 				}
@@ -163,10 +163,10 @@ public class BlockPartyCommand implements CommandExecutor {
 							((Config) BlockParty.getArena.get(args[1])).abort();
 							Start.startGame(args[1], p);
 						} else {
-							p.sendMessage("ง3[BlockParty] ง8Arena " + args[1] + " isn't enabled or doesn't exists!");
+							p.sendMessage("ยง3[BlockParty] ยง8Arena " + args[1] + " isn't enabled or doesn't exists!");
 						}
 					} else {
-						p.sendMessage("ง4You don't have the permissions to do that");
+						p.sendMessage("ยง4You don't have the permissions to do that");
 					}
 				}
 				if (args[0].equalsIgnoreCase("stop")) {
@@ -177,10 +177,10 @@ public class BlockPartyCommand implements CommandExecutor {
 							Period.stop(args[1]);
 							Config.stopGameInProgress(args[1], true);
 						} else {
-							p.sendMessage("ง3[BlockParty] ง8Arena " + args[1] + " isn't enabled or doesn't exists!");
+							p.sendMessage("ยง3[BlockParty] ยง8Arena " + args[1] + " isn't enabled or doesn't exists!");
 						}
 					} else {
-						p.sendMessage("ง4You don't have the permissions to do that");
+						p.sendMessage("ยง4You don't have the permissions to do that");
 					}
 				}
 
@@ -194,7 +194,7 @@ public class BlockPartyCommand implements CommandExecutor {
 						if (BlockParty.getArena.containsKey(args[1])) {
 							SaveFloor.setFloor(p, args[1]);
 						} else {
-							p.sendMessage("ง3[BlockParty] ง8Arena " + args[1] + " isn't enabled or doesn't exists!");
+							p.sendMessage("ยง3[BlockParty] ยง8Arena " + args[1] + " isn't enabled or doesn't exists!");
 						}
 					}
 				}
@@ -208,7 +208,7 @@ public class BlockPartyCommand implements CommandExecutor {
 						if (BlockParty.getArena.containsKey(args[1])) {
 							Arena.disable(args[1], p);
 						} else {
-							p.sendMessage("ง3[BlockParty] ง8Arena " + args[1] + " isn't enabled or doesn't exists!");
+							p.sendMessage("ยง3[BlockParty] ยง8Arena " + args[1] + " isn't enabled or doesn't exists!");
 						}
 					}
 				}
@@ -226,9 +226,9 @@ public class BlockPartyCommand implements CommandExecutor {
 							}
 							return true;
 						}
-						p.sendMessage("ง3[BlockParty] ง8Arena " + args[1] + " isn't enabled or doesn't exists!");
+						p.sendMessage("ยง3[BlockParty] ยง8Arena " + args[1] + " isn't enabled or doesn't exists!");
 					} else {
-						p.sendMessage("ง4You don't have the permissions to do that");
+						p.sendMessage("ยง4You don't have the permissions to do that");
 						return true;
 					}
 				}
@@ -236,12 +236,12 @@ public class BlockPartyCommand implements CommandExecutor {
 					if (p.hasPermission("blockparty.admin")) {
 						if (BlockParty.getArena.containsKey(args[1])) {
 							AddFloor.add(args[1], args[2]);
-							p.sendMessage("ง3[BlockParty] ง8Floor " + args[2] + " was added to Arena " + args[1]);
-							p.sendMessage("ง3[BlockParty] ง8Be sure, that the floor exists!");
-							p.sendMessage("ง3[BlockParty] ง8It is recommended, that the floors have the same size!");
-							p.sendMessage("ง3[BlockParty] ง7Maybe the Floor will not be added. Take a look in you arena config!");
+							p.sendMessage("ยง3[BlockParty] ยง8Floor " + args[2] + " was added to Arena " + args[1]);
+							p.sendMessage("ยง3[BlockParty] ยง8Be sure, that the floor exists!");
+							p.sendMessage("ยง3[BlockParty] ยง8It is recommended, that the floors have the same size!");
+							p.sendMessage("ยง3[BlockParty] ยง7Maybe the Floor will not be added. Take a look in you arena config!");
 						} else {
-							p.sendMessage("ง3[BlockParty] ง8Arena " + args[1] + " isn't enabled or doesn't exists!");
+							p.sendMessage("ยง3[BlockParty] ยง8Arena " + args[1] + " isn't enabled or doesn't exists!");
 						}
 					}
 				}
@@ -249,9 +249,9 @@ public class BlockPartyCommand implements CommandExecutor {
 					if (p.hasPermission("blockparty.admin")) {
 						if (BlockParty.getArena.containsKey(args[1])) {
 							RemoveFloor.add(args[1], args[2]);
-							p.sendMessage("ง3[BlockParty] ง7Maybe the Floor will not be removed. Take a look in you arena config!");
+							p.sendMessage("ยง3[BlockParty] ยง7Maybe the Floor will not be removed. Take a look in you arena config!");
 						} else {
-							p.sendMessage("ง3[BlockParty] ง8Arena " + args[1] + " isn't enabled or doesn't exists!");
+							p.sendMessage("ยง3[BlockParty] ยง8Arena " + args[1] + " isn't enabled or doesn't exists!");
 						}
 					}
 				}
@@ -259,10 +259,10 @@ public class BlockPartyCommand implements CommandExecutor {
 		} else {
 			ConsoleCommandSender cs = (ConsoleCommandSender) sender;
 			cs.sendMessage("");
-			cs.sendMessage("ง7BlockParty ง6" + BlockParty.getInstance().getDescription().getVersion());
+			cs.sendMessage("ยง7BlockParty ยง6" + BlockParty.getInstance().getDescription().getVersion());
 			cs.sendMessage("");
-			cs.sendMessage("ง8Developer: ง3LekoHD, ScriptJunkie");
-			cs.sendMessage("ง8Commands: ง3/blockparty help");
+			cs.sendMessage("ยง8Developer: ยง3LekoHD, ScriptJunkie");
+			cs.sendMessage("ยง8Commands: ยง3/blockparty help");
 			return true;
 		}
 		return true;

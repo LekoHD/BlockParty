@@ -52,6 +52,7 @@ public class Config {
 	public double timeReductionPerLevel;
 	public boolean autoGenerateFloors;
 	public boolean useSchematicFloors;
+    public boolean enableActionbarInfo = true;
 	public boolean isEnabled = false;
 	public boolean useBoosts = true;
 	public boolean fallingBlock = true;
@@ -150,6 +151,7 @@ public class Config {
 		this.cfg.set("configuration.FallingBlocks", Boolean.valueOf(true));
 		this.cfg.set("configuration.AutoGenerateFloors", Boolean.valueOf(true));
 		this.cfg.set("configuration.UseSchematicFloors", Boolean.valueOf(true));
+        this.cfg.set("configuration.EnableActionbarInfo", Boolean.valueOf(true));
 		this.enabledFloors.add("example");
 		this.cfg.set("configuration.EnabledFloors", this.enabledFloors);
 		this.rewardItems.add(Integer.valueOf(264));
@@ -212,7 +214,7 @@ public class Config {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			return "ง3[BlockParty] ง8" + pos + " Spawn was set for Arena " + Config.arenaName;
+			return "ยง3[BlockParty] ยง8" + pos + " Spawn was set for Arena " + Config.arenaName;
 		}
 		return (BlockParty.messageManager.ARENA_DISABLED.replace("$ARENANAME$", Config.arenaName));
 	}
@@ -669,6 +671,7 @@ public class Config {
 			this.fallingBlock = this.cfg.getBoolean("configuration.FallingBlocks");
 			this.autoGenerateFloors = this.cfg.getBoolean("configuration.AutoGenerateFloors");
 			this.useSchematicFloors = this.cfg.getBoolean("configuration.UseSchematicFloors");
+            this.enableActionbarInfo = this.cfg.getBoolean("configuration.EnableActionbarInfo");
 			this.enabledFloors = ((ArrayList<String>) this.cfg.get("configuration.EnabledFloors"));
 			// this.enabledFloors = ((ArrayList<String>) loadFloors());
 			this.rewardItems = ((ArrayList<Integer>) this.cfg.get("configuration.RewardItems"));
@@ -766,6 +769,10 @@ public class Config {
 	public boolean getUseSchematicFloors() {
 		return this.useSchematicFloors;
 	}
+
+    public boolean getEnableActionbarInfo() {
+        return this.enableActionbarInfo;
+    }
 
 	public boolean reachedMaxPlayers() {
 		if (this.arena.exists()) {

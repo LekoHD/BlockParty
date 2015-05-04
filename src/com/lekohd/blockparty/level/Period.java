@@ -4,7 +4,9 @@ package com.lekohd.blockparty.level;
  * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
  */
 import com.lekohd.blockparty.BlockParty;
+import com.lekohd.blockparty.actionbar.Action;
 import com.lekohd.blockparty.bonus.Boosts;
+import com.lekohd.blockparty.database.ItemColor;
 import com.lekohd.blockparty.floor.FloorBlock;
 import com.lekohd.blockparty.floor.LoadFloor;
 import com.lekohd.blockparty.floor.RandomizeFloor;
@@ -92,14 +94,20 @@ public class Period {
 		final String aName = arenaName;
 		cg = c;
 		num = 6;
-		if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+		if (BlockParty.getArena.get(aName).getEnableActionbarInfo() || Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 			if (Players.getPlayerAmountOnFloor(aName) != 1) {
 				for (String name : Players.getPlayersOnFloor(aName)) {
 					Player p = Bukkit.getPlayer(name);
-					BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
-				}
+                    if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+					    BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
+                    if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                        Action.sendAction(p, BlockParty.messageManager.ACTIONBAR_WAITING);
+                }
 			} else {
-				BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_WAITING, 100.0F);
+                if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+				    BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_WAITING, 100.0F);
+                if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                    Action.sendAction(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.ACTIONBAR_WAITING);
 			}
 		}
 		dc = Bukkit.getScheduler().scheduleSyncRepeatingTask(BlockParty.getInstance(), new Runnable() {
@@ -195,27 +203,86 @@ public class Period {
 						// System.out.print(Period.number);
 						if (Period.number > 1.0D) {
 							Period.number -= 1.0D;
-							if ((Period.number > 10.0D) && (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))) {
+							if ((Period.number > 10.0D) && (BlockParty.getArena.get(aName).getEnableActionbarInfo() || Bukkit.getPluginManager().isPluginEnabled("BarAPI"))) {
 								if (Players.getPlayerAmountOnFloor(aName) != 1) {
 									for (String name : Players.getPlayersOnFloor(aName)) {
 										Player p = Bukkit.getPlayer(name);
-										BarAPI.setMessage(p, BlockParty.messageManager.BAR_DANCE, (float) ((Period.number - 10.0D) / (numb - 10.0D) * 100.0D));
+                                        if (Material.STAINED_CLAY == randomBlock.getType() || Material.WOOL == randomBlock.getType()) {
+                                           // p.sendMessage(BlockParty.messageManager.PERIOD_NEXT_BLOCK_IS.replace("$BLOCKNAME$",
+                                             //       FloorBlock.getName(randomBlock.getData(), randomBlock.getType())));                      $BLOCKCOLORCODE$
+                                            if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+                                                BarAPI.setMessage(p, BlockParty.messageManager.BAR_DANCE.replace("$BLOCKNAME$", FloorBlock.getName(randomBlock.getData(), randomBlock.getType()))
+                                                            .replace("$BLOCKCOLORCODE$", ItemColor.getColorCode(randomBlock.getData(), randomBlock.getType()))
+                                                                .replace("$BLOCKCOLORNAME$", ItemColor.getColorName(randomBlock.getData(), randomBlock.getType())), (float) ((Period.number - 10.0D) / (numb - 10.0D) * 100.0D));
+                                            if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                                                Action.sendAction(p, BlockParty.messageManager.ACTIONBAR_DANCE.replace("$BLOCKNAME$",
+                                                        FloorBlock.getName(randomBlock.getData(), randomBlock.getType()))
+                                                            .replace("$BLOCKCOLORCODE$", ItemColor.getColorCode(randomBlock.getData(), randomBlock.getType()))
+                                                                .replace("$BLOCKCOLORNAME$", ItemColor.getColorName(randomBlock.getData(), randomBlock.getType())));
+                                        } else {
+                                            //p.sendMessage(BlockParty.messageManager.PERIOD_NEXT_BLOCK_IS.replace("$BLOCKNAME$", randomBlock.getType().name()));
+                                            if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+                                                BarAPI.setMessage(p, BlockParty.messageManager.BAR_DANCE.replace("$BLOCKNAME$", randomBlock.getType().name())
+                                                            .replace("$BLOCKCOLORCODE$", ItemColor.getColorCode(randomBlock.getData(), randomBlock.getType()))
+                                                                .replace("$BLOCKCOLORNAME$", ItemColor.getColorName(randomBlock.getData(), randomBlock.getType())), (float) ((Period.number - 10.0D) / (numb - 10.0D) * 100.0D));
+                                            if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                                                Action.sendAction(p, BlockParty.messageManager.ACTIONBAR_DANCE.replace("$BLOCKNAME$", randomBlock.getType().name())
+                                                        .replace("$BLOCKCOLORCODE$", ItemColor.getColorCode(randomBlock.getData(), randomBlock.getType()))
+                                                            .replace("$BLOCKCOLORNAME$", ItemColor.getColorName(randomBlock.getData(), randomBlock.getType())));
+                                        }
+                                        /*if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+										    BarAPI.setMessage(p, BlockParty.messageManager.BAR_DANCE, (float) ((Period.number - 10.0D) / (numb - 10.0D) * 100.0D));
+                                        if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                                            Action.sendAction(p, BlockParty.messageManager.ACTIONBAR_DANCE);*/
 									}
 								} else {
-									BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_DANCE,
+                                    if (Material.STAINED_CLAY == randomBlock.getType() || Material.WOOL == randomBlock.getType()) {
+                                        // p.sendMessage(BlockParty.messageManager.PERIOD_NEXT_BLOCK_IS.replace("$BLOCKNAME$",
+                                        //       FloorBlock.getName(randomBlock.getData(), randomBlock.getType())));
+                                        if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+                                            BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_DANCE.replace("$BLOCKNAME$",
+                                                    FloorBlock.getName(randomBlock.getData(), randomBlock.getType()))
+                                                        .replace("$BLOCKCOLORCODE$", ItemColor.getColorCode(randomBlock.getData(), randomBlock.getType()))
+                                                        .replace("$BLOCKCOLORNAME$", ItemColor.getColorName(randomBlock.getData(), randomBlock.getType())), (float) ((Period.number - 10.0D) / (numb - 10.0D) * 100.0D));
+                                        if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                                            Action.sendAction(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.ACTIONBAR_DANCE.replace("$BLOCKNAME$",
+                                                    FloorBlock.getName(randomBlock.getData(), randomBlock.getType()))
+                                                        .replace("$BLOCKCOLORCODE$", ItemColor.getColorCode(randomBlock.getData(), randomBlock.getType()))
+                                                            .replace("$BLOCKCOLORNAME$", ItemColor.getColorName(randomBlock.getData(), randomBlock.getType())));
+                                    } else {
+                                        //p.sendMessage(BlockParty.messageManager.PERIOD_NEXT_BLOCK_IS.replace("$BLOCKNAME$", randomBlock.getType().name()));
+                                        if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+                                            BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_DANCE.replace("$BLOCKNAME$", randomBlock.getType().name())
+                                                    .replace("$BLOCKCOLORCODE$", ItemColor.getColorCode(randomBlock.getData(), randomBlock.getType()))
+                                                        .replace("$BLOCKCOLORNAME$", ItemColor.getColorName(randomBlock.getData(), randomBlock.getType())), (float) ((Period.number - 10.0D) / (numb - 10.0D) * 100.0D));
+                                        if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                                            Action.sendAction(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.ACTIONBAR_DANCE.replace("$BLOCKNAME$", randomBlock.getType().name())
+                                                    .replace("$BLOCKCOLORCODE$", ItemColor.getColorCode(randomBlock.getData(), randomBlock.getType()))
+                                                        .replace("$BLOCKCOLORNAME$", ItemColor.getColorName(randomBlock.getData(), randomBlock.getType())));
+                                    }
+                                    /*if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+									    BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.BAR_DANCE,
 											(float) ((Period.number - 10.0D) / (numb - 10.0D) * 100.0D));
+                                    if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                                        Action.sendAction(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.ACTIONBAR_DANCE);*/
 								}
 							}
 							if ((Period.number <= 10.0D) && (Period.number > 9.0D)) {
-								if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+								if (BlockParty.getArena.get(aName).getEnableActionbarInfo() || Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 									if (Players.getPlayerAmountOnFloor(aName) != 1) {
 										for (String name : Players.getPlayersOnFloor(aName)) {
 											Player p = Bukkit.getPlayer(name);
-											BarAPI.setMessage(p, BlockParty.messageManager.BAR_STOP, 5);
+                                            if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+											    BarAPI.setMessage(p, BlockParty.messageManager.BAR_STOP, 5);
+                                            if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                                                Action.sendAction(p, BlockParty.messageManager.ACTIONBAR_STOP);
 										}
 									} else {
-										BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)),
+                                        if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+										    BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)),
 												BlockParty.messageManager.BAR_STOP, 5);
+                                        if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                                            Action.sendAction(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.ACTIONBAR_STOP);
 									}
 								}
 								RemoveBlocks.remove(aName, Byte.valueOf(randomBlock.getData()), randomBlock.getType());
@@ -229,15 +296,21 @@ public class Period {
 									Player p = Bukkit.getPlayer(name);
 									p.getInventory().clear();
 								}
-								if (Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
+								if (BlockParty.getArena.get(aName).getEnableActionbarInfo() || Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 									if (Players.getPlayerAmountOnFloor(aName) != 1) {
 										for (String name : Players.getPlayersOnFloor(aName)) {
 											Player p = Bukkit.getPlayer(name);
-											BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
+                                            if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+											    BarAPI.setMessage(p, BlockParty.messageManager.BAR_WAITING, 100.0F);
+                                            if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                                                Action.sendAction(p, BlockParty.messageManager.ACTIONBAR_WAITING);
 										}
 									} else {
-										BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)),
+                                        if (Bukkit.getPluginManager().isPluginEnabled("BarAPI"))
+										    BarAPI.setMessage(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)),
 												BlockParty.messageManager.BAR_WAITING, 100.0F);
+                                        if (BlockParty.getArena.get(aName).getEnableActionbarInfo())
+                                            Action.sendAction(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.ACTIONBAR_WAITING);
 									}
 								}
 								if ((((Config) BlockParty.getArena.get(aName)).getUseBoosts())

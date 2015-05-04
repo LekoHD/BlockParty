@@ -15,85 +15,89 @@ import org.bukkit.configuration.file.YamlConfiguration;
 //MessageManager.BLOCKPARTY_PREFIX + " " + MessageManager.EFFECTS_JUMPING
 public class MessageManager {
 	public String PLUGIN_NAME = "[BlockParty]";
-	// #Essentially is the color for ง3[BlockParty] for all messages
-	public String BLOCKPARTY_COLOR = "ง3";
+	// #Essentially is the color for ยง3[BlockParty] for all messages
+	public String BLOCKPARTY_COLOR = "ยง3";
 
-	public String BLOCKPARTY_PREFIX = "ง3[BlockParty]";
+	public String BLOCKPARTY_PREFIX = "ยง3[BlockParty]";
 
-	public String BOOST_NAME_WALK = "ง6Walk Faster";
-	public String BOOST_NAME_JUMP = "ง6Jump Higher";
-	public String BOOST_NAME_ENDERPEARL = "ง6Jump Further";
+	public String BOOST_NAME_WALK = "ยง6Walk Faster";
+	public String BOOST_NAME_JUMP = "ยง6Jump Higher";
+	public String BOOST_NAME_ENDERPEARL = "ยง6Jump Further";
 
-	public String EFFECTS_WALKING = "ง8Your walking speed has been increased!";
-	public String EFFECTS_JUMPING = "ง8Your jumping height has been increased!";
-	public String EFFECTS_NAUSEA = "ง8Ohh... This was a bad effect!";
-	public String EFFECTS_BLINDNESS = "ง8Ohh... This was a bad effect!";
-	public String EFFECTS_EXPIRED = "ง8Your effect has expired!";
+	public String EFFECTS_WALKING = "ยง8Your walking speed has been increased!";
+	public String EFFECTS_JUMPING = "ยง8Your jumping height has been increased!";
+	public String EFFECTS_NAUSEA = "ยง8Ohh... This was a bad effect!";
+	public String EFFECTS_BLINDNESS = "ยง8Ohh... This was a bad effect!";
+	public String EFFECTS_EXPIRED = "ยง8Your effect has expired!";
 
-	public String ARENA_EXISTS_ALREADY = "ง8Arena $ARENANAME$ already exists!";
-	public String ARENT_DOES_NOT_EXIST = "ง8Arena $ARENANAME$ does not exists!";
-	public String ARENA_CREATED = "ง8Arena $ARENANAME$ was successfully created!";
-	public String ARENA_FULL = "ง8Arena $ARENANAME$ is full!";
-	public String ARENA_DISABLED = "ง8Arena $ARENANAME$ disabled!";
-	public String ARENA_ENABLED = "ง8Arena $ARENANAME$ loaded!";
-	public String ARENA_RELOADING = "ง8reloading $ARENANAME$";
-	public String ARENA_CONFIGS_RELOADED = "ง8Arena configs reloaded successfully!";
-	public String ARENA_DELETED = "ง8Arena $ARENANAME$ was successfully deleted!";
-	public String ARENA_FLOOR_ERROR = "ง8You have to set the floor first!";
-	public String ARENA_SPAWN_ERROR = "ง8You have to set all spawns first!";
+	public String ARENA_EXISTS_ALREADY = "ยง8Arena $ARENANAME$ already exists!";
+	public String ARENT_DOES_NOT_EXIST = "ยง8Arena $ARENANAME$ does not exists!";
+	public String ARENA_CREATED = "ยง8Arena $ARENANAME$ was successfully created!";
+	public String ARENA_FULL = "ยง8Arena $ARENANAME$ is full!";
+	public String ARENA_DISABLED = "ยง8Arena $ARENANAME$ disabled!";
+	public String ARENA_ENABLED = "ยง8Arena $ARENANAME$ loaded!";
+	public String ARENA_RELOADING = "ยง8reloading $ARENANAME$";
+	public String ARENA_CONFIGS_RELOADED = "ยง8Arena configs reloaded successfully!";
+	public String ARENA_DELETED = "ยง8Arena $ARENANAME$ was successfully deleted!";
+	public String ARENA_FLOOR_ERROR = "ยง8You have to set the floor first!";
+	public String ARENA_SPAWN_ERROR = "ยง8You have to set all spawns first!";
 
 	public String SETUP_SPAWN_SET = "The spawn point was set for the arena";
-	public String SETUP_FLOOR_SET = "ง8Floor was set for Arena $ARENANAME$";
-	public String SETUP_FLOOR_ERROR_SAME_WORLD = "ง8Arena and Floor must be in the same world";
-	public String SETUP_FLOOR_ERROR_MIN_HEIGHT = "ง8The Floor must be 1 block high!";
-	public String SETUP_FLOOR_ERROR_WORLD_EDIT_SELECT = "ง8Select a region with WorldEdit first.";
-	public String JOIN_VANISH = "ง8Cannot join arena when you are in Vanish Mode.";
-	public String JOIN_SUCCESS_BROADCAST = "ง8$PLAYER$ joined the game!";
-	public String JOIN_SUCCESS_PLAYER = "ง8You have joined Arena $ARENANAME$";
-	public String JOIN_ERROR_FULL = "ง8The Arena $ARENANAME$ is full!";
-	public String JOIN_ERROR_IN_GAME = "ง8You are already in a game!";
-	public String JOIN_ARENA_IS_DISABLED = "ง8Arena $ARENANAME$ is currently disabled!";
+	public String SETUP_FLOOR_SET = "ยง8Floor was set for Arena $ARENANAME$";
+	public String SETUP_FLOOR_ERROR_SAME_WORLD = "ยง8Arena and Floor must be in the same world";
+	public String SETUP_FLOOR_ERROR_MIN_HEIGHT = "ยง8The Floor must be 1 block high!";
+	public String SETUP_FLOOR_ERROR_WORLD_EDIT_SELECT = "ยง8Select a region with WorldEdit first.";
+	public String JOIN_VANISH = "ยง8Cannot join arena when you are in Vanish Mode.";
+	public String JOIN_SUCCESS_BROADCAST = "ยง8$PLAYER$ joined the game!";
+	public String JOIN_SUCCESS_PLAYER = "ยง8You have joined Arena $ARENANAME$";
+	public String JOIN_ERROR_FULL = "ยง8The Arena $ARENANAME$ is full!";
+	public String JOIN_ERROR_IN_GAME = "ยง8You are already in a game!";
+	public String JOIN_ARENA_IS_DISABLED = "ยง8Arena $ARENANAME$ is currently disabled!";
 
-	public String START_SUCCESS = "ง8The game has started!";
-	public String START_ERROR_ZERO_PAYERS = "ง8You cannot start a game with 0 players in the Lobby";
-	public String START_ERROR_LESS_THEN_MIN_PLAYERS = "ง8Not enough players to start the game!";
-	public String STOP_GAME_FORCED = "ง8The game has forced stopped by staff!";
+	public String START_SUCCESS = "ยง8The game has started!";
+	public String START_ERROR_ZERO_PAYERS = "ยง8You cannot start a game with 0 players in the Lobby";
+	public String START_ERROR_LESS_THEN_MIN_PLAYERS = "ยง8Not enough players to start the game!";
+	public String STOP_GAME_FORCED = "ยง8The game has forced stopped by staff!";
 
-	public String LEAVE_LOCATION_NOT_FOUND = "ง8Cannot load your old location. Please type /spawn";
-	public String LEAVE_CANNOT = "ง8You can not leave the current game.";
-	public String LEAVE_NOT_IN_ARENA = "ง8You are not in an arena!";
-	public String LEAVE_ARENA_BROADCAST = "ง8$PLAYER$ has left the game";
-	public String LEAVE_ARENA_PLAYER = "ง8You left the arena!";
+	public String LEAVE_LOCATION_NOT_FOUND = "ยง8Cannot load your old location. Please type /spawn";
+	public String LEAVE_CANNOT = "ยง8You can not leave the current game.";
+	public String LEAVE_NOT_IN_ARENA = "ยง8You are not in an arena!";
+	public String LEAVE_ARENA_BROADCAST = "ยง8$PLAYER$ has left the game";
+	public String LEAVE_ARENA_PLAYER = "ยง8You left the arena!";
 
 	public String BAR_WAITING = "Waiting ...";
 	public String BAR_DANCE = "Dance";
 	public String BAR_STOP = "STOP";
 	public String BAR_STARTS_SOON = "Game starts soon";
-	public String BAR_TIMER = "ง8$TIMER$ seconds left!";
+	public String BAR_TIMER = "ยง8$TIMER$ seconds left!";
 
-	public String PERIOD_WINNER_ANNOUNCE_SELF = "ง8Congratulations! You won the game.";
-	public String PERIOD_WINNER_ANNOUNCE_ALL = "ง8$PLAYER$ won the game.";
-	public String PERIOD_WINNER_ANNOUNCE_REWARD = "ง8You will get you reward when you leave the arena!";
-	public String PERIOD_NEXT_BLOCK_IS = "ง8Next Block is $BLOCKNAME$";
-	public String PERIOD_BOOSTS_SUMMONED = "ง8A Boost has been summoned!";
-	public String PERIOD_ELIMINATED = "ง8$PLAYER$ was ง4ELIMINATED!";
+    public String ACTIONBAR_WAITING = "Waiting ...";
+    public String ACTIONBAR_DANCE = "Block:$BLOCKCOLORCODE$ &l$BLOCKNAME$";
+    public String ACTIONBAR_STOP = "STOP";
+
+	public String PERIOD_WINNER_ANNOUNCE_SELF = "ยง8Congratulations! You won the game.";
+	public String PERIOD_WINNER_ANNOUNCE_ALL = "ยง8$PLAYER$ won the game.";
+	public String PERIOD_WINNER_ANNOUNCE_REWARD = "ยง8You will get you reward when you leave the arena!";
+	public String PERIOD_NEXT_BLOCK_IS = "ยง8Next Block is $BLOCKNAME$";
+	public String PERIOD_BOOSTS_SUMMONED = "ยง8A Boost has been summoned!";
+	public String PERIOD_ELIMINATED = "ยง8$PLAYER$ was ยง4ELIMINATED!";
 	public String PERIOD_ERROR_NO_FLOORS = "There are no floors for Arena $ARENANAME$.";
 
-	public String SONG_NOT_EXIST = "ง8$SONG$ does not exist.";
-	public String SONG_NOW_PLAYING = "ง8Playing song $SONG$";
+	public String SONG_NOT_EXIST = "ยง8$SONG$ does not exist.";
+	public String SONG_NOW_PLAYING = "ยง8Playing song $SONG$";
 
 	public String VOTE_ITEM_INVENTORY_HEADER = "Click to Vote!";
-	public String VOTE_ITEM_FIREBALL_DISPLAY_NAME = "ง6Vote for a Song!";
+	public String VOTE_ITEM_FIREBALL_DISPLAY_NAME = "ยง6Vote for a Song!";
 	public String VOTE_ITEM_FIREBALL_LORE = "Click me!";
-	public String VOTE_FOR_SONG = "ง8You have voted for $SONG$.";
+	public String VOTE_FOR_SONG = "ยง8You have voted for $SONG$.";
 
-	public String SIGN_JOIN = "ง2Join";
-	public String SIGN_FULL = "ง4Full";
-	public String SIGN_IN_LOBBY = "ง2In Lobby";
-	public String SIGN_IN_GAME = "ง4In Game";
-	public String SIGN_PLACEMENT_NOT_EXIST = "ง8Arena $ARENANAME$ is not enabled or does not exists!";
+	public String SIGN_JOIN = "ยง2Join";
+	public String SIGN_FULL = "ยง4Full";
+	public String SIGN_IN_LOBBY = "ยง2In Lobby";
+	public String SIGN_IN_GAME = "ยง4In Game";
+	public String SIGN_PLACEMENT_NOT_EXIST = "ยง8Arena $ARENANAME$ is not enabled or does not exists!";
 
-	public String NO_PERMISSION = "ง4You do not have the permissions to do that.";
+	public String NO_PERMISSION = "ยง4You do not have the permissions to do that.";
 	public String CONSOLE_OUTPUT_WINNER = "$PLAYER$ won block party @ $ARENANAME$.";
 
 	public void loadLocale(String language) {
@@ -158,6 +162,10 @@ public class MessageManager {
 				BAR_STARTS_SOON = colorizeString(config.getString("BAR_STARTS_SOON"));
 				BAR_TIMER = colorizeString(config.getString("BAR_TIMER"));
 
+                ACTIONBAR_WAITING = colorizeString(config.getString("ACTIONBAR_WAITING"));
+                ACTIONBAR_DANCE = colorizeString(config.getString("ACTIONBAR_DANCE"));
+                ACTIONBAR_STOP = colorizeString(config.getString("ACTIONBAR_STOP"));
+
 				PERIOD_WINNER_ANNOUNCE_SELF = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_WINNER_ANNOUNCE_SELF"));
 				PERIOD_WINNER_ANNOUNCE_ALL = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_WINNER_ANNOUNCE_ALL"));
 				PERIOD_WINNER_ANNOUNCE_REWARD = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_WINNER_ANNOUNCE_REWARD"));
@@ -205,7 +213,7 @@ public class MessageManager {
 	
 	
 	public static enum MessageType {
-		INFO(ChatColor.GRAY, ""), ERROR(ChatColor.RED, "งcError: "), BAD(ChatColor.RED, "");
+		INFO(ChatColor.GRAY, ""), ERROR(ChatColor.RED, "ยงcError: "), BAD(ChatColor.RED, "");
 
 		private ChatColor color;
 		private String prefix;

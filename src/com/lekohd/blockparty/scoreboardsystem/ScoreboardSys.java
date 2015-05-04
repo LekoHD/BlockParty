@@ -16,19 +16,19 @@ public class ScoreboardSys {
 		Scoreboard playerboard = Bukkit.getScoreboardManager().getNewScoreboard();
 		Objective objective = playerboard.registerNewObjective("Score", "dummy");
 		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-		objective.setDisplayName("ง6BlockParty");
-		Score s1 = objective.getScore(Bukkit.getOfflinePlayer("ง1" + ChatColor.GREEN + "------------"));
+		objective.setDisplayName("ยง6BlockParty");
+		Score s1 = objective.getScore(Bukkit.getOfflinePlayer("ยง1" + ChatColor.GREEN + "------------"));
 		Score s2 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Level:"));
 		Score s3 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Server"));
 		Score s4 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "2.0"));
-		Score s5 = objective.getScore(Bukkit.getOfflinePlayer("ง2" + ChatColor.GREEN + "------------"));
+		Score s5 = objective.getScore(Bukkit.getOfflinePlayer("ยง2" + ChatColor.GREEN + "------------"));
 		Score s6 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Kit:"));
 		Score s7 = objective.getScore(Bukkit.getOfflinePlayer(""));
-		Score s8 = objective.getScore(Bukkit.getOfflinePlayer("ง3" + ChatColor.GREEN + "------------"));
+		Score s8 = objective.getScore(Bukkit.getOfflinePlayer("ยง3" + ChatColor.GREEN + "------------"));
 
 		Score s12 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "Navigiere mit"));
 		Score s13 = objective.getScore(Bukkit.getOfflinePlayer(ChatColor.GRAY + "dem Compass"));
-		Score s14 = objective.getScore(Bukkit.getOfflinePlayer("ง5" + ChatColor.GREEN + "------------"));
+		Score s14 = objective.getScore(Bukkit.getOfflinePlayer("ยง5" + ChatColor.GREEN + "------------"));
 		s1.setScore(14);
 		s2.setScore(13);
 		s3.setScore(12);

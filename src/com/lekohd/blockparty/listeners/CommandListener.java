@@ -31,19 +31,10 @@ public class CommandListener implements Listener {
 
 	//need to put commands in config.
 	private boolean checkCommand(String command) {
-		switch (command) {
-		case "/msg":
-			return true;
-		case "/ban":
-			return true;
-		case "/mute":
-			return true;
-		case "/a":
-			return true;
-		case "/kick":
-			return true;
-		default:
-			return false;
-		}
+        if( command.equalsIgnoreCase("/msg") || command.equalsIgnoreCase("/ban") || command.equalsIgnoreCase("/mute")||command.equalsIgnoreCase("/a")||command.equalsIgnoreCase("/kick"))
+        {
+            return true;
+        }
+        return false;
 	}
 }
