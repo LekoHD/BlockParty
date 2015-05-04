@@ -22,6 +22,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX, ScriptJunkie and CPx1989
+ */
+
 public class WinnerCountdown {
 	public static int cd;
 	public static double number = 6.0D;

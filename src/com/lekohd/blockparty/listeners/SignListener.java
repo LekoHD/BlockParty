@@ -1,6 +1,6 @@
 package com.lekohd.blockparty.listeners;
 /*
- * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ * Copyright (C) 2014 Leon167, XxChxppellxX, ScriptJunkie and CPx1989
  */
 import com.lekohd.blockparty.BlockParty;
 import org.bukkit.ChatColor;
@@ -20,10 +20,10 @@ public class SignListener implements Listener {
 					if (e.getLine(2) != null) {
 						if (BlockParty.getArena.containsKey(e.getLine(2))) {
 							String arenaName = e.getLine(2);
-							e.setLine(0, "§6[BlockParty]");
-							e.setLine(1, "§7Arena:");
+							e.setLine(0, "ï¿½6[BlockParty]");
+							e.setLine(1, "ï¿½7Arena:");
 							e.setLine(2, ChatColor.AQUA + arenaName);
-							e.setLine(3, "§2Join");
+							e.setLine(3, "ï¿½2Join");
 							BlockParty.signs.put(arenaName, (Sign) e.getBlock().getState());
 						} else {
 							p.sendMessage(BlockParty.messageManager.ARENT_DOES_NOT_EXIST.replace("$ARENANAME$", e.getLine(1)));
@@ -31,8 +31,8 @@ public class SignListener implements Listener {
 					}
 				}
 				if (e.getLine(1).equalsIgnoreCase("leave")) {
-					e.setLine(0, "§6[BlockParty]");
-					e.setLine(1, "§4Leave");
+					e.setLine(0, "ï¿½6[BlockParty]");
+					e.setLine(1, "ï¿½4Leave");
 				}
 			}
 		}

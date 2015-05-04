@@ -1,7 +1,7 @@
 package com.lekohd.blockparty.system;
 
 /*
- * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ * Copyright (C) 2014 Leon167, XxChxppellxX, ScriptJunkie and CPx1989
  */
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.floor.FloorPoints;

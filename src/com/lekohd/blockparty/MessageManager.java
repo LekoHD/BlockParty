@@ -1,7 +1,7 @@
 package com.lekohd.blockparty;
 
 /*
- * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ * Copyright (C) 2014 Leon167, XxChxppellxX, ScriptJunkie and CPx1989
  */
 import java.io.File;
 import java.io.FileNotFoundException;

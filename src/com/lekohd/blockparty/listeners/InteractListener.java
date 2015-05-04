@@ -14,10 +14,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX, ScriptJunkie and CPx1989
+ */
+
 public class InteractListener implements Listener {
-	/*
-	 * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
-	 */
 	public int duration = 10;
 
 	@SuppressWarnings("deprecation")
@@ -54,8 +55,8 @@ public class InteractListener implements Listener {
 				if ((e.getClickedBlock().getType() == Material.SIGN) || (e.getClickedBlock().getType() == Material.SIGN_POST)
 						|| (e.getClickedBlock().getType() == Material.WALL_SIGN)) {
 					Sign sign = (Sign) e.getClickedBlock().getState();
-					if (sign.getLine(0).equals("§6[BlockParty]")) {
-						if (sign.getLine(3).equalsIgnoreCase("§2Join")) {
+					if (sign.getLine(0).equals("ï¿½6[BlockParty]")) {
+						if (sign.getLine(3).equalsIgnoreCase("ï¿½2Join")) {
 							if (p.hasPermission("blockparty.user")) {
 								Arena.join(p, removeColorCodes(sign.getLine(2)));
 							} else {
@@ -63,8 +64,8 @@ public class InteractListener implements Listener {
 							}
 						}
 					}
-					if (sign.getLine(0).equalsIgnoreCase("§6[BlockParty]")) {
-						if (sign.getLine(1).equalsIgnoreCase("§4Leave")) {
+					if (sign.getLine(0).equalsIgnoreCase("ï¿½6[BlockParty]")) {
+						if (sign.getLine(1).equalsIgnoreCase("ï¿½4Leave")) {
 							if (p.hasPermission("blockparty.user")) {
 								Arena.leave(p);
 							}
@@ -89,7 +90,7 @@ public class InteractListener implements Listener {
 	public String removeColorCodes(String str) {
 		String h = "";
 		for (int i = 0; i < str.length(); i++) {
-			if (str.charAt(i) == '§') {
+			if (str.charAt(i) == 'ï¿½') {
 				i++;
 			} else {
 				h = h + str.charAt(i);

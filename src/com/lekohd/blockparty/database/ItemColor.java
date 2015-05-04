@@ -1,14 +1,9 @@
 package com.lekohd.blockparty.database;
 
-import com.lekohd.blockparty.floor.FloorBlock;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 
-/**
- * Created by Leon on 04.05.2015.
- * Project BlockParty
- * <p/>
- * Copyright (C) 2014 Leon167 { LekoHD
+/*
+ * Copyright (C) 2014 Leon167, XxChxppellxX, ScriptJunkie and CPx1989
  */
 public class ItemColor {
 

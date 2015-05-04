@@ -1,6 +1,6 @@
 package com.lekohd.blockparty;
 /*
- * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ * Copyright (C) 2014 Leon167, XxChxppellxX, ScriptJunkie and CPx1989
  */
 import com.lekohd.blockparty.system.Metrics;
 import com.lekohd.blockparty.commands.BlockPartyCommand;

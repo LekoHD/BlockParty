@@ -1,6 +1,6 @@
 package com.lekohd.blockparty.bonus;
 /*
- * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ * Copyright (C) 2014 Leon167, XxChxppellxX, ScriptJunkie and CPx1989
  */
 import java.util.Random;
 import org.bukkit.Material;

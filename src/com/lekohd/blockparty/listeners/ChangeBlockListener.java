@@ -1,6 +1,6 @@
 package com.lekohd.blockparty.listeners;
 /*
- * Copyright (C) 2014 Leon167, XxChxppellxX and ScriptJunkie 
+ * Copyright (C) 2014 Leon167, XxChxppellxX, ScriptJunkie and CPx1989
  */
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
