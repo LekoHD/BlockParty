@@ -55,8 +55,8 @@ public class InteractListener implements Listener {
 				if ((e.getClickedBlock().getType() == Material.SIGN) || (e.getClickedBlock().getType() == Material.SIGN_POST)
 						|| (e.getClickedBlock().getType() == Material.WALL_SIGN)) {
 					Sign sign = (Sign) e.getClickedBlock().getState();
-					if (sign.getLine(0).equals("�6[BlockParty]")) {
-						if (sign.getLine(3).equalsIgnoreCase("�2Join")) {
+					if (sign.getLine(0).equalsIgnoreCase("§6[BlockParty]")) {
+						if (sign.getLine(3).equalsIgnoreCase("§2Join")) {
 							if (p.hasPermission("blockparty.user")) {
 								Arena.join(p, removeColorCodes(sign.getLine(2)));
 							} else {
@@ -64,8 +64,8 @@ public class InteractListener implements Listener {
 							}
 						}
 					}
-					if (sign.getLine(0).equalsIgnoreCase("�6[BlockParty]")) {
-						if (sign.getLine(1).equalsIgnoreCase("�4Leave")) {
+					if (sign.getLine(0).equalsIgnoreCase("§6[BlockParty]")) {
+						if (sign.getLine(1).equalsIgnoreCase("§4Leave")) {
 							if (p.hasPermission("blockparty.user")) {
 								Arena.leave(p);
 							}
@@ -90,7 +90,7 @@ public class InteractListener implements Listener {
 	public String removeColorCodes(String str) {
 		String h = "";
 		for (int i = 0; i < str.length(); i++) {
-			if (str.charAt(i) == '�') {
+			if (str.charAt(i) == '§') {
 				i++;
 			} else {
 				h = h + str.charAt(i);
