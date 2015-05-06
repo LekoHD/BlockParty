@@ -8,6 +8,7 @@ import com.lekohd.blockparty.floor.FloorPoints;
 import com.lekohd.blockparty.level.Period;
 import com.lekohd.blockparty.level.WinnerCountdown;
 import com.lekohd.blockparty.music.Songs;
+import com.lekohd.blockparty.scoreboardsystem.ScoreboardSys;
 import com.lekohd.blockparty.sign.Signs;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.Selection;
@@ -53,6 +54,7 @@ public class Config {
 	public boolean autoGenerateFloors;
 	public boolean useSchematicFloors;
     public boolean enableActionbarInfo = true;
+    public boolean enableScoreboard = true;
 	public boolean isEnabled = false;
 	public boolean useBoosts = true;
 	public boolean fallingBlock = true;
@@ -152,6 +154,7 @@ public class Config {
 		this.cfg.set("configuration.AutoGenerateFloors", Boolean.valueOf(true));
 		this.cfg.set("configuration.UseSchematicFloors", Boolean.valueOf(true));
         this.cfg.set("configuration.EnableActionbarInfo", Boolean.valueOf(true));
+        this.cfg.set("configuration.EnableScoreboard", Boolean.valueOf(true));
 		this.enabledFloors.add("example");
 		this.cfg.set("configuration.EnabledFloors", this.enabledFloors);
 		this.rewardItems.add(Integer.valueOf(264));
@@ -333,6 +336,9 @@ public class Config {
 		BlockParty.inGamePlayers.remove(p.getName());
 		BlockParty.onFloorPlayers.remove(p.getName());
 
+        //Scoreboard
+        ScoreboardSys.removeScore(p);
+
 		broadcastInGame(BlockParty.messageManager.LEAVE_ARENA_BROADCAST.replace("$PLAYER$", p.getName()), (String) BlockParty.inGamePlayers.get(p.getName()));
 
 		if (BlockParty.getArena.get(arenaName) != null) {
@@ -388,6 +394,10 @@ public class Config {
 							// Add to game at this point
 							BlockParty.inGamePlayers.put(p.getName(), Config.arenaName);
 							BlockParty.inLobbyPlayers.put(p.getName(), Config.arenaName);
+
+                            // Scoreboard
+                            if(BlockParty.getArena.get(Config.arenaName).getEnableScoreboard())
+                                ScoreboardSys.setLobbyScore(p);
 
 							// Archive Inventory
 							BlockParty.inventoryManager.storeInv(p, true);
@@ -672,6 +682,7 @@ public class Config {
 			this.autoGenerateFloors = this.cfg.getBoolean("configuration.AutoGenerateFloors");
 			this.useSchematicFloors = this.cfg.getBoolean("configuration.UseSchematicFloors");
             this.enableActionbarInfo = this.cfg.getBoolean("configuration.EnableActionbarInfo");
+            this.enableScoreboard = this.cfg.getBoolean("configuration.EnableScoreboard");
 			this.enabledFloors = ((ArrayList<String>) this.cfg.get("configuration.EnabledFloors"));
 			// this.enabledFloors = ((ArrayList<String>) loadFloors());
 			this.rewardItems = ((ArrayList<Integer>) this.cfg.get("configuration.RewardItems"));
@@ -773,6 +784,8 @@ public class Config {
     public boolean getEnableActionbarInfo() {
         return this.enableActionbarInfo;
     }
+
+    public boolean getEnableScoreboard() { return this.enableScoreboard; }
 
 	public boolean reachedMaxPlayers() {
 		if (this.arena.exists()) {

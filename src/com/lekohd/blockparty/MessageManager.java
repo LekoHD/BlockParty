@@ -82,6 +82,10 @@ public class MessageManager {
 	public String PERIOD_BOOSTS_SUMMONED = "§8A Boost has been summoned!";
 	public String PERIOD_ELIMINATED = "§8$PLAYER$ was §4ELIMINATED!";
 	public String PERIOD_ERROR_NO_FLOORS = "There are no floors for Arena $ARENANAME$.";
+    public String PERIOD_ANNOUNCE_POINTS_PLUS_ONE = "&5&l+ 1 &8Point!";
+    public String PERIOD_ANNOUNCE_POINTS_PLUS_FIVE = "&5&l+ 5 &8Points for reaching the third place!";
+    public String PERIOD_ANNOUNCE_POINTS_PLUS_TEN = "&5&l+ 10 &8Points for reaching the second place!";
+    public String PERIOD_ANNOUNCE_POINTS_PLUS_FIFTEEN = "&5&l+ 15 &8Points for reaching the first place!";
 
 	public String SONG_NOT_EXIST = "§8$SONG$ does not exist.";
 	public String SONG_NOW_PLAYING = "§8Playing song $SONG$";
@@ -173,6 +177,10 @@ public class MessageManager {
 				PERIOD_BOOSTS_SUMMONED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_BOOSTS_SUMMONED"));
 				PERIOD_ELIMINATED = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_ELIMINATED"));
 				PERIOD_ERROR_NO_FLOORS = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_ERROR_NO_FLOORS"));
+                PERIOD_ANNOUNCE_POINTS_PLUS_ONE = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_ANNOUNCE_POINTS_PLUS_ONE"));
+                PERIOD_ANNOUNCE_POINTS_PLUS_FIVE = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_ANNOUNCE_POINTS_PLUS_FIVE"));
+                PERIOD_ANNOUNCE_POINTS_PLUS_TEN = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_ANNOUNCE_POINTS_PLUS_TEN"));
+                PERIOD_ANNOUNCE_POINTS_PLUS_FIFTEEN = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("PERIOD_ANNOUNCE_POINTS_PLUS_FIFTEEN"));
 
 				SONG_NOT_EXIST = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SONG_NOT_EXIST"));
 				SONG_NOW_PLAYING = colorizeString(BLOCKPARTY_PREFIX + " " + config.getString("SONG_NOW_PLAYING"));

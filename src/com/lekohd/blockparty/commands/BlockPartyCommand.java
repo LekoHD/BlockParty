@@ -20,6 +20,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+
 public class BlockPartyCommand implements CommandExecutor {
 	public static String lobby = "Lobby";
 	public static String game = "Game";
@@ -29,7 +31,7 @@ public class BlockPartyCommand implements CommandExecutor {
 			Player p = (Player) sender;
 			if (args.length == 0) {
 				p.sendMessage("");
-				p.sendMessage("§7BlockParty indev §6" + BlockParty.getInstance().getDescription().getVersion());
+				p.sendMessage("§7BlockParty §6" + BlockParty.getInstance().getDescription().getVersion());
 				p.sendMessage("");
 				p.sendMessage("§8Developers: §3" + BlockParty.pdfFile.getAuthors());
 				p.sendMessage("§8Commands: §3/blockparty help");
@@ -39,7 +41,8 @@ public class BlockPartyCommand implements CommandExecutor {
 				p.sendMessage(ChatColor.GREEN + "----" + " §6BlockParty " + ChatColor.AQUA + "Commands " + ChatColor.GREEN + "----");
 				p.sendMessage("§3/blockparty info  §8Get all informations about the plugin");
 				p.sendMessage("§3/blockparty join <arenaName>  §8Join the arena");
-				p.sendMessage("§3/blockparty leave <arenaName>  §8Leave the arena");
+				p.sendMessage("§3/blockparty leave  §8Leave the arena");
+                p.sendMessage("§3/blockparty stats <points|gamesplayed|roundssurvived|eliminations|victories|placings>  §8Get stats");
 				if (p.hasPermission("blockparty.admin")) {
 					p.sendMessage("§3/blockparty admin  §8Show the admin commands");
 				}
@@ -50,7 +53,7 @@ public class BlockPartyCommand implements CommandExecutor {
 					p.sendMessage(ChatColor.GREEN + "----" + " §6BlockParty " + ChatColor.AQUA + "Admin-Commands " + ChatColor.GREEN + "----");
 					p.sendMessage("§3/blockparty start <arenaName>  §8Starts the game");
 					p.sendMessage("§3/blockparty create <arenaName>  §8Creates an arena");
-					p.sendMessage("§3/blockparty delete <arenaName>  §8Creates an arena");
+					p.sendMessage("§3/blockparty delete <arenaName>  §8Deletes an arena");
 					p.sendMessage("§3/blockparty setSpawn <arenaName> <lobby|game>  §8Set the spawns for lobby|game");
 					p.sendMessage("§3/blockparty setFloor <arenaName>  §8Set the floor for an arena");
 					p.sendMessage("§3/blockparty addFloor <arenaName> <floorName>  §8Add a schematic floor to an arena");
@@ -135,6 +138,93 @@ public class BlockPartyCommand implements CommandExecutor {
 						p.sendMessage("§4You don't have the permissions to do that");
 					}
 				}
+
+                if(args[0].equalsIgnoreCase("stats"))
+                {
+                    if(args[1].equalsIgnoreCase("points"))
+                    {
+                        ArrayList<String> pList = BlockParty.statsManager.getSortedPlayersByPoints();
+                        int i = 1;
+                        p.sendMessage(ChatColor.GREEN + "----" + " §6BlockParty " + ChatColor.AQUA + "Stats " + ChatColor.GREEN + "----");
+                        for(String name : pList)
+                        {
+                            p.sendMessage("§3§l" + i + ". §8" + name + ": §5" + BlockParty.statsManager.getPoints(name) + " §8Points");
+                            i++;
+                        }
+                        p.sendMessage(" ");
+                        p.sendMessage("§8Your Points: §5" + BlockParty.statsManager.getPoints(p.getName()));
+                    }
+
+                    if(args[1].equalsIgnoreCase("eliminations"))
+                    {
+                        ArrayList<String> pList = BlockParty.statsManager.getSortedPlayersByEliminations();
+                        int i = 1;
+                        p.sendMessage(ChatColor.GREEN + "----" + " §6BlockParty " + ChatColor.AQUA + "Stats " + ChatColor.GREEN + "----");
+                        for(String name : pList)
+                        {
+                            p.sendMessage("§3§l" + i + ". §8" + name + ": §5" + BlockParty.statsManager.getEliminations(name) + " §8Eliminations");
+                            i++;
+                        }
+                        p.sendMessage(" ");
+                        p.sendMessage("§8Your Eliminations: §5" + BlockParty.statsManager.getEliminations(p.getName()));
+                    }
+
+                    if(args[1].equalsIgnoreCase("gamesplayed"))
+                    {
+                        ArrayList<String> pList = BlockParty.statsManager.getSortedPlayersByGamesPlayed();
+                        int i = 1;
+                        p.sendMessage(ChatColor.GREEN + "----" + " §6BlockParty " + ChatColor.AQUA + "Stats " + ChatColor.GREEN + "----");
+                        for(String name : pList)
+                        {
+                            p.sendMessage("§3§l" + i + ". §8" + name + ": §5" + BlockParty.statsManager.getGamesPlayed(name) + " §8Games played");
+                            i++;
+                        }
+                        p.sendMessage(" ");
+                        p.sendMessage("§8You played: §5" + BlockParty.statsManager.getGamesPlayed(p.getName()) + " §8games");
+                    }
+
+                    if(args[1].equalsIgnoreCase("roundssurvived"))
+                    {
+                        ArrayList<String> pList = BlockParty.statsManager.getSortedPlayersByRoundsSurvived();
+                        int i = 1;
+                        p.sendMessage(ChatColor.GREEN + "----" + " §6BlockParty " + ChatColor.AQUA + "Stats " + ChatColor.GREEN + "----");
+                        for(String name : pList)
+                        {
+                            p.sendMessage("§3§l" + i + ". §8" + name + ": §5" + BlockParty.statsManager.getRoundsSurvived(name) + " §8Rounds survived");
+                            i++;
+                        }
+                        p.sendMessage(" ");
+                        p.sendMessage("§8You survived: §5" + BlockParty.statsManager.getRoundsSurvived(p.getName()) + " §8rounds");
+                    }
+
+                    if(args[1].equalsIgnoreCase("victories"))
+                    {
+                        ArrayList<String> pList = BlockParty.statsManager.getSortedPlayersByVictories();
+                        int i = 1;
+                        p.sendMessage(ChatColor.GREEN + "----" + " §6BlockParty " + ChatColor.AQUA + "Stats " + ChatColor.GREEN + "----");
+                        for(String name : pList)
+                        {
+                            p.sendMessage("§3§l" + i + ". §8" + name + ": §5" + BlockParty.statsManager.getVictories(name) + " §8Victories");
+                            i++;
+                        }
+                        p.sendMessage(" ");
+                        p.sendMessage("§8Your Victories: §5" + BlockParty.statsManager.getVictories(p.getName()));
+                    }
+
+                    if(args[1].equalsIgnoreCase("placings"))
+                    {
+                        ArrayList<String> pList = BlockParty.statsManager.getSortedPlayersByPlacings();
+                        int i = 1;
+                        p.sendMessage(ChatColor.GREEN + "----" + " §6BlockParty " + ChatColor.AQUA + "Stats " + ChatColor.GREEN + "----");
+                        for(String name : pList)
+                        {
+                            p.sendMessage("§3§l" + i + ". §8" + name + ": §5" + BlockParty.statsManager.getPlacings(name) + " §8Placings");
+                            i++;
+                        }
+                        p.sendMessage(" ");
+                        p.sendMessage("§8Your Placings: §5" + BlockParty.statsManager.getPlacings(p.getName()));
+                    }
+                }
 
 				if ((args[0].equalsIgnoreCase("tutorial")) && (args[1].equalsIgnoreCase("schematics")) && (p.hasPermission("blockparty.admin"))) {
 					p.sendMessage(ChatColor.GREEN + "----" + " §6BlockParty " + ChatColor.AQUA + "Schematics-Tutorial " + ChatColor.GREEN + "----");

@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.lekohd.blockparty.BlockParty;
+import com.lekohd.blockparty.scoreboardsystem.ScoreboardSys;
 import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Config;
 import com.lekohd.blockparty.system.Players;
@@ -54,6 +55,9 @@ public class WinnerCountdown {
 
 								BlockParty.onFloorPlayers.remove(playerName);
 								BlockParty.inLobbyPlayers.put(playerName, arenaName);
+
+                                if(BlockParty.getArena.get(arenaName).getEnableScoreboard())
+                                    ScoreboardSys.setLobbyScore(Bukkit.getPlayer(playerName));
 
 								Player p = Bukkit.getPlayer(playerName);
 								p.teleport(Arena.getLobbySpawn(arenaName));

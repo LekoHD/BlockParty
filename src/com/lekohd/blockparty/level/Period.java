@@ -12,6 +12,7 @@ import com.lekohd.blockparty.floor.LoadFloor;
 import com.lekohd.blockparty.floor.RandomizeFloor;
 import com.lekohd.blockparty.floor.RemoveBlocks;
 import com.lekohd.blockparty.music.Songs;
+import com.lekohd.blockparty.scoreboardsystem.ScoreboardSys;
 import com.lekohd.blockparty.sign.Signs;
 import com.lekohd.blockparty.system.Arena;
 import com.lekohd.blockparty.system.Config;
@@ -267,7 +268,7 @@ public class Period {
                                         Action.sendAction(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), BlockParty.messageManager.ACTIONBAR_DANCE);*/
 								}
 							}
-							if ((Period.number <= 10.0D) && (Period.number > 9.0D)) {
+							if ((Period.number < 10.0D) && (Period.number >= 9.0D)) {
 								if (BlockParty.getArena.get(aName).getEnableActionbarInfo() || Bukkit.getPluginManager().isPluginEnabled("BarAPI")) {
 									if (Players.getPlayerAmountOnFloor(aName) != 1) {
 										for (String name : Players.getPlayersOnFloor(aName)) {
@@ -323,7 +324,37 @@ public class Period {
 										}
 									}
 								}
+                                if(BlockParty.getArena.get(aName).getEnableScoreboard()) {
+                                    if (Players.getPlayerAmountOnFloor(aName) != 1) {
+                                        for (String name : Players.getPlayersOnFloor(aName)) {
+                                            Player p = Bukkit.getPlayer(name);
+                                            p.sendMessage(BlockParty.messageManager.PERIOD_ANNOUNCE_POINTS_PLUS_ONE);
+                                            BlockParty.statsManager.setPoints(p, (BlockParty.statsManager.getPoints(p) + 1));
+                                            BlockParty.statsManager.setRoundsSurvived(p, (BlockParty.statsManager.getRoundsSurvived(p) + 1));
+                                        }
+                                    }
+                                }
+
 							}
+
+                            if(BlockParty.getArena.get(aName).getEnableScoreboard())
+                            {
+                                if (Players.getPlayerAmountOnFloor(aName) != 1) {
+                                    for (String name : Players.getPlayersOnFloor(aName)) {
+                                        Player p = Bukkit.getPlayer(name);
+                                        if (Period.number >= 9.0D)
+                                            ScoreboardSys.setGameScore(p, Players.getPlayerAmountOnFloor(aName), (Period.period + 1), (int)number-9);
+
+                                    }
+                                }
+                                else
+                                {
+                                    /*ScoreboardSys.setGameScore(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), Players.getPlayerAmountOnFloor(aName), Players.getPlayerAmountInGame(aName));
+                                    BlockParty.statsManager.setPoints(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), (BlockParty.statsManager.getPoints(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0))) + 1));
+                                    BlockParty.statsManager.setRoundsSurvived(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), (BlockParty.statsManager.getRoundsSurvived(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0))) + 1));*/
+                                }
+                            }
+
 							if (Players.getPlayerAmountOnFloor(aName) == 1) {
 								Bukkit.getScheduler().cancelTask(Period.cd);
 								((Config) BlockParty.getArena.get(aName)).setStart(false);
@@ -338,6 +369,11 @@ public class Period {
 									b.remove();
 								}
 
+                                BlockParty.statsManager.setVictories(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), (BlockParty.statsManager.getVictories(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0))) + 1));
+                                BlockParty.statsManager.setPoints(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), (BlockParty.statsManager.getPoints(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0))) + 15));
+                                Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(BlockParty.messageManager.PERIOD_ANNOUNCE_POINTS_PLUS_FIFTEEN);
+                                BlockParty.statsManager.setPlacings(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)), (BlockParty.statsManager.getPlacings(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0))) + 1));
+                                BlockParty.statsManager.storeStats(Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)));
 								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(
 										BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_SELF);
 								Bukkit.getPlayer((String) Players.getPlayersOnFloor(aName).get(0)).sendMessage(
@@ -356,6 +392,9 @@ public class Period {
 								Period.setFloor(aName, true);
 							}
 						} else {
+
+
+
 							Period.period += 1;
 							Bukkit.getScheduler().cancelTask(Period.cd);
 							Period.this.start(aName, Period.period, bo);
@@ -382,6 +421,11 @@ public class Period {
 			Signs.updateGameProgress(aName, true);
 			for (String name : Players.getPlayersOnFloor(aName)) {
 				Player p = Bukkit.getPlayer(name);
+                BlockParty.statsManager.setVictories(p, (BlockParty.statsManager.getVictories(p) + 1));
+                BlockParty.statsManager.setPlacings(p, (BlockParty.statsManager.getPlacings(p) + 1));
+                BlockParty.statsManager.setPoints(p, (BlockParty.statsManager.getPoints(p) + 15));
+                p.sendMessage(BlockParty.messageManager.PERIOD_ANNOUNCE_POINTS_PLUS_FIFTEEN);
+                BlockParty.statsManager.storeStats(p);
 				p.sendMessage(BlockParty.messageManager.PERIOD_WINNER_ANNOUNCE_SELF);
 				if (Bukkit.getPluginManager().isPluginEnabled("NoteBlockAPI")) {
 					Songs.stop(p);

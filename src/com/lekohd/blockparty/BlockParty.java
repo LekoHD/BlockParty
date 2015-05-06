@@ -2,19 +2,11 @@ package com.lekohd.blockparty;
 /*
  * Copyright (C) 2014 Leon167, XxChxppellxX, ScriptJunkie and CPx1989
  */
+import com.lekohd.blockparty.listeners.*;
+import com.lekohd.blockparty.statistics.StatsManager;
 import com.lekohd.blockparty.system.Metrics;
 import com.lekohd.blockparty.commands.BlockPartyCommand;
 import com.lekohd.blockparty.floor.LoadFloor;
-import com.lekohd.blockparty.listeners.BlockPlaceListener;
-import com.lekohd.blockparty.listeners.ChangeBlockListener;
-import com.lekohd.blockparty.listeners.CommandListener;
-import com.lekohd.blockparty.listeners.DamageListener;
-import com.lekohd.blockparty.listeners.DisconnectListener;
-import com.lekohd.blockparty.listeners.FeedListener;
-import com.lekohd.blockparty.listeners.InteractListener;
-import com.lekohd.blockparty.listeners.InventoryListener;
-import com.lekohd.blockparty.listeners.MoveListener;
-import com.lekohd.blockparty.listeners.SignListener;
 import com.lekohd.blockparty.music.Songs;
 import com.lekohd.blockparty.system.Config;
 import com.lekohd.blockparty.system.InventoryManager;
@@ -64,6 +56,7 @@ public class BlockParty extends JavaPlugin {
 	public static Set<String> inventoriesToRestore;
 	public static Logger logger;
 	public static InventoryManager inventoryManager;
+    public static StatsManager statsManager;
 	public static String defaultLanguage = "en";
 	public static MessageManager messageManager;
 	
@@ -98,6 +91,7 @@ public class BlockParty extends JavaPlugin {
 		pm.registerEvents(new BlockPlaceListener(), this);
 		pm.registerEvents(new DamageListener(), this);
 		pm.registerEvents(new InventoryListener(), this);
+        pm.registerEvents(new JoinListener(), this);
 
 		noteBlockAPI = pm.isPluginEnabled("NoteBlockAPI");
 		pm.isPluginEnabled("BarAPI");
@@ -112,6 +106,8 @@ public class BlockParty extends JavaPlugin {
 		registerInventories();
 		
 		inventoryManager = new InventoryManager(instance);
+
+        statsManager = new StatsManager(instance);
 		
 		try {
 			new Metrics(this).start();

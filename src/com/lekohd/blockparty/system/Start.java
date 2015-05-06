@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import com.lekohd.blockparty.BlockParty;
 import com.lekohd.blockparty.level.Period;
 import com.lekohd.blockparty.music.Songs;
+import com.lekohd.blockparty.scoreboardsystem.ScoreboardSys;
 import com.lekohd.blockparty.sign.Signs;
 import me.confuser.barapi.BarAPI;
 import org.bukkit.Bukkit;
@@ -53,6 +54,10 @@ public class Start {
 				for (String name : Players.getPlayersInLobby(arenaName)) {
 					Player p = Bukkit.getPlayer(name);
 					p.teleport(Arena.getGameSpawn(arenaName));
+
+                    //Stats
+                    BlockParty.statsManager.setGamesPlayed(p, (BlockParty.statsManager.getGamesPlayed(p) + 1));
+
 					p.getInventory().clear();
 					p.updateInventory();
 					BlockParty.inLobbyPlayers.remove(p.getName());
@@ -64,6 +69,12 @@ public class Start {
 					}
 					Bukkit.getScheduler().cancelTask(cd);
 				}
+                if(BlockParty.getArena.get(arenaName).getEnableScoreboard()){
+                    for (String name : Players.getPlayersInLobby(arenaName)) {
+                        Player p = Bukkit.getPlayer(name);
+                        ScoreboardSys.setGameScore(p, Players.getPlayerAmountOnFloor(arenaName), 1, 0);
+                    }
+                }
 				((Config) BlockParty.getArena.get(arenaName)).setGameProgress("inGame");
 				Signs.updateGameProgress(arenaName, false);
 				((Config) BlockParty.getArena.get(arenaName)).setStart(false);
